@@ -26,14 +26,14 @@ export function listMarkdownRelPaths(): string[] {
   return out.sort();
 }
 
-/** URL slug 段一律小写，与 list 中的真实路径对应。 */
+/** URL slug 段一律小写，并对齐常见习惯（下划线转短横线）。 */
 export function relPathToSlugSegments(rel: string): string[] {
   const base = rel.endsWith(".md") ? rel.slice(0, -3) : rel;
-  return base.split("/").map((s) => s.toLowerCase());
+  return base.split("/").map((s) => s.toLowerCase().replace(/_/g, "-"));
 }
 
 export function slugKey(slug: string[]): string {
-  return slug.map((s) => s.toLowerCase()).join("/");
+  return slug.map((s) => s.toLowerCase().replace(/_/g, "-")).join("/");
 }
 
 /** 根据 URL slug 解析为 docs 下的相对路径；找不到返回 null。 */
