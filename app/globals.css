@@ -246,3 +246,127 @@ a {
     transition: none !important;
   }
 }
+
+/* Markdown 文档正文（站内 /docs/view/...） */
+.doc-markdown {
+  color: var(--foreground);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.doc-markdown h1,
+.doc-markdown h2,
+.doc-markdown h3,
+.doc-markdown h4 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-top: 1.75rem;
+  margin-bottom: 0.65rem;
+  color: var(--foreground);
+}
+
+.doc-markdown h1 {
+  font-size: 1.65rem;
+  border-bottom: 1px solid var(--line-weak);
+  padding-bottom: 0.35rem;
+}
+
+.doc-markdown h2 {
+  font-size: 1.28rem;
+}
+
+.doc-markdown h3 {
+  font-size: 1.08rem;
+}
+
+.doc-markdown p {
+  margin: 0.75rem 0;
+}
+
+.doc-markdown a {
+  color: var(--brand-end);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.doc-markdown a:hover {
+  color: var(--brand-start);
+}
+
+.doc-markdown ul,
+.doc-markdown ol {
+  margin: 0.65rem 0 0.65rem 1.25rem;
+  padding: 0;
+}
+
+.doc-markdown li {
+  margin: 0.35rem 0;
+}
+
+.doc-markdown blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 0 0.5rem 1rem;
+  border-left: 3px solid var(--brand-start);
+  color: var(--muted);
+  background: var(--surface-muted);
+  border-radius: 0 0.4rem 0.4rem 0;
+}
+
+.doc-markdown code {
+  font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  font-size: 0.86em;
+  padding: 0.12em 0.38em;
+  border-radius: 0.3rem;
+  background: var(--surface-muted);
+  border: 1px solid var(--line-weak);
+}
+
+.doc-markdown pre {
+  margin: 1rem 0;
+  padding: 1rem 1.1rem;
+  overflow: auto;
+  border-radius: 0.55rem;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow-soft);
+}
+
+.doc-markdown pre code {
+  font-size: 0.82rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  line-height: 1.55;
+}
+
+.doc-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.92rem;
+}
+
+.doc-markdown th,
+.doc-markdown td {
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+}
+
+.doc-markdown th {
+  background: var(--surface-muted);
+  font-weight: 600;
+}
+
+.doc-markdown hr {
+  border: 0;
+  border-top: 1px solid var(--line-weak);
+  margin: 1.75rem 0;
+}
+
+.doc-markdown img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.4rem;
+}

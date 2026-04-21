@@ -34,7 +34,12 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
       active: pathname === "/download",
       icon: Download,
     },
-    { href: withLang("/docs", safeCurrentLang), label: messages.nav.docs, active: pathname === "/docs", icon: BookOpenText },
+    {
+      href: withLang("/docs", safeCurrentLang),
+      label: messages.nav.docs,
+      active: pathname === "/docs" || pathname.startsWith("/docs/"),
+      icon: BookOpenText,
+    },
     {
       href: withLang("/changelog", safeCurrentLang),
       label: messages.nav.changelog,

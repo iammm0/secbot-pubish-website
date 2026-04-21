@@ -1,0 +1,5 @@
+同步时间(UTC): 2026-04-21T02:02:59Z
+上游仓库: https://github.com/iammm0/secbot.git
+分支/引用: main
+上游提交: e9f43c99acd907e505541e2d2a02acbc6d429069
+说明: 由 scripts/sync-secbot-docs.sh 生成；正文 Markdown 来自上游 docs/。
