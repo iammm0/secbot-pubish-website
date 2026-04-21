@@ -13,11 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Secbot Publish",
-  description: "Secbot official release website for TS and PY distributions.",
+  title: "secbot",
+  description: "Secbot 的发布与文档站点（TS 正式版 + PY 实验版）。",
   openGraph: {
-    title: "Secbot Publish",
-    description: "Official TS release and experimental PY release.",
+    title: "Secbot 发布站",
+    description: "Secbot 的发布与文档站点（TS 正式版 + PY 实验版）。",
     url: "https://github.com/iammm0/secbot",
     siteName: "Secbot",
     type: "website",
