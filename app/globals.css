@@ -156,7 +156,9 @@ a {
   font-size: 0.84rem;
   line-height: 1.5;
   color: var(--foreground);
-  word-break: break-all;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
 }
 
 .ui-button {
@@ -399,17 +401,23 @@ a {
   overflow-wrap: anywhere;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 480px) {
   .section-wrap {
-    padding: 2.25rem 1.1rem;
+    padding: 2rem 0.75rem;
   }
 
-  .ui-button {
+  .surface-card {
+    padding: 1rem;
+  }
+
+  .cta-row .ui-button {
     width: 100%;
     justify-content: center;
   }
+}
 
-  nav[aria-label] a {
-    max-width: 100%;
+@media (max-width: 375px) {
+  .section-wrap {
+    padding: 1.5rem 0.5rem;
   }
 }

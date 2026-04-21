@@ -25,9 +25,9 @@ export function CopyCommandBlock({ command, hint, copyLabel, copiedLabel }: Copy
 
   return (
     <>
-      <div className="mt-3 flex items-start justify-between gap-3">
-        <div className="command-block flex-1">{command}</div>
-        <button type="button" className="ui-button" onClick={handleCopy} aria-label={copyLabel} title={copyLabel}>
+      <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+        <div className="command-block min-w-0 flex-1">{command}</div>
+        <button type="button" className="ui-button shrink-0" onClick={handleCopy} aria-label={copyLabel} title={copyLabel}>
           {copied ? <Check className="h-4 w-4 text-[var(--brand-start)]" /> : <Copy className="h-4 w-4" />}
           <span>{copied ? copiedLabel : copyLabel}</span>
         </button>

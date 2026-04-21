@@ -21,7 +21,7 @@ export default async function Home({ searchParams }: HomeProps) {
         <SiteHeader locale={locale} messages={messages} />
         <main className="page-main">
           <SectionBlock title={messages.home.heroTitle}>
-            <div className="surface-card motion-enter p-5 sm:p-7">
+            <div className="surface-card motion-enter p-3 sm:p-5 md:p-7">
               <p className="max-w-3xl text-base leading-8 text-[var(--muted)]">{messages.home.heroSubtitle}</p>
 
               <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -49,7 +49,7 @@ export default async function Home({ searchParams }: HomeProps) {
                 </article>
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="cta-row mt-6 flex flex-wrap gap-3">
                 <a
                   href="https://www.npmjs.com/package/@opensec/secbot"
                   target="_blank"

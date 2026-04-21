@@ -22,7 +22,7 @@ export function SiteFooter({ messages }: SiteFooterProps) {
           GitHub ID: @iammm0
         </a>
         <a
-          className="px-4 py-4 text-sm text-[var(--foreground)] no-underline hover:bg-[var(--surface-muted)] sm:px-6"
+          className="break-all px-4 py-4 text-sm text-[var(--foreground)] no-underline hover:bg-[var(--surface-muted)] sm:break-normal sm:px-6"
           href="mailto:wisewater5419@gmail.com"
         >
           Email: wisewater5419@gmail.com

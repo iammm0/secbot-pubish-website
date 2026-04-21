@@ -38,7 +38,7 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
 
   return (
     <header className="sticky top-0 z-30 border-b border-[var(--line-weak)] bg-[var(--header-bg)] backdrop-blur-md">
-      <div className="px-4 py-4 sm:px-6">
+      <div className="px-3 py-3 sm:px-6 sm:py-4">
         <div className="flex items-start justify-between gap-4">
           <Link href={withLang("/", safeCurrentLang)} className="min-w-0 shrink no-underline">
             <p className="truncate font-mono text-lg font-semibold tracking-tight text-[var(--foreground)]">{messages.brand.name}</p>
@@ -87,13 +87,13 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
 
           <button
             type="button"
-            className="ui-button md:hidden"
+            className="ui-button shrink-0 md:hidden"
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-expanded={mobileOpen}
             aria-label={mobileOpen ? messages.common.closeMenu : messages.common.openMenu}
           >
             {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-            <span>{mobileOpen ? messages.common.closeMenu : messages.common.openMenu}</span>
+            <span className="hidden min-[360px]:inline">{mobileOpen ? messages.common.closeMenu : messages.common.openMenu}</span>
           </button>
         </div>
 
