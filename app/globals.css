@@ -167,6 +167,7 @@ a {
   border-radius: 0.5rem;
   border: 1px solid var(--line);
   padding: 0.5rem 0.85rem;
+  min-height: 2.5rem;
   font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
   font-size: 0.78rem;
   font-weight: 600;
@@ -252,6 +253,7 @@ a {
   color: var(--foreground);
   font-size: 0.98rem;
   line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
 .doc-markdown h1,
@@ -326,6 +328,7 @@ a {
   margin: 1rem 0;
   padding: 1rem 1.1rem;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 0.55rem;
   border: 1px solid var(--line);
   background: var(--panel);
@@ -341,7 +344,11 @@ a {
 }
 
 .doc-markdown table {
+  display: block;
   width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-collapse: collapse;
   margin: 1rem 0;
   font-size: 0.92rem;
@@ -384,4 +391,25 @@ a {
 .docs-article-lead {
   border-left: 3px solid var(--brand-start);
   padding-left: 0.85rem;
+}
+
+/* 文档顶栏与本页目录在移动端避免横向溢出 */
+.docs-top-strip,
+.doc-onpage-toc {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 420px) {
+  .section-wrap {
+    padding: 2.25rem 1.1rem;
+  }
+
+  .ui-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  nav[aria-label] a {
+    max-width: 100%;
+  }
 }
