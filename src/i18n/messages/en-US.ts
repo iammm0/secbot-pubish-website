@@ -45,202 +45,91 @@ const enUS = {
   docs: {
     title: "Secbot documentation overview",
     subtitle:
-      "The current sync targets the Python CLI / FastAPI track. Pages are synced from upstream docs/ and rendered here. Information architecture follows the layered, guided layout of execgo.site docs.",
+      "Docs are split by upstream release branch: pypi-release for Python / PyPI and npm-release for TypeScript / npm. The branch-first structure follows the execgo.site documentation pattern.",
     backToHub: "Back to docs hub",
     quickNavLabel: "Start here",
     quickLinks: [
       { label: "Overview", viewPath: "/docs", emphasis: true },
-      { label: "Quickstart", viewPath: "/docs/view/quickstart" },
-      { label: "HTTP API", viewPath: "/docs/view/api" },
-      { label: "LLM providers", viewPath: "/docs/view/llm-providers" },
-      { label: "Deployment", viewPath: "/docs/view/deployment" },
-      { label: "Security", viewPath: "/docs/view/security-warning" },
+      { label: "PY docs", viewPath: "/docs/secbot/pypi-release" },
+      { label: "NPM docs", viewPath: "/docs/secbot/npm-release" },
+      { label: "PY quickstart", viewPath: "/docs/secbot/pypi-release/quickstart" },
+      { label: "NPM quickstart", viewPath: "/docs/secbot/npm-release/quickstart" },
+      { label: "Security", viewPath: "/docs/secbot/pypi-release/security-warning" },
     ],
     anchorNav: [
+      { label: "Branch docs", anchor: "branch-docs" },
       { label: "Where to start", anchor: "where-to-start" },
       { label: "Recommended paths", anchor: "recommended-paths" },
       { label: "Who this is for", anchor: "doc-scope" },
       { label: "Doc map", anchor: "doc-map" },
     ],
+    branchDocsTitle: "Choose a release branch",
+    branchDocsIntro:
+      "Secbot currently maintains both Python / PyPI and TypeScript / npm release lines. Pick the release channel first, then read the docs generated from that branch snapshot.",
     scopeTitle: "Who this documentation is for",
     scopeBullets: [
-      "Teams that want Secbot as a local or shared entry point for AI-driven security workflows—from install and model setup to CLI and HTTP APIs.",
-      "Readers who need the current Python CLI plus optional FastAPI docs instead of the older Node/Docker/UI document set.",
-      "Operators who treat the on-site copy as canonical for the synced revision (see docs/SOURCE.txt for the upstream commit).",
+      "Teams that want Secbot as a local or shared entry point for AI-driven security workflows, while reading the docs that match their release channel.",
+      "Python users should start with pypi-release; Node.js / TypeScript users should start with npm-release.",
+      "Operators who treat each on-site branch copy as canonical for the synced revision; see docs/SOURCE.txt and each branch SOURCE.txt for commits.",
     ],
     whereToStartTitle: "Choose where to start",
     whereToStartIntro:
       "On first contact, you do not need to read files in alphabetical order. Pick whether you are unblocking install, integrating via API, or shipping to production, then follow the matching path below.",
     whereToStartBullets: [
       {
-        text: "First install and trial:",
+        text: "Using Python / PyPI:",
         links: [
-          { label: "Quickstart", viewPath: "/docs/view/quickstart" },
-          { label: "Security warning", viewPath: "/docs/view/security-warning" },
+          { label: "PY docs home", viewPath: "/docs/secbot/pypi-release" },
+          { label: "PY quickstart", viewPath: "/docs/secbot/pypi-release/quickstart" },
         ],
       },
       {
-        text: "Model setup and local runtime:",
+        text: "Using TypeScript / npm:",
         links: [
-          { label: "LLM providers", viewPath: "/docs/view/llm-providers" },
-          { label: "Ollama", viewPath: "/docs/view/ollama-setup" },
-          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
+          { label: "NPM docs home", viewPath: "/docs/secbot/npm-release" },
+          { label: "NPM quickstart", viewPath: "/docs/secbot/npm-release/quickstart" },
+          { label: "Node setup", viewPath: "/docs/secbot/npm-release/node-setup" },
         ],
       },
       {
-        text: "API integration, extensions, and deployment:",
+        text: "API integration or deployment:",
         links: [
-          { label: "HTTP API", viewPath: "/docs/view/api" },
-          { label: "Tool extension", viewPath: "/docs/view/tool-extension" },
-          { label: "Deployment", viewPath: "/docs/view/deployment" },
-          { label: "Release process", viewPath: "/docs/view/release" },
+          { label: "PY API", viewPath: "/docs/secbot/pypi-release/api" },
+          { label: "NPM API", viewPath: "/docs/secbot/npm-release/api" },
+          { label: "Deployment", viewPath: "/docs/secbot/npm-release/deployment" },
         ],
       },
     ],
     recommendedPathsTitle: "Recommended reading paths",
     recommendedPaths: [
       {
-        title: "Path A: Bring up CLI and models",
+        title: "Path A: Python / PyPI",
         items: [
-          { label: "Quickstart", viewPath: "/docs/view/quickstart" },
-          { label: "LLM providers", viewPath: "/docs/view/llm-providers" },
-          { label: "Ollama (optional)", viewPath: "/docs/view/ollama-setup" },
-          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
+          { label: "PY docs home", viewPath: "/docs/secbot/pypi-release" },
+          { label: "Quickstart", viewPath: "/docs/secbot/pypi-release/quickstart" },
+          { label: "LLM providers", viewPath: "/docs/secbot/pypi-release/llm-providers" },
+          { label: "Deployment", viewPath: "/docs/secbot/pypi-release/deployment" },
         ],
       },
       {
-        title: "Path B: API and extensibility",
+        title: "Path B: TypeScript / npm",
         items: [
-          { label: "HTTP API", viewPath: "/docs/view/api" },
-          { label: "Tool extension", viewPath: "/docs/view/tool-extension" },
-          { label: "Skills & memory", viewPath: "/docs/view/skills-and-memory" },
-          { label: "Prompt guide", viewPath: "/docs/view/prompt-guide" },
-        ],
-      },
-      {
-        title: "Path C: Deploy and release",
-        items: [
-          { label: "Deployment", viewPath: "/docs/view/deployment" },
-          { label: "Release process", viewPath: "/docs/view/release" },
-          { label: "Changelog", viewPath: "/docs/view/changelog" },
-          { label: "Release notes index", viewPath: "/docs/view/releases/readme" },
+          { label: "NPM docs home", viewPath: "/docs/secbot/npm-release" },
+          { label: "Quickstart", viewPath: "/docs/secbot/npm-release/quickstart" },
+          { label: "Node setup", viewPath: "/docs/secbot/npm-release/node-setup" },
+          { label: "Migration status", viewPath: "/docs/secbot/npm-release/ts-migration-status" },
         ],
       },
     ],
     docMapTitle: "Documentation map",
     docMapLead:
-      "Browse by topic; each link opens the on-site preview. Other Markdown files are still reachable at /docs/view/… (lowercase slug, no .md suffix).",
+      "The documentation map is generated per branch. Open a branch home page to browse every Markdown file that exists in that branch snapshot.",
     architectureCreditBefore: "Layout and reading-path patterns inspired by",
     architectureCreditLink: "execgo.site docs",
     architectureCreditAfter: ".",
-    articleLead: "Synced content below; use the on-page table of contents at the end to jump inside long pages.",
+    articleLead: "Synced content for the active release branch; use the on-page table of contents at the end to jump inside long pages.",
     onPageTocTitle: "On this page",
     moreInTree: "Both the design-paradigms directory and the release-notes directory now have on-site index pages.",
-    sections: [
-      {
-        title: "Getting started & safety",
-        items: [
-          {
-            label: "Docs hub (this site)",
-            description: "Curated index and links",
-            viewPath: "/docs/view/readme",
-          },
-          { label: "Quickstart", viewPath: "/docs/view/quickstart" },
-          { label: "Security warning", viewPath: "/docs/view/security-warning" },
-        ],
-      },
-      {
-        title: "Models & runtime",
-        items: [
-          { label: "LLM providers", viewPath: "/docs/view/llm-providers" },
-          { label: "Ollama", viewPath: "/docs/view/ollama-setup" },
-          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
-        ],
-      },
-      {
-        title: "Integration & extensions",
-        items: [
-          { label: "HTTP API", viewPath: "/docs/view/api" },
-          { label: "LLM providers", viewPath: "/docs/view/llm-providers" },
-          { label: "Tool extension", viewPath: "/docs/view/tool-extension" },
-          { label: "Skills & memory", viewPath: "/docs/view/skills-and-memory" },
-        ],
-      },
-      {
-        title: "Deploy & release",
-        items: [
-          { label: "Deployment", viewPath: "/docs/view/deployment" },
-          { label: "Release process", viewPath: "/docs/view/release" },
-          { label: "Docs changelog (upstream)", viewPath: "/docs/view/changelog" },
-          { label: "Release notes index", viewPath: "/docs/view/releases/readme" },
-        ],
-      },
-      {
-        title: "Database & test environments",
-        items: [
-          { label: "Database guide", viewPath: "/docs/view/database-guide" },
-          { label: "Virtual test environment", viewPath: "/docs/view/virtual-test-environment" },
-        ],
-      },
-      {
-        title: "Design paradigms",
-        items: [
-          {
-            label: "Index",
-            viewPath: "/docs/view/design-paradigms/readme",
-          },
-          {
-            label: "Agent architecture",
-            viewPath: "/docs/view/design-paradigms/agent-architecture",
-          },
-          {
-            label: "CLI & dependencies",
-            viewPath: "/docs/view/design-paradigms/cli-and-dependencies",
-          },
-          {
-            label: "Config & environment",
-            viewPath: "/docs/view/design-paradigms/config-and-env",
-          },
-          {
-            label: "Commit conventions",
-            viewPath: "/docs/view/design-paradigms/commit-conventions",
-          },
-          {
-            label: "Prompt management",
-            viewPath: "/docs/view/design-paradigms/prompt-management",
-          },
-          {
-            label: "React & tool calling",
-            viewPath: "/docs/view/design-paradigms/react-and-tool-calling",
-          },
-          {
-            label: "Session & events",
-            viewPath: "/docs/view/design-paradigms/session-and-events",
-          },
-          {
-            label: "Skill plugin system",
-            viewPath: "/docs/view/design-paradigms/skill-plugin-system",
-          },
-        ],
-      },
-      {
-        title: "Release notes",
-        items: [
-          {
-            label: "Release notes index",
-            viewPath: "/docs/view/releases/readme",
-          },
-          {
-            label: "v1.8.0 notes",
-            viewPath: "/docs/view/releases/v1.8.0",
-          },
-          {
-            label: "v1.7.0 notes",
-            viewPath: "/docs/view/releases/v1.7.0",
-          },
-        ],
-      },
-    ],
   },
   footer: {
     warning: "Only for authorized security testing, research, and education.",

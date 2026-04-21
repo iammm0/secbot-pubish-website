@@ -5,6 +5,7 @@ import { SiteHeader } from "@/src/components/site-header";
 import { DocsTopStrip } from "@/src/components/docs-top-strip";
 import { type Locale, defaultLocale, isLocale } from "@/src/i18n/config";
 import { getMessages } from "@/src/i18n/messages";
+import { DOC_BRANCHES, listDocEntries } from "@/src/lib/docs-fs";
 
 type DocsPageProps = {
   searchParams?: Promise<{ lang?: string }>;
@@ -28,7 +29,36 @@ export default async function DocsPage({ searchParams }: DocsPageProps) {
         <DocsTopStrip locale={locale} messages={messages} anchorNav={d.anchorNav} />
         <main className="page-main">
           <SectionBlock title={d.title} subtitle={d.subtitle}>
-            <div className="docs-overview mx-auto max-w-3xl space-y-12 px-4 sm:px-0">
+            <div className="docs-overview mx-auto max-w-4xl space-y-12 px-4 sm:px-0">
+              <section id="branch-docs" className="scroll-mt-28">
+                <h2 className="docs-overview-h2">{d.branchDocsTitle}</h2>
+                <p className="mt-3 text-[var(--muted)]">{d.branchDocsIntro}</p>
+                <div className="mt-6 grid gap-5 md:grid-cols-2">
+                  {DOC_BRANCHES.map((branch) => {
+                    const docsCount = listDocEntries(branch.id).length;
+                    return (
+                      <Link
+                        key={branch.id}
+                        href={withLang(`/docs/secbot/${branch.id}`, locale)}
+                        className="surface-card block p-5 no-underline hover:border-[var(--brand-end)]"
+                      >
+                        <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted-soft)]">
+                          {branch.badge}
+                        </p>
+                        <h3 className="mt-3 text-xl font-semibold tracking-tight text-[var(--foreground)]">{branch.label}</h3>
+                        <p className="mt-2 text-sm text-[var(--muted)]">{branch.summary}</p>
+                        <div className="mt-5 flex flex-wrap items-center gap-3 text-xs">
+                          <span className="rounded-full border border-[var(--line)] px-2.5 py-1 font-mono text-[var(--foreground)]">
+                            {branch.shortLabel}
+                          </span>
+                          <span className="text-[var(--muted-soft)]">{docsCount} docs</span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </section>
+
               <section id="doc-scope" className="scroll-mt-28">
                 <h2 className="docs-overview-h2">{d.scopeTitle}</h2>
                 <ul className="mt-3 list-disc space-y-2 pl-5 text-[var(--muted)]">
@@ -63,7 +93,7 @@ export default async function DocsPage({ searchParams }: DocsPageProps) {
 
               <section id="recommended-paths" className="scroll-mt-28">
                 <h2 className="docs-overview-h2">{d.recommendedPathsTitle}</h2>
-                <div className="mt-5 grid gap-6 md:grid-cols-3">
+                <div className="mt-5 grid gap-6 md:grid-cols-2">
                   {d.recommendedPaths.map((path) => (
                     <div key={path.title} className="surface-card p-4">
                       <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[var(--muted-soft)]">
@@ -86,6 +116,23 @@ export default async function DocsPage({ searchParams }: DocsPageProps) {
                 </div>
               </section>
 
+              <section id="doc-map" className="scroll-mt-28">
+                <h2 className="docs-overview-h2">{d.docMapTitle}</h2>
+                <p className="mt-3 text-sm text-[var(--muted)]">{d.docMapLead}</p>
+                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                  {DOC_BRANCHES.map((branch) => (
+                    <Link
+                      key={branch.id}
+                      href={withLang(`/docs/secbot/${branch.id}`, locale)}
+                      className="surface-card block p-4 no-underline hover:border-[var(--brand-end)]"
+                    >
+                      <p className="font-medium text-[var(--foreground)]">{branch.label}</p>
+                      <p className="mt-1 text-sm text-[var(--muted)]">{branch.summary}</p>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+
               <p className="text-center text-xs text-[var(--muted-soft)]">
                 {d.architectureCreditBefore}{" "}
                 <a
@@ -98,34 +145,6 @@ export default async function DocsPage({ searchParams }: DocsPageProps) {
                 </a>
                 {d.architectureCreditAfter}
               </p>
-
-              <section id="doc-map" className="scroll-mt-28">
-                <h2 className="docs-overview-h2">{d.docMapTitle}</h2>
-                <p className="mt-3 text-sm text-[var(--muted)]">{d.docMapLead}</p>
-                {d.moreInTree ? <p className="mt-2 text-sm text-[var(--muted-soft)]">{d.moreInTree}</p> : null}
-                <div className="mt-8 flex flex-col gap-10">
-                  {d.sections.map((section, sIndex) => (
-                    <div key={section.title}>
-                      <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted-soft)]">
-                        {sIndex + 1}. {section.title}
-                      </h3>
-                      <ul className="mt-3 space-y-2 border-l border-[var(--line)] pl-4">
-                        {section.items.map((item) => (
-                          <li key={item.viewPath} className="text-sm text-[var(--muted)]">
-                            <Link
-                              href={withLang(item.viewPath, locale)}
-                              className="font-medium text-[var(--foreground)] no-underline hover:underline"
-                            >
-                              {item.label}
-                            </Link>
-                            {item.description ? <span className="text-[var(--muted)]">：{item.description}</span> : null}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </section>
             </div>
           </SectionBlock>
         </main>

@@ -250,7 +250,7 @@ a {
   }
 }
 
-/* Markdown 文档正文（站内 /docs/view/...） */
+/* Markdown 文档正文（站内 /docs/secbot/<branch>/...） */
 .doc-markdown {
   color: var(--foreground);
   font-size: 0.98rem;

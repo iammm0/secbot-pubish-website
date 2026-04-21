@@ -45,201 +45,90 @@ const zhCN = {
   docs: {
     title: "Secbot 文档总览",
     subtitle:
-      "当前同步的是 Python CLI / FastAPI 路线文档；正文由上游 docs/ 同步至本站，全部在站内阅读。信息架构参考 execgo.site 文档站的分层与导读方式。",
+      "文档按上游发布分支拆分展示：pypi-release 对应 Python / PyPI 路线，npm-release 对应 TypeScript / npm 路线。信息架构参考 execgo.site 的分支文档展示方式。",
     backToHub: "返回文档目录",
     quickNavLabel: "开始这里",
     quickLinks: [
       { label: "文档总览", viewPath: "/docs", emphasis: true },
-      { label: "快速开始", viewPath: "/docs/view/quickstart" },
-      { label: "HTTP API", viewPath: "/docs/view/api" },
-      { label: "模型与 LLM", viewPath: "/docs/view/llm-providers" },
-      { label: "部署说明", viewPath: "/docs/view/deployment" },
-      { label: "安全声明", viewPath: "/docs/view/security-warning" },
+      { label: "PY 文档", viewPath: "/docs/secbot/pypi-release" },
+      { label: "NPM 文档", viewPath: "/docs/secbot/npm-release" },
+      { label: "PY 快速开始", viewPath: "/docs/secbot/pypi-release/quickstart" },
+      { label: "NPM 快速开始", viewPath: "/docs/secbot/npm-release/quickstart" },
+      { label: "安全声明", viewPath: "/docs/secbot/pypi-release/security-warning" },
     ],
     anchorNav: [
+      { label: "分支文档", anchor: "branch-docs" },
       { label: "从哪里读起", anchor: "where-to-start" },
       { label: "推荐阅读路径", anchor: "recommended-paths" },
       { label: "这套文档适合什么", anchor: "doc-scope" },
       { label: "文档地图", anchor: "doc-map" },
     ],
+    branchDocsTitle: "选择发布分支",
+    branchDocsIntro:
+      "Secbot 现在同时维护 Python / PyPI 与 TypeScript / npm 两条发布线。请先选择你要使用的发布渠道，再进入对应分支下的文档地图。",
     scopeTitle: "这套文档适合什么",
     scopeBullets: [
-      "需要把 Secbot 作为本地或团队环境里的 AI 安全测试工作流入口，从安装、模型配置到 CLI / API 跑通。",
-      "当前这套站内文档以 Python CLI 与可选 FastAPI 后端为主，而不是旧版 Node / Docker / UI 文章集合。",
-      "接口与配置说明以站内版本为准；与上游不一致时以你同步时的提交为准（见 docs/SOURCE.txt）。",
+      "需要把 Secbot 作为本地或团队环境里的 AI 安全测试工作流入口，但希望按实际发布渠道阅读文档。",
+      "Python 使用者应优先进入 pypi-release；Node.js / TypeScript 使用者应优先进入 npm-release。",
+      "接口与配置说明以站内对应分支版本为准；同步提交记录见 docs/SOURCE.txt 与各分支目录下的 SOURCE.txt。",
     ],
     whereToStartTitle: "先判断你应该从哪读起",
     whereToStartIntro:
       "第一次接触时，不必按文件名顺序硬读。先决定你是「先把环境跑通」「要做 HTTP/API 接入」还是「准备部署上线」，再按对应路径跳转到站内页面。",
     whereToStartBullets: [
       {
-        text: "第一次安装与试用：",
+        text: "准备使用 Python / PyPI 版本：",
         links: [
-          { label: "快速开始", viewPath: "/docs/view/quickstart" },
-          { label: "安全声明", viewPath: "/docs/view/security-warning" },
+          { label: "PY 文档首页", viewPath: "/docs/secbot/pypi-release" },
+          { label: "PY 快速开始", viewPath: "/docs/secbot/pypi-release/quickstart" },
         ],
       },
       {
-        text: "模型配置与本地运行：",
+        text: "准备使用 TypeScript / npm 版本：",
         links: [
-          { label: "模型与 LLM 提供商", viewPath: "/docs/view/llm-providers" },
-          { label: "Ollama", viewPath: "/docs/view/ollama-setup" },
-          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
+          { label: "NPM 文档首页", viewPath: "/docs/secbot/npm-release" },
+          { label: "NPM 快速开始", viewPath: "/docs/secbot/npm-release/quickstart" },
+          { label: "Node 环境", viewPath: "/docs/secbot/npm-release/node-setup" },
         ],
       },
       {
-        text: "API 接入、扩展与部署：",
+        text: "需要接入 API 或部署：",
         links: [
-          { label: "HTTP API", viewPath: "/docs/view/api" },
-          { label: "工具扩展", viewPath: "/docs/view/tool-extension" },
-          { label: "部署说明", viewPath: "/docs/view/deployment" },
-          { label: "发布流程", viewPath: "/docs/view/release" },
+          { label: "PY API", viewPath: "/docs/secbot/pypi-release/api" },
+          { label: "NPM API", viewPath: "/docs/secbot/npm-release/api" },
+          { label: "部署说明", viewPath: "/docs/secbot/npm-release/deployment" },
         ],
       },
     ],
     recommendedPathsTitle: "推荐阅读路径",
     recommendedPaths: [
       {
-        title: "路径 A：先把 CLI 与模型跑通",
+        title: "路径 A：Python / PyPI",
         items: [
-          { label: "快速开始", viewPath: "/docs/view/quickstart" },
-          { label: "模型与 LLM 提供商", viewPath: "/docs/view/llm-providers" },
-          { label: "Ollama（可选）", viewPath: "/docs/view/ollama-setup" },
-          { label: "SQLite 说明", viewPath: "/docs/view/sqlite-setup" },
+          { label: "PY 文档首页", viewPath: "/docs/secbot/pypi-release" },
+          { label: "快速开始", viewPath: "/docs/secbot/pypi-release/quickstart" },
+          { label: "模型与 LLM 提供商", viewPath: "/docs/secbot/pypi-release/llm-providers" },
+          { label: "部署说明", viewPath: "/docs/secbot/pypi-release/deployment" },
         ],
       },
       {
-        title: "路径 B：接入 API 与扩展能力",
+        title: "路径 B：TypeScript / npm",
         items: [
-          { label: "HTTP API", viewPath: "/docs/view/api" },
-          { label: "工具扩展", viewPath: "/docs/view/tool-extension" },
-          { label: "Skills 与记忆", viewPath: "/docs/view/skills-and-memory" },
-          { label: "Prompt 指南", viewPath: "/docs/view/prompt-guide" },
-        ],
-      },
-      {
-        title: "路径 C：准备部署与发布",
-        items: [
-          { label: "部署说明", viewPath: "/docs/view/deployment" },
-          { label: "发布流程", viewPath: "/docs/view/release" },
-          { label: "变更日志", viewPath: "/docs/view/changelog" },
-          { label: "发布说明索引", viewPath: "/docs/view/releases/readme" },
+          { label: "NPM 文档首页", viewPath: "/docs/secbot/npm-release" },
+          { label: "快速开始", viewPath: "/docs/secbot/npm-release/quickstart" },
+          { label: "Node 环境", viewPath: "/docs/secbot/npm-release/node-setup" },
+          { label: "迁移状态", viewPath: "/docs/secbot/npm-release/ts-migration-status" },
         ],
       },
     ],
     docMapTitle: "文档地图",
-    docMapLead: "按主题分组；点击条目进入站内预览。其余文件仍可通过路径 /docs/view/… 直接打开（与仓库 docs/ 文件名对应，小写、无 .md 后缀）。",
+    docMapLead: "文档地图按分支生成；进入分支首页后可以查看该分支实际存在的全部 Markdown 文档。",
     architectureCreditBefore: "信息架构与阅读路径参考",
     architectureCreditLink: "execgo.site 文档站",
     architectureCreditAfter: "。",
-    articleLead: "以下为同步至本站的正文；文末提供本页目录，便于在长文中跳转。",
+    articleLead: "以下为当前发布分支同步至本站的正文；文末提供本页目录，便于在长文中跳转。",
     onPageTocTitle: "本页目录",
     moreInTree: "设计范式目录与历史发布说明目录都提供了站内索引页，可直接进入。",
-    sections: [
-      {
-        title: "入门与安全",
-        items: [
-          {
-            label: "文档导览",
-            description: "本站维护的目录与链接表",
-            viewPath: "/docs/view/readme",
-          },
-          { label: "快速开始", viewPath: "/docs/view/quickstart" },
-          { label: "安全声明", viewPath: "/docs/view/security-warning" },
-        ],
-      },
-      {
-        title: "模型与运行环境",
-        items: [
-          { label: "模型与 LLM 提供商", viewPath: "/docs/view/llm-providers" },
-          { label: "Ollama", viewPath: "/docs/view/ollama-setup" },
-          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
-        ],
-      },
-      {
-        title: "接入与扩展",
-        items: [
-          { label: "HTTP API", viewPath: "/docs/view/api" },
-          { label: "模型与 LLM 提供商", viewPath: "/docs/view/llm-providers" },
-          { label: "工具扩展", viewPath: "/docs/view/tool-extension" },
-          { label: "Skills 与记忆", viewPath: "/docs/view/skills-and-memory" },
-        ],
-      },
-      {
-        title: "部署与发布",
-        items: [
-          { label: "部署说明", viewPath: "/docs/view/deployment" },
-          { label: "发布流程", viewPath: "/docs/view/release" },
-          { label: "文档侧变更记录", viewPath: "/docs/view/changelog" },
-          { label: "发布说明索引", viewPath: "/docs/view/releases/readme" },
-        ],
-      },
-      {
-        title: "数据库与测试环境",
-        items: [
-          { label: "数据库指南", viewPath: "/docs/view/database-guide" },
-          { label: "虚拟测试环境", viewPath: "/docs/view/virtual-test-environment" },
-        ],
-      },
-      {
-        title: "设计范式（架构）",
-        items: [
-          {
-            label: "目录索引",
-            viewPath: "/docs/view/design-paradigms/readme",
-          },
-          {
-            label: "Agent 架构",
-            viewPath: "/docs/view/design-paradigms/agent-architecture",
-          },
-          {
-            label: "CLI 与依赖",
-            viewPath: "/docs/view/design-paradigms/cli-and-dependencies",
-          },
-          {
-            label: "配置与环境",
-            viewPath: "/docs/view/design-paradigms/config-and-env",
-          },
-          {
-            label: "提交约定",
-            viewPath: "/docs/view/design-paradigms/commit-conventions",
-          },
-          {
-            label: "Prompt 管理",
-            viewPath: "/docs/view/design-paradigms/prompt-management",
-          },
-          {
-            label: "React 与工具调用",
-            viewPath: "/docs/view/design-paradigms/react-and-tool-calling",
-          },
-          {
-            label: "Session 与事件",
-            viewPath: "/docs/view/design-paradigms/session-and-events",
-          },
-          {
-            label: "Skill 插件系统",
-            viewPath: "/docs/view/design-paradigms/skill-plugin-system",
-          },
-        ],
-      },
-      {
-        title: "历史版本说明",
-        items: [
-          {
-            label: "发布说明索引",
-            viewPath: "/docs/view/releases/readme",
-          },
-          {
-            label: "v1.8.0 说明",
-            viewPath: "/docs/view/releases/v1.8.0",
-          },
-          {
-            label: "v1.7.0 说明",
-            viewPath: "/docs/view/releases/v1.7.0",
-          },
-        ],
-      },
-    ],
   },
   footer: {
     warning: "仅用于获得明确授权的安全测试、研究与教学。",
