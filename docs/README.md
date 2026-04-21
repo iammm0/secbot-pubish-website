@@ -1,6 +1,6 @@
 # Secbot 文档导览
 
-本站 `docs/` 目录由 [iammm0/secbot](https://github.com/iammm0/secbot) 上游 `docs/` 同步而来（见同目录 `SOURCE.txt` 中的提交与时间）。在发布站点上可通过 **文档** 导航进入站内阅读；仓库内也可直接浏览本目录。
+本站 `docs/` 目录由上游 Secbot 开源项目的 `docs/` 同步而来（同步记录见同目录 `SOURCE.txt`）。**请在发布站点「文档」中直接预览**，下表为站内路径（部署域名 + 路径即可访问）。
 
 ## 入门与安全
 
@@ -50,4 +50,4 @@
 - 设计范式子目录：路径以 `/docs/view/design-paradigms/...` 形式访问
 - 发布说明子目录：`/docs/view/releases/...`
 
-文档内若含有指向**上游仓库源码树**的相对链接，在站内可能无法跳转，请以 [GitHub 仓库](https://github.com/iammm0/secbot) 为准。
+正文内若含有指向**源码树**的相对链接，在站内可能无法解析，需结合本地克隆的 Secbot 工程查看对应文件。

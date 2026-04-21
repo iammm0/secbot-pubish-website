@@ -50,11 +50,9 @@ const zhCN = {
   },
   docs: {
     title: "文档中心",
-    subtitle: "按主题浏览使用说明与接入指南；正文由上游仓库 docs 同步，可在站内阅读或跳转 GitHub 原文。",
+    subtitle: "按主题浏览使用说明与接入指南；正文已整理进本站，可直接在站内预览，无需跳转外部文档站。",
     backToHub: "返回文档目录",
-    viewOnGithub: "在 GitHub 上查看原文",
-    githubSource: "GitHub 原文",
-    moreInTree: "更多文件见仓库 docs/ 目录，站内路径为 /docs/view/…",
+    moreInTree: "其余 Markdown 见项目 docs/ 目录，访问路径为 /docs/view/文件名（小写、无 .md 后缀；子目录同理）。",
     sections: [
       {
         title: "入门与安全",
@@ -63,52 +61,51 @@ const zhCN = {
             label: "文档导览",
             description: "本站维护的目录与链接表",
             viewPath: "/docs/view/readme",
-            docRel: "README.md",
           },
-          { label: "快速开始", viewPath: "/docs/view/quickstart", docRel: "QUICKSTART.md" },
-          { label: "安全声明", viewPath: "/docs/view/security-warning", docRel: "SECURITY_WARNING.md" },
+          { label: "快速开始", viewPath: "/docs/view/quickstart" },
+          { label: "安全声明", viewPath: "/docs/view/security-warning" },
         ],
       },
       {
         title: "环境与依赖",
         items: [
-          { label: "Node 环境", viewPath: "/docs/view/node-setup", docRel: "NODE_SETUP.md" },
-          { label: "Ollama", viewPath: "/docs/view/ollama-setup", docRel: "OLLAMA_SETUP.md" },
-          { label: "SQLite", viewPath: "/docs/view/sqlite-setup", docRel: "SQLITE_SETUP.md" },
-          { label: "Docker", viewPath: "/docs/view/docker-setup", docRel: "DOCKER_SETUP.md" },
+          { label: "Node 环境", viewPath: "/docs/view/node-setup" },
+          { label: "Ollama", viewPath: "/docs/view/ollama-setup" },
+          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
+          { label: "Docker", viewPath: "/docs/view/docker-setup" },
         ],
       },
       {
         title: "接入与扩展",
         items: [
-          { label: "HTTP API", viewPath: "/docs/view/api", docRel: "API.md" },
-          { label: "模型与 LLM 提供商", viewPath: "/docs/view/llm-providers", docRel: "LLM_PROVIDERS.md" },
-          { label: "工具扩展", viewPath: "/docs/view/tool-extension", docRel: "TOOL_EXTENSION.md" },
-          { label: "Skills 与记忆", viewPath: "/docs/view/skills-and-memory", docRel: "SKILLS_AND_MEMORY.md" },
+          { label: "HTTP API", viewPath: "/docs/view/api" },
+          { label: "模型与 LLM 提供商", viewPath: "/docs/view/llm-providers" },
+          { label: "工具扩展", viewPath: "/docs/view/tool-extension" },
+          { label: "Skills 与记忆", viewPath: "/docs/view/skills-and-memory" },
         ],
       },
       {
         title: "部署与发布",
         items: [
-          { label: "部署说明", viewPath: "/docs/view/deployment", docRel: "DEPLOYMENT.md" },
-          { label: "发布流程", viewPath: "/docs/view/release", docRel: "RELEASE.md" },
-          { label: "文档侧变更记录", viewPath: "/docs/view/changelog", docRel: "CHANGELOG.md" },
+          { label: "部署说明", viewPath: "/docs/view/deployment" },
+          { label: "发布流程", viewPath: "/docs/view/release" },
+          { label: "文档侧变更记录", viewPath: "/docs/view/changelog" },
         ],
       },
       {
         title: "产品与交互",
         items: [
-          { label: "应用说明（APP）", viewPath: "/docs/view/app", docRel: "APP.md" },
-          { label: "UI 与交互设计", viewPath: "/docs/view/ui-design-and-interaction", docRel: "UI-DESIGN-AND-INTERACTION.md" },
-          { label: "Prompt 指南", viewPath: "/docs/view/prompt-guide", docRel: "PROMPT_GUIDE.md" },
-          { label: "语音相关", viewPath: "/docs/view/speech-guide", docRel: "SPEECH_GUIDE.md" },
+          { label: "应用说明（APP）", viewPath: "/docs/view/app" },
+          { label: "UI 与交互设计", viewPath: "/docs/view/ui-design-and-interaction" },
+          { label: "Prompt 指南", viewPath: "/docs/view/prompt-guide" },
+          { label: "语音相关", viewPath: "/docs/view/speech-guide" },
         ],
       },
       {
         title: "数据库与测试环境",
         items: [
-          { label: "数据库指南", viewPath: "/docs/view/database-guide", docRel: "DATABASE_GUIDE.md" },
-          { label: "虚拟测试环境", viewPath: "/docs/view/virtual-test-environment", docRel: "VIRTUAL_TEST_ENVIRONMENT.md" },
+          { label: "数据库指南", viewPath: "/docs/view/database-guide" },
+          { label: "虚拟测试环境", viewPath: "/docs/view/virtual-test-environment" },
         ],
       },
       {
@@ -117,42 +114,34 @@ const zhCN = {
           {
             label: "Agent 架构",
             viewPath: "/docs/view/design-paradigms/agent-architecture",
-            docRel: "design-paradigms/agent-architecture.md",
           },
           {
             label: "CLI 与依赖",
             viewPath: "/docs/view/design-paradigms/cli-and-dependencies",
-            docRel: "design-paradigms/cli-and-dependencies.md",
           },
           {
             label: "配置与环境",
             viewPath: "/docs/view/design-paradigms/config-and-env",
-            docRel: "design-paradigms/config-and-env.md",
           },
           {
             label: "提交约定",
             viewPath: "/docs/view/design-paradigms/commit-conventions",
-            docRel: "design-paradigms/commit-conventions.md",
           },
           {
             label: "Prompt 管理",
             viewPath: "/docs/view/design-paradigms/prompt-management",
-            docRel: "design-paradigms/prompt-management.md",
           },
           {
             label: "React 与工具调用",
             viewPath: "/docs/view/design-paradigms/react-and-tool-calling",
-            docRel: "design-paradigms/react-and-tool-calling.md",
           },
           {
             label: "Session 与事件",
             viewPath: "/docs/view/design-paradigms/session-and-events",
-            docRel: "design-paradigms/session-and-events.md",
           },
           {
             label: "Skill 插件系统",
             viewPath: "/docs/view/design-paradigms/skill-plugin-system",
-            docRel: "design-paradigms/skill-plugin-system.md",
           },
         ],
       },
@@ -162,12 +151,10 @@ const zhCN = {
           {
             label: "v1.8.0 说明",
             viewPath: "/docs/view/releases/v1.8.0",
-            docRel: "releases/v1.8.0.md",
           },
           {
             label: "v1.7.0 说明",
             viewPath: "/docs/view/releases/v1.7.0",
-            docRel: "releases/v1.7.0.md",
           },
         ],
       },
