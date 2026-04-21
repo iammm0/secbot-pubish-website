@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # 从 iammm0/secbot 浅克隆并同步 docs/ 到项目根目录。
-# 用法：REF=main ./scripts/sync-secbot-docs.sh
+# 默认跟踪 pypi-release，可通过 REF 覆盖。
+# 用法：REF=pypi-release ./scripts/sync-secbot-docs.sh
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 UPSTREAM_DIR="${UPSTREAM_DIR:-$ROOT/vendor/_secbot-upstream}"
-REF="${REF:-main}"
+REF="${REF:-pypi-release}"
 REPO_URL="${REPO_URL:-https://github.com/iammm0/secbot.git}"
 
 mkdir -p "$ROOT/vendor"
@@ -21,7 +22,7 @@ fi
 mkdir -p "$ROOT/docs"
 # 保留本站维护的 docs/README.md（导览），其余与上游 docs 对齐
 rsync -a --delete \
-  --exclude='README.md' \
+  --exclude='/README.md' \
   "$UPSTREAM_DIR/docs/" "$ROOT/docs/"
 
 COMMIT="$(git -C "$UPSTREAM_DIR" rev-parse HEAD)"

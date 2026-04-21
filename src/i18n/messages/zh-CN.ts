@@ -45,7 +45,7 @@ const zhCN = {
   docs: {
     title: "Secbot 文档总览",
     subtitle:
-      "面向授权安全测试的终端与后端；正文由上游 docs/ 同步至本站，全部在站内阅读。信息架构参考 execgo.site 文档站的分层与导读方式。",
+      "当前同步的是 Python CLI / FastAPI 路线文档；正文由上游 docs/ 同步至本站，全部在站内阅读。信息架构参考 execgo.site 文档站的分层与导读方式。",
     backToHub: "返回文档目录",
     quickNavLabel: "开始这里",
     quickLinks: [
@@ -64,8 +64,8 @@ const zhCN = {
     ],
     scopeTitle: "这套文档适合什么",
     scopeBullets: [
-      "需要把 Secbot 作为本地或团队环境里的 AI 安全测试工作流入口，从安装、模型到 CLI / API 跑通。",
-      "希望优先交付「单仓 + 本地 SQLite + 终端 UI」形态，而不是先阅读分散的 GitHub Markdown。",
+      "需要把 Secbot 作为本地或团队环境里的 AI 安全测试工作流入口，从安装、模型配置到 CLI / API 跑通。",
+      "当前这套站内文档以 Python CLI 与可选 FastAPI 后端为主，而不是旧版 Node / Docker / UI 文章集合。",
       "接口与配置说明以站内版本为准；与上游不一致时以你同步时的提交为准（见 docs/SOURCE.txt）。",
     ],
     whereToStartTitle: "先判断你应该从哪读起",
@@ -80,38 +80,40 @@ const zhCN = {
         ],
       },
       {
-        text: "编排、工具与记忆扩展：",
+        text: "模型配置与本地运行：",
         links: [
-          { label: "HTTP API", viewPath: "/docs/view/api" },
-          { label: "工具扩展", viewPath: "/docs/view/tool-extension" },
-          { label: "Skills 与记忆", viewPath: "/docs/view/skills-and-memory" },
+          { label: "模型与 LLM 提供商", viewPath: "/docs/view/llm-providers" },
+          { label: "Ollama", viewPath: "/docs/view/ollama-setup" },
+          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
         ],
       },
       {
-        text: "部署与容器化：",
+        text: "API 接入、扩展与部署：",
         links: [
+          { label: "HTTP API", viewPath: "/docs/view/api" },
+          { label: "工具扩展", viewPath: "/docs/view/tool-extension" },
           { label: "部署说明", viewPath: "/docs/view/deployment" },
-          { label: "Docker", viewPath: "/docs/view/docker-setup" },
+          { label: "发布流程", viewPath: "/docs/view/release" },
         ],
       },
     ],
     recommendedPathsTitle: "推荐阅读路径",
     recommendedPaths: [
       {
-        title: "路径 A：先把安装与环境跑通",
+        title: "路径 A：先把 CLI 与模型跑通",
         items: [
           { label: "快速开始", viewPath: "/docs/view/quickstart" },
-          { label: "Node 环境", viewPath: "/docs/view/node-setup" },
           { label: "模型与 LLM 提供商", viewPath: "/docs/view/llm-providers" },
           { label: "Ollama（可选）", viewPath: "/docs/view/ollama-setup" },
+          { label: "SQLite 说明", viewPath: "/docs/view/sqlite-setup" },
         ],
       },
       {
-        title: "路径 B：接入 API、工具与交互",
+        title: "路径 B：接入 API 与扩展能力",
         items: [
           { label: "HTTP API", viewPath: "/docs/view/api" },
           { label: "工具扩展", viewPath: "/docs/view/tool-extension" },
-          { label: "UI 与交互设计", viewPath: "/docs/view/ui-design-and-interaction" },
+          { label: "Skills 与记忆", viewPath: "/docs/view/skills-and-memory" },
           { label: "Prompt 指南", viewPath: "/docs/view/prompt-guide" },
         ],
       },
@@ -119,9 +121,9 @@ const zhCN = {
         title: "路径 C：准备部署与发布",
         items: [
           { label: "部署说明", viewPath: "/docs/view/deployment" },
-          { label: "Docker", viewPath: "/docs/view/docker-setup" },
           { label: "发布流程", viewPath: "/docs/view/release" },
-          { label: "SQLite 说明", viewPath: "/docs/view/sqlite-setup" },
+          { label: "变更日志", viewPath: "/docs/view/changelog" },
+          { label: "发布说明索引", viewPath: "/docs/view/releases/readme" },
         ],
       },
     ],
@@ -132,7 +134,7 @@ const zhCN = {
     architectureCreditAfter: "。",
     articleLead: "以下为同步至本站的正文；文末提供本页目录，便于在长文中跳转。",
     onPageTocTitle: "本页目录",
-    moreInTree: "",
+    moreInTree: "设计范式目录与历史发布说明目录都提供了站内索引页，可直接进入。",
     sections: [
       {
         title: "入门与安全",
@@ -147,12 +149,11 @@ const zhCN = {
         ],
       },
       {
-        title: "环境与依赖",
+        title: "模型与运行环境",
         items: [
-          { label: "Node 环境", viewPath: "/docs/view/node-setup" },
+          { label: "模型与 LLM 提供商", viewPath: "/docs/view/llm-providers" },
           { label: "Ollama", viewPath: "/docs/view/ollama-setup" },
           { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
-          { label: "Docker", viewPath: "/docs/view/docker-setup" },
         ],
       },
       {
@@ -170,15 +171,7 @@ const zhCN = {
           { label: "部署说明", viewPath: "/docs/view/deployment" },
           { label: "发布流程", viewPath: "/docs/view/release" },
           { label: "文档侧变更记录", viewPath: "/docs/view/changelog" },
-        ],
-      },
-      {
-        title: "产品与交互",
-        items: [
-          { label: "应用说明（APP）", viewPath: "/docs/view/app" },
-          { label: "UI 与交互设计", viewPath: "/docs/view/ui-design-and-interaction" },
-          { label: "Prompt 指南", viewPath: "/docs/view/prompt-guide" },
-          { label: "语音相关", viewPath: "/docs/view/speech-guide" },
+          { label: "发布说明索引", viewPath: "/docs/view/releases/readme" },
         ],
       },
       {
@@ -191,6 +184,10 @@ const zhCN = {
       {
         title: "设计范式（架构）",
         items: [
+          {
+            label: "目录索引",
+            viewPath: "/docs/view/design-paradigms/readme",
+          },
           {
             label: "Agent 架构",
             viewPath: "/docs/view/design-paradigms/agent-architecture",
@@ -226,8 +223,12 @@ const zhCN = {
         ],
       },
       {
-        title: "历史版本说明（节选）",
+        title: "历史版本说明",
         items: [
+          {
+            label: "发布说明索引",
+            viewPath: "/docs/view/releases/readme",
+          },
           {
             label: "v1.8.0 说明",
             viewPath: "/docs/view/releases/v1.8.0",

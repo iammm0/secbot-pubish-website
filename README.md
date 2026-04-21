@@ -29,17 +29,17 @@ npm run dev
 
 ## 同步上游文档
 
-仓库内 [`scripts/sync-secbot-docs.sh`](./scripts/sync-secbot-docs.sh) 会将 [iammm0/secbot](https://github.com/iammm0/secbot) 的 `docs/` 同步到项目根目录 `docs/`。克隆目录位于 `vendor/_secbot-upstream/`（已加入 `.gitignore`，且不参与 TypeScript/ESLint 检查）。
+仓库内 [`scripts/sync-secbot-docs.sh`](./scripts/sync-secbot-docs.sh) 会将 [iammm0/secbot](https://github.com/iammm0/secbot) 的 `docs/` 同步到项目根目录 `docs/`。当前默认同步分支为 `pypi-release`，克隆目录位于 `vendor/_secbot-upstream/`（已加入 `.gitignore`，且不参与 TypeScript/ESLint 检查）。
 
-默认同步分支为 `main`，也可指定分支或引用：
+也可通过环境变量指定其他分支或引用：
 
 ```bash
 npm run sync:docs
 # 或
-REF=npm-release bash scripts/sync-secbot-docs.sh
+REF=main bash scripts/sync-secbot-docs.sh
 ```
 
-同步后会更新 `docs/SOURCE.txt`（记录时间与上游提交），并将 [`scripts/templates/docs-hub-README.md`](./scripts/templates/docs-hub-README.md) 复制为 `docs/README.md`（本站导览；该文件在 rsync 中被排除，以免被上游覆盖）。
+同步后会更新 `docs/SOURCE.txt`（记录时间与上游提交），并将 [`scripts/templates/docs-hub-README.md`](./scripts/templates/docs-hub-README.md) 复制为 `docs/README.md`（本站导览；仅根目录 `docs/README.md` 在 rsync 中被排除，以免被上游覆盖）。
 
 ## 项目结构（摘要）
 

@@ -45,7 +45,7 @@ const enUS = {
   docs: {
     title: "Secbot documentation overview",
     subtitle:
-      "Terminal UI and backend for authorized security testing. Pages are synced from upstream docs/ and rendered here. Information architecture follows the layered, guided layout of execgo.site docs.",
+      "The current sync targets the Python CLI / FastAPI track. Pages are synced from upstream docs/ and rendered here. Information architecture follows the layered, guided layout of execgo.site docs.",
     backToHub: "Back to docs hub",
     quickNavLabel: "Start here",
     quickLinks: [
@@ -64,8 +64,8 @@ const enUS = {
     ],
     scopeTitle: "Who this documentation is for",
     scopeBullets: [
-      "Teams that want Secbot as a local or shared entry point for AI-driven security workflows—from install and models to CLI and HTTP APIs.",
-      "Readers who prefer a single on-site guide instead of jumping across scattered Markdown files on GitHub.",
+      "Teams that want Secbot as a local or shared entry point for AI-driven security workflows—from install and model setup to CLI and HTTP APIs.",
+      "Readers who need the current Python CLI plus optional FastAPI docs instead of the older Node/Docker/UI document set.",
       "Operators who treat the on-site copy as canonical for the synced revision (see docs/SOURCE.txt for the upstream commit).",
     ],
     whereToStartTitle: "Choose where to start",
@@ -80,48 +80,50 @@ const enUS = {
         ],
       },
       {
-        text: "Orchestration, tools, and memory:",
+        text: "Model setup and local runtime:",
         links: [
-          { label: "HTTP API", viewPath: "/docs/view/api" },
-          { label: "Tool extension", viewPath: "/docs/view/tool-extension" },
-          { label: "Skills & memory", viewPath: "/docs/view/skills-and-memory" },
+          { label: "LLM providers", viewPath: "/docs/view/llm-providers" },
+          { label: "Ollama", viewPath: "/docs/view/ollama-setup" },
+          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
         ],
       },
       {
-        text: "Deployment and containers:",
+        text: "API integration, extensions, and deployment:",
         links: [
+          { label: "HTTP API", viewPath: "/docs/view/api" },
+          { label: "Tool extension", viewPath: "/docs/view/tool-extension" },
           { label: "Deployment", viewPath: "/docs/view/deployment" },
-          { label: "Docker", viewPath: "/docs/view/docker-setup" },
+          { label: "Release process", viewPath: "/docs/view/release" },
         ],
       },
     ],
     recommendedPathsTitle: "Recommended reading paths",
     recommendedPaths: [
       {
-        title: "Path A: Install and environment",
+        title: "Path A: Bring up CLI and models",
         items: [
           { label: "Quickstart", viewPath: "/docs/view/quickstart" },
-          { label: "Node setup", viewPath: "/docs/view/node-setup" },
           { label: "LLM providers", viewPath: "/docs/view/llm-providers" },
           { label: "Ollama (optional)", viewPath: "/docs/view/ollama-setup" },
+          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
         ],
       },
       {
-        title: "Path B: API, tools, and UX",
+        title: "Path B: API and extensibility",
         items: [
           { label: "HTTP API", viewPath: "/docs/view/api" },
           { label: "Tool extension", viewPath: "/docs/view/tool-extension" },
-          { label: "UI & interaction", viewPath: "/docs/view/ui-design-and-interaction" },
+          { label: "Skills & memory", viewPath: "/docs/view/skills-and-memory" },
           { label: "Prompt guide", viewPath: "/docs/view/prompt-guide" },
         ],
       },
       {
-        title: "Path C: Ship and release",
+        title: "Path C: Deploy and release",
         items: [
           { label: "Deployment", viewPath: "/docs/view/deployment" },
-          { label: "Docker", viewPath: "/docs/view/docker-setup" },
           { label: "Release process", viewPath: "/docs/view/release" },
-          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
+          { label: "Changelog", viewPath: "/docs/view/changelog" },
+          { label: "Release notes index", viewPath: "/docs/view/releases/readme" },
         ],
       },
     ],
@@ -133,7 +135,7 @@ const enUS = {
     architectureCreditAfter: ".",
     articleLead: "Synced content below; use the on-page table of contents at the end to jump inside long pages.",
     onPageTocTitle: "On this page",
-    moreInTree: "",
+    moreInTree: "Both the design-paradigms directory and the release-notes directory now have on-site index pages.",
     sections: [
       {
         title: "Getting started & safety",
@@ -148,12 +150,11 @@ const enUS = {
         ],
       },
       {
-        title: "Environment & dependencies",
+        title: "Models & runtime",
         items: [
-          { label: "Node setup", viewPath: "/docs/view/node-setup" },
+          { label: "LLM providers", viewPath: "/docs/view/llm-providers" },
           { label: "Ollama", viewPath: "/docs/view/ollama-setup" },
           { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
-          { label: "Docker", viewPath: "/docs/view/docker-setup" },
         ],
       },
       {
@@ -171,15 +172,7 @@ const enUS = {
           { label: "Deployment", viewPath: "/docs/view/deployment" },
           { label: "Release process", viewPath: "/docs/view/release" },
           { label: "Docs changelog (upstream)", viewPath: "/docs/view/changelog" },
-        ],
-      },
-      {
-        title: "Product & UX",
-        items: [
-          { label: "Application notes (APP)", viewPath: "/docs/view/app" },
-          { label: "UI & interaction", viewPath: "/docs/view/ui-design-and-interaction" },
-          { label: "Prompt guide", viewPath: "/docs/view/prompt-guide" },
-          { label: "Speech guide", viewPath: "/docs/view/speech-guide" },
+          { label: "Release notes index", viewPath: "/docs/view/releases/readme" },
         ],
       },
       {
@@ -192,6 +185,10 @@ const enUS = {
       {
         title: "Design paradigms",
         items: [
+          {
+            label: "Index",
+            viewPath: "/docs/view/design-paradigms/readme",
+          },
           {
             label: "Agent architecture",
             viewPath: "/docs/view/design-paradigms/agent-architecture",
@@ -227,8 +224,12 @@ const enUS = {
         ],
       },
       {
-        title: "Release notes (sample)",
+        title: "Release notes",
         items: [
+          {
+            label: "Release notes index",
+            viewPath: "/docs/view/releases/readme",
+          },
           {
             label: "v1.8.0 notes",
             viewPath: "/docs/view/releases/v1.8.0",
