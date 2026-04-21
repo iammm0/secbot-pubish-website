@@ -48,10 +48,97 @@ const enUS = {
     pyCmd: "pip install secbot",
   },
   docs: {
-    title: "Documentation",
-    subtitle: "Browse guides by topic. Content is hosted and rendered on this site only—no external doc jumps.",
+    title: "Secbot documentation overview",
+    subtitle:
+      "Terminal UI and backend for authorized security testing. Pages are synced from upstream docs/ and rendered here. Information architecture follows the layered, guided layout of execgo.site docs.",
     backToHub: "Back to docs hub",
-    moreInTree: "Additional Markdown files live under docs/; open them at /docs/view/… (lowercase slug, no .md suffix).",
+    quickNavLabel: "Start here",
+    quickLinks: [
+      { label: "Overview", viewPath: "/docs", emphasis: true },
+      { label: "Quickstart", viewPath: "/docs/view/quickstart" },
+      { label: "HTTP API", viewPath: "/docs/view/api" },
+      { label: "LLM providers", viewPath: "/docs/view/llm-providers" },
+      { label: "Deployment", viewPath: "/docs/view/deployment" },
+      { label: "Security", viewPath: "/docs/view/security-warning" },
+    ],
+    anchorNav: [
+      { label: "Where to start", anchor: "where-to-start" },
+      { label: "Recommended paths", anchor: "recommended-paths" },
+      { label: "Who this is for", anchor: "doc-scope" },
+      { label: "Doc map", anchor: "doc-map" },
+    ],
+    scopeTitle: "Who this documentation is for",
+    scopeBullets: [
+      "Teams that want Secbot as a local or shared entry point for AI-driven security workflows—from install and models to CLI and HTTP APIs.",
+      "Readers who prefer a single on-site guide instead of jumping across scattered Markdown files on GitHub.",
+      "Operators who treat the on-site copy as canonical for the synced revision (see docs/SOURCE.txt for the upstream commit).",
+    ],
+    whereToStartTitle: "Choose where to start",
+    whereToStartIntro:
+      "On first contact, you do not need to read files in alphabetical order. Pick whether you are unblocking install, integrating via API, or shipping to production, then follow the matching path below.",
+    whereToStartBullets: [
+      {
+        text: "First install and trial:",
+        links: [
+          { label: "Quickstart", viewPath: "/docs/view/quickstart" },
+          { label: "Security warning", viewPath: "/docs/view/security-warning" },
+        ],
+      },
+      {
+        text: "Orchestration, tools, and memory:",
+        links: [
+          { label: "HTTP API", viewPath: "/docs/view/api" },
+          { label: "Tool extension", viewPath: "/docs/view/tool-extension" },
+          { label: "Skills & memory", viewPath: "/docs/view/skills-and-memory" },
+        ],
+      },
+      {
+        text: "Deployment and containers:",
+        links: [
+          { label: "Deployment", viewPath: "/docs/view/deployment" },
+          { label: "Docker", viewPath: "/docs/view/docker-setup" },
+        ],
+      },
+    ],
+    recommendedPathsTitle: "Recommended reading paths",
+    recommendedPaths: [
+      {
+        title: "Path A: Install and environment",
+        items: [
+          { label: "Quickstart", viewPath: "/docs/view/quickstart" },
+          { label: "Node setup", viewPath: "/docs/view/node-setup" },
+          { label: "LLM providers", viewPath: "/docs/view/llm-providers" },
+          { label: "Ollama (optional)", viewPath: "/docs/view/ollama-setup" },
+        ],
+      },
+      {
+        title: "Path B: API, tools, and UX",
+        items: [
+          { label: "HTTP API", viewPath: "/docs/view/api" },
+          { label: "Tool extension", viewPath: "/docs/view/tool-extension" },
+          { label: "UI & interaction", viewPath: "/docs/view/ui-design-and-interaction" },
+          { label: "Prompt guide", viewPath: "/docs/view/prompt-guide" },
+        ],
+      },
+      {
+        title: "Path C: Ship and release",
+        items: [
+          { label: "Deployment", viewPath: "/docs/view/deployment" },
+          { label: "Docker", viewPath: "/docs/view/docker-setup" },
+          { label: "Release process", viewPath: "/docs/view/release" },
+          { label: "SQLite", viewPath: "/docs/view/sqlite-setup" },
+        ],
+      },
+    ],
+    docMapTitle: "Documentation map",
+    docMapLead:
+      "Browse by topic; each link opens the on-site preview. Other Markdown files are still reachable at /docs/view/… (lowercase slug, no .md suffix).",
+    architectureCreditBefore: "Layout and reading-path patterns inspired by",
+    architectureCreditLink: "execgo.site docs",
+    architectureCreditAfter: ".",
+    articleLead: "Synced content below; use the on-page table of contents at the end to jump inside long pages.",
+    onPageTocTitle: "On this page",
+    moreInTree: "",
     sections: [
       {
         title: "Getting started & safety",

@@ -370,3 +370,18 @@ a {
   height: auto;
   border-radius: 0.4rem;
 }
+
+/* 文档总览（对齐 execgo.site 式分层导读） */
+.docs-overview-h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+  border-bottom: 1px solid var(--line-weak);
+  padding-bottom: 0.35rem;
+}
+
+.docs-article-lead {
+  border-left: 3px solid var(--brand-start);
+  padding-left: 0.85rem;
+}

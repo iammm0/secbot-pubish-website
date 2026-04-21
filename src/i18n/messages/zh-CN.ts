@@ -48,10 +48,96 @@ const zhCN = {
     pyCmd: "pip install secbot",
   },
   docs: {
-    title: "文档中心",
-    subtitle: "按主题浏览使用说明与接入指南；正文已整理进本站，可直接在站内预览，无需跳转外部文档站。",
+    title: "Secbot 文档总览",
+    subtitle:
+      "面向授权安全测试的终端与后端；正文由上游 docs/ 同步至本站，全部在站内阅读。信息架构参考 execgo.site 文档站的分层与导读方式。",
     backToHub: "返回文档目录",
-    moreInTree: "其余 Markdown 见项目 docs/ 目录，访问路径为 /docs/view/文件名（小写、无 .md 后缀；子目录同理）。",
+    quickNavLabel: "开始这里",
+    quickLinks: [
+      { label: "文档总览", viewPath: "/docs", emphasis: true },
+      { label: "快速开始", viewPath: "/docs/view/quickstart" },
+      { label: "HTTP API", viewPath: "/docs/view/api" },
+      { label: "模型与 LLM", viewPath: "/docs/view/llm-providers" },
+      { label: "部署说明", viewPath: "/docs/view/deployment" },
+      { label: "安全声明", viewPath: "/docs/view/security-warning" },
+    ],
+    anchorNav: [
+      { label: "从哪里读起", anchor: "where-to-start" },
+      { label: "推荐阅读路径", anchor: "recommended-paths" },
+      { label: "这套文档适合什么", anchor: "doc-scope" },
+      { label: "文档地图", anchor: "doc-map" },
+    ],
+    scopeTitle: "这套文档适合什么",
+    scopeBullets: [
+      "需要把 Secbot 作为本地或团队环境里的 AI 安全测试工作流入口，从安装、模型到 CLI / API 跑通。",
+      "希望优先交付「单仓 + 本地 SQLite + 终端 UI」形态，而不是先阅读分散的 GitHub Markdown。",
+      "接口与配置说明以站内版本为准；与上游不一致时以你同步时的提交为准（见 docs/SOURCE.txt）。",
+    ],
+    whereToStartTitle: "先判断你应该从哪读起",
+    whereToStartIntro:
+      "第一次接触时，不必按文件名顺序硬读。先决定你是「先把环境跑通」「要做 HTTP/API 接入」还是「准备部署上线」，再按对应路径跳转到站内页面。",
+    whereToStartBullets: [
+      {
+        text: "第一次安装与试用：",
+        links: [
+          { label: "快速开始", viewPath: "/docs/view/quickstart" },
+          { label: "安全声明", viewPath: "/docs/view/security-warning" },
+        ],
+      },
+      {
+        text: "编排、工具与记忆扩展：",
+        links: [
+          { label: "HTTP API", viewPath: "/docs/view/api" },
+          { label: "工具扩展", viewPath: "/docs/view/tool-extension" },
+          { label: "Skills 与记忆", viewPath: "/docs/view/skills-and-memory" },
+        ],
+      },
+      {
+        text: "部署与容器化：",
+        links: [
+          { label: "部署说明", viewPath: "/docs/view/deployment" },
+          { label: "Docker", viewPath: "/docs/view/docker-setup" },
+        ],
+      },
+    ],
+    recommendedPathsTitle: "推荐阅读路径",
+    recommendedPaths: [
+      {
+        title: "路径 A：先把安装与环境跑通",
+        items: [
+          { label: "快速开始", viewPath: "/docs/view/quickstart" },
+          { label: "Node 环境", viewPath: "/docs/view/node-setup" },
+          { label: "模型与 LLM 提供商", viewPath: "/docs/view/llm-providers" },
+          { label: "Ollama（可选）", viewPath: "/docs/view/ollama-setup" },
+        ],
+      },
+      {
+        title: "路径 B：接入 API、工具与交互",
+        items: [
+          { label: "HTTP API", viewPath: "/docs/view/api" },
+          { label: "工具扩展", viewPath: "/docs/view/tool-extension" },
+          { label: "UI 与交互设计", viewPath: "/docs/view/ui-design-and-interaction" },
+          { label: "Prompt 指南", viewPath: "/docs/view/prompt-guide" },
+        ],
+      },
+      {
+        title: "路径 C：准备部署与发布",
+        items: [
+          { label: "部署说明", viewPath: "/docs/view/deployment" },
+          { label: "Docker", viewPath: "/docs/view/docker-setup" },
+          { label: "发布流程", viewPath: "/docs/view/release" },
+          { label: "SQLite 说明", viewPath: "/docs/view/sqlite-setup" },
+        ],
+      },
+    ],
+    docMapTitle: "文档地图",
+    docMapLead: "按主题分组；点击条目进入站内预览。其余文件仍可通过路径 /docs/view/… 直接打开（与仓库 docs/ 文件名对应，小写、无 .md 后缀）。",
+    architectureCreditBefore: "信息架构与阅读路径参考",
+    architectureCreditLink: "execgo.site 文档站",
+    architectureCreditAfter: "。",
+    articleLead: "以下为同步至本站的正文；文末提供本页目录，便于在长文中跳转。",
+    onPageTocTitle: "本页目录",
+    moreInTree: "",
     sections: [
       {
         title: "入门与安全",

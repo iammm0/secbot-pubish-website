@@ -46,7 +46,7 @@ REF=npm-release bash scripts/sync-secbot-docs.sh
 | 路径 | 说明 |
 |------|------|
 | [`app/`](./app/) | App Router 页面与布局 |
-| [`app/docs/`](./app/docs/) | 文档中心 `/docs` |
+| [`app/docs/`](./app/docs/) | 文档中心 `/docs`（导读与分层参考 [execgo.site/docs](https://execgo.site/docs) 信息架构） |
 | [`app/docs/view/[[...slug]]/`](./app/docs/view/) | 单篇文档 `/docs/view/...` |
 | [`docs/`](./docs/) | 同步自上游的 Markdown 与 `SOURCE.txt` |
 | [`scripts/`](./scripts/) | 文档同步脚本与导览模板 |

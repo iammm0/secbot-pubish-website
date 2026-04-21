@@ -1,5 +1,6 @@
 "use client";
 
+import type { HTMLAttributes } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -7,7 +8,7 @@ type DocMarkdownProps = {
   markdown: string;
 };
 
-/** 将正文中指向 GitHub 上 docs/*.md 的链接改为本站 /docs/view/…，避免阅读时再跳转到 GitHub。 */
+/** 将正文中指向 GitHub 上 docs/*.md 的链接改为本站 /docs/view/… */
 function githubBlobDocsToViewPath(href: string): string | null {
   try {
     const u = new URL(href);
@@ -24,12 +25,30 @@ function githubBlobDocsToViewPath(href: string): string | null {
   }
 }
 
+function mkHeading(Tag: "h1" | "h2" | "h3", nextId: () => number) {
+  return function MdHeading(props: HTMLAttributes<HTMLHeadingElement>) {
+    const { children, ...rest } = props;
+    const id = `stoc-${nextId()}`;
+    return (
+      <Tag id={id} {...rest}>
+        {children}
+      </Tag>
+    );
+  };
+}
+
 export function DocMarkdown({ markdown }: DocMarkdownProps) {
+  let headingSeq = 0;
+  const nextHeadingId = () => headingSeq++;
+
   return (
     <div className="doc-markdown">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
+          h1: mkHeading("h1", nextHeadingId),
+          h2: mkHeading("h2", nextHeadingId),
+          h3: mkHeading("h3", nextHeadingId),
           a: ({ href, children, ...props }) => {
             const internal = href ? githubBlobDocsToViewPath(href) : null;
             const dest = internal ?? href ?? "#";
