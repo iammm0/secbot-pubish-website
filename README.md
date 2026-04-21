@@ -1,6 +1,6 @@
 # Secbot 发布站点（secbot-publish-website）
 
-基于 [Next.js](https://nextjs.org) 的 Secbot 发布与文档门户：首页、下载说明、**站内文档**（Markdown 渲染）等。文档正文由上游 Secbot 的 `docs/` 同步至本仓库 [`docs/`](./docs/)，**仅在站内** `/docs`、`/docs/view/...` 预览，不依赖跳转到 GitHub 阅读文档。
+基于 [Next.js](https://nextjs.org) 的 Secbot 发布与文档门户：首页（含 npm / PyPI 安装命令）、**站内文档**（Markdown 渲染）等。文档正文由上游 Secbot 的 `docs/` 同步至本仓库 [`docs/`](./docs/)，**仅在站内** `/docs`、`/docs/view/...` 预览，不依赖跳转到 GitHub 阅读文档。
 
 > **合规提示**：Secbot 仅适用于获得明确授权的安全测试、研究与教学。请勿对未授权目标进行扫描或利用。
 

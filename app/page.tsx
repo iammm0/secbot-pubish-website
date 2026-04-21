@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CopyCommandBlock } from "@/src/components/copy-command-block";
 import { SiteFooter } from "@/src/components/site-footer";
 import { SectionBlock } from "@/src/components/section-block";
@@ -28,10 +27,10 @@ export default async function Home({ searchParams }: HomeProps) {
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 <article className="rounded-lg border border-[var(--line)] bg-[var(--surface)] p-4">
                   <p className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--muted-soft)]">
-                    {messages.download.tsTitle}
+                    {messages.home.tsTitle}
                   </p>
                   <CopyCommandBlock
-                    command={messages.download.tsCmd}
+                    command={messages.home.tsCmd}
                     hint={messages.common.copyHint}
                     copyLabel={messages.common.copyCommand}
                     copiedLabel={messages.common.copied}
@@ -39,10 +38,10 @@ export default async function Home({ searchParams }: HomeProps) {
                 </article>
                 <article className="rounded-lg border border-[var(--line)] bg-[var(--surface)] p-4">
                   <p className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--muted-soft)]">
-                    {messages.download.pyTitle}
+                    {messages.home.pyTitle}
                   </p>
                   <CopyCommandBlock
-                    command={messages.download.pyCmd}
+                    command={messages.home.pyCmd}
                     hint={messages.common.copyHint}
                     copyLabel={messages.common.copyCommand}
                     copiedLabel={messages.common.copied}
@@ -51,9 +50,14 @@ export default async function Home({ searchParams }: HomeProps) {
               </div>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link href={`/download?lang=${locale}`} className="ui-button ui-button-primary">
+                <a
+                  href="https://www.npmjs.com/package/@opensec/secbot"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ui-button ui-button-primary"
+                >
                   {messages.home.ctaTs}
-                </Link>
+                </a>
                 <a href="https://pypi.org/project/secbot/" target="_blank" rel="noopener noreferrer" className="ui-button">
                   {messages.home.ctaPy}
                 </a>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { BookOpenText, Download, GitBranch, House, Languages, Menu, X } from "lucide-react";
+import { BookOpenText, GitBranch, House, Languages, Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/src/components/theme-toggle";
 import { type Locale, isLocale } from "@/src/i18n/config";
 import type { SiteMessages } from "@/src/i18n/messages";
@@ -28,12 +28,6 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
 
   const navLinks = [
     { href: withLang("/", safeCurrentLang), label: messages.nav.home, active: pathname === "/", icon: House },
-    {
-      href: withLang("/download", safeCurrentLang),
-      label: messages.nav.download,
-      active: pathname === "/download",
-      icon: Download,
-    },
     {
       href: withLang("/docs", safeCurrentLang),
       label: messages.nav.docs,

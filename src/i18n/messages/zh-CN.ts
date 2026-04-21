@@ -5,7 +5,6 @@ const zhCN = {
   },
   nav: {
     home: "首页",
-    download: "下载",
     docs: "文档",
     github: "GitHub",
   },
@@ -26,6 +25,10 @@ const zhCN = {
       "Secbot 提供正式 TS 发布版本与实验 PY 版本，帮助你在授权场景中快速搭建 AI 安全测试工作流。",
     ctaTs: "获取 TS 正式版",
     ctaPy: "体验 PY 实验版",
+    tsTitle: "TS 正式版",
+    tsCmd: "npm i -g @opensec/secbot",
+    pyTitle: "PY 实验版",
+    pyCmd: "pip install secbot",
     highlightTitle: "为什么选择 Secbot",
     highlights: [
       "多推理后端接入，覆盖主流模型平台",
@@ -36,16 +39,6 @@ const zhCN = {
       "文档与安装入口清晰，团队成员可以更快上手并统一工作流",
       "项目持续迭代，版本更新节奏稳定，便于长期维护与升级",
     ],
-  },
-  download: {
-    title: "下载与安装",
-    subtitle: "按你的使用场景选择发布渠道",
-    tsTitle: "TS 正式版",
-    tsDesc: "适合生产与团队协作，优先保证稳定体验。",
-    tsCmd: "npm i -g @opensec/secbot",
-    pyTitle: "PY 实验版",
-    pyDesc: "适合快速试验新能力与研究型验证。",
-    pyCmd: "pip install secbot",
   },
   docs: {
     title: "Secbot 文档总览",

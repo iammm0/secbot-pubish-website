@@ -5,7 +5,6 @@ const enUS = {
   },
   nav: {
     home: "Home",
-    download: "Download",
     docs: "Docs",
     github: "GitHub",
   },
@@ -26,6 +25,10 @@ const enUS = {
       "Secbot provides an official TS package and an experimental PY package to help you build AI-driven security workflows in authorized environments.",
     ctaTs: "Get TS official release",
     ctaPy: "Try PY experimental release",
+    tsTitle: "TS official release",
+    tsCmd: "npm i -g @opensec/secbot",
+    pyTitle: "PY experimental release",
+    pyCmd: "pip install secbot",
     highlightTitle: "Why Secbot",
     highlights: [
       "Multiple inference backends across major model providers",
@@ -36,16 +39,6 @@ const enUS = {
       "Clear docs and install paths help teams onboard faster",
       "Continuous iterations with predictable updates for long-term maintenance",
     ],
-  },
-  download: {
-    title: "Download & Install",
-    subtitle: "Choose the channel that matches your use case",
-    tsTitle: "TS Official Release",
-    tsDesc: "Built for production and team collaboration with stable behavior.",
-    tsCmd: "npm i -g @opensec/secbot",
-    pyTitle: "PY Experimental Release",
-    pyDesc: "Best for rapid experiments and research validation.",
-    pyCmd: "pip install secbot",
   },
   docs: {
     title: "Secbot documentation overview",
