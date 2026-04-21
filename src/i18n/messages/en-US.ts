@@ -38,6 +38,8 @@ const enUS = {
       "Supports end-to-end workflow from discovery and testing to reporting",
       "Clear docs and install paths help teams onboard faster",
       "Continuous iterations with predictable updates for long-term maintenance",
+      "HTTP API plus tool extension hooks fit existing platforms, CI/CD, or custom orchestration",
+      "Skills and memory-style extensions help teams capture reusable playbooks and reduce drift",
     ],
   },
   docs: {
