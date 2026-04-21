@@ -7,7 +7,6 @@ const enUS = {
     home: "Home",
     download: "Download",
     docs: "Docs",
-    changelog: "Changelog",
     github: "GitHub",
   },
   common: {
@@ -158,14 +157,6 @@ const enUS = {
           },
         ],
       },
-    ],
-  },
-  changelog: {
-    title: "Changelog",
-    subtitle: "Recent updates (static in v1 site)",
-    items: [
-      { version: "v2.0.3", date: "2026-04-06", notes: "Latest stable release with overall UX and maintainability improvements." },
-      { version: "v2.0.0", date: "2026-03-xx", notes: "Focused on terminal-ui shape, streamlined architecture and release flow." },
     ],
   },
   footer: {

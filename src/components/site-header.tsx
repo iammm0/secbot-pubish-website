@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { BookOpenText, Download, GitBranch, House, Languages, Menu, ScrollText, X } from "lucide-react";
+import { BookOpenText, Download, GitBranch, House, Languages, Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/src/components/theme-toggle";
 import { type Locale, isLocale } from "@/src/i18n/config";
 import type { SiteMessages } from "@/src/i18n/messages";
@@ -39,12 +39,6 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
       label: messages.nav.docs,
       active: pathname === "/docs" || pathname.startsWith("/docs/"),
       icon: BookOpenText,
-    },
-    {
-      href: withLang("/changelog", safeCurrentLang),
-      label: messages.nav.changelog,
-      active: pathname === "/changelog",
-      icon: ScrollText,
     },
   ];
 

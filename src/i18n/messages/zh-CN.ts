@@ -7,7 +7,6 @@ const zhCN = {
     home: "首页",
     download: "下载",
     docs: "文档",
-    changelog: "更新日志",
     github: "GitHub",
   },
   common: {
@@ -158,14 +157,6 @@ const zhCN = {
           },
         ],
       },
-    ],
-  },
-  changelog: {
-    title: "更新日志",
-    subtitle: "近期版本更新（首版采用静态展示）",
-    items: [
-      { version: "v2.0.3", date: "2026-04-06", notes: "发布最新稳定版本，优化整体体验与可维护性。" },
-      { version: "v2.0.0", date: "2026-03-xx", notes: "聚焦 terminal-ui 形态，整理架构并增强发布流程。" },
     ],
   },
   footer: {
