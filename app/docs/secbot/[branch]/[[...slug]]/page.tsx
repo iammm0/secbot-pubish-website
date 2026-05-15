@@ -9,11 +9,8 @@ import { SiteHeader } from "@/src/components/site-header";
 import { type Locale, defaultLocale, isLocale } from "@/src/i18n/config";
 import { getMessages } from "@/src/i18n/messages";
 import {
-  DOC_BRANCHES,
   type DocBranchId,
-  getDocBranch,
   isDocBranchId,
-  listDocEntries,
   listDocSections,
   listStaticSlugParams,
   readMarkdownFile,
@@ -30,10 +27,6 @@ function withLang(path: string, locale: Locale) {
   return `${path}?lang=${locale}`;
 }
 
-function branchHref(branchId: DocBranchId, locale: Locale) {
-  return withLang(`/docs/secbot/${branchId}`, locale);
-}
-
 function titleFromMarkdown(markdown: string, fallback: string): string {
   const titleLine = markdown.split(/\r?\n/).find((line) => line.trim().startsWith("# "));
   return titleLine ? titleLine.replace(/^#\s+/, "").trim() : fallback;
@@ -47,29 +40,6 @@ function stripLeadingTitle(markdown: string): string {
   index += 1;
   while (index < lines.length && !lines[index].trim()) index += 1;
   return lines.slice(index).join("\n");
-}
-
-function BranchSwitch({ activeBranchId, locale }: { activeBranchId: DocBranchId; locale: Locale }) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      {DOC_BRANCHES.map((branch) => {
-        const active = branch.id === activeBranchId;
-        return (
-          <Link
-            key={branch.id}
-            href={branchHref(branch.id, locale)}
-            className={`rounded-full border px-3 py-1 text-xs font-medium no-underline ${
-              active
-                ? "border-transparent bg-[var(--brand-end)] text-white"
-                : "border-[var(--line)] text-[var(--muted)] hover:text-[var(--foreground)]"
-            }`}
-          >
-            {branch.label}
-          </Link>
-        );
-      })}
-    </div>
-  );
 }
 
 export async function generateStaticParams() {
@@ -96,8 +66,6 @@ export default async function BranchDocPage({ params, searchParams }: BranchDocP
 
   if (!isDocBranchId(branchParam)) notFound();
   const branch = branchParam;
-  const branchMeta = getDocBranch(branch)!;
-
   const rel = resolveMarkdownRelPath(branch, slug ?? []);
   if (!rel) notFound();
 
@@ -122,16 +90,8 @@ export default async function BranchDocPage({ params, searchParams }: BranchDocP
                 文档
               </Link>
               <span>/</span>
-              <Link href={branchHref(branch, locale)} className="no-underline hover:text-[var(--foreground)]">
-                {branchMeta.label}
-              </Link>
-              <span>/</span>
               <span className="text-[var(--foreground)]">{title}</span>
             </nav>
-
-            <div className="mb-6">
-              <BranchSwitch activeBranchId={branch} locale={locale} />
-            </div>
 
             <h1 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">{title}</h1>
 

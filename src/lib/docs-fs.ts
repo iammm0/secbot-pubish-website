@@ -25,7 +25,7 @@ export const DOC_BRANCHES = [
 export type DocBranch = (typeof DOC_BRANCHES)[number];
 export type DocBranchId = DocBranch["id"];
 
-export const DEFAULT_DOC_BRANCH: DocBranchId = "pypi-release";
+export const DEFAULT_DOC_BRANCH: DocBranchId = "npm-release";
 
 export type DocEntry = {
   title: string;

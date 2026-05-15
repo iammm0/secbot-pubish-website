@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { SiteFooter } from "@/src/components/site-footer";
-import { SectionBlock } from "@/src/components/section-block";
+import { DocSidebar } from "@/src/components/doc-sidebar";
 import { SiteHeader } from "@/src/components/site-header";
-import { DocsTopStrip } from "@/src/components/docs-top-strip";
 import { type Locale, defaultLocale, isLocale } from "@/src/i18n/config";
 import { getMessages } from "@/src/i18n/messages";
-import { DOC_BRANCHES, listDocEntries } from "@/src/lib/docs-fs";
+import { listDocSections } from "@/src/lib/docs-fs";
 
 type DocsPageProps = {
   searchParams?: Promise<{ lang?: string }>;
@@ -21,66 +20,33 @@ export default async function DocsPage({ searchParams }: DocsPageProps) {
   const locale: Locale = lang && isLocale(lang) ? lang : defaultLocale;
   const messages = getMessages(locale);
   const d = messages.docs;
+  const sections = listDocSections("npm-release");
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
       <div className="site-shell flex min-h-screen flex-col">
         <SiteHeader locale={locale} messages={messages} />
-        <DocsTopStrip locale={locale} messages={messages} anchorNav={d.anchorNav} />
-        <main className="page-main">
-          <SectionBlock title={d.title} subtitle={d.subtitle}>
-            <div className="docs-overview mx-auto max-w-4xl space-y-12 px-4 sm:px-0">
-              <section id="branch-docs" className="scroll-mt-28">
-                <h2 className="docs-overview-h2">{d.branchDocsTitle}</h2>
-                <p className="mt-3 text-[var(--muted)]">{d.branchDocsIntro}</p>
-                <div className="mt-6 grid gap-5 md:grid-cols-2">
-                  {DOC_BRANCHES.map((branch) => {
-                    const docsCount = listDocEntries(branch.id).length;
-                    return (
-                      <Link
-                        key={branch.id}
-                        href={withLang(`/docs/secbot/${branch.id}`, locale)}
-                        className="surface-card block p-5 no-underline hover:border-[var(--brand-end)]"
-                      >
-                        <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted-soft)]">
-                          {branch.badge}
-                        </p>
-                        <h3 className="mt-3 text-xl font-semibold tracking-tight text-[var(--foreground)]">{branch.label}</h3>
-                        <p className="mt-2 text-sm text-[var(--muted)]">{branch.summary}</p>
-                        <div className="mt-5 flex flex-wrap items-center gap-3 text-xs">
-                          <span className="rounded-full border border-[var(--line)] px-2.5 py-1 font-mono text-[var(--foreground)]">
-                            {branch.shortLabel}
-                          </span>
-                          <span className="text-[var(--muted-soft)]">{docsCount} docs</span>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </section>
+        <div className="flex flex-1">
+          <DocSidebar sections={sections} branchId="npm-release" locale={locale} />
 
-              <section id="doc-scope" className="scroll-mt-28">
-                <h2 className="docs-overview-h2">{d.scopeTitle}</h2>
-                <ul className="mt-3 list-disc space-y-2 pl-5 text-[var(--muted)]">
-                  {d.scopeBullets.map((line, i) => (
-                    <li key={i}>{line}</li>
-                  ))}
-                </ul>
-              </section>
+          <main className="min-w-0 flex-1 px-4 py-8 sm:px-8">
+            <div className="mx-auto max-w-3xl">
+              <h1 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">{d.title}</h1>
+              <p className="mt-2 text-sm text-[var(--muted)]">{d.subtitle}</p>
 
-              <section id="where-to-start" className="scroll-mt-28">
-                <h2 className="docs-overview-h2">{d.whereToStartTitle}</h2>
-                <p className="mt-3 text-[var(--muted)]">{d.whereToStartIntro}</p>
-                <ul className="mt-4 list-disc space-y-3 pl-5 text-[var(--foreground)]">
+              <section id="where-to-start" className="mt-10 scroll-mt-20">
+                <h2 className="text-lg font-semibold text-[var(--foreground)]">{d.whereToStartTitle}</h2>
+                <p className="mt-2 text-sm text-[var(--muted)]">{d.whereToStartIntro}</p>
+                <ul className="mt-4 space-y-3 text-sm">
                   {d.whereToStartBullets.map((row, idx) => (
-                    <li key={`${row.text}-${idx}`}>
+                    <li key={idx}>
                       <span className="text-[var(--muted)]">{row.text}</span>{" "}
                       {row.links.map((link, i) => (
                         <span key={link.viewPath}>
                           {i > 0 ? "、" : null}
                           <Link
                             href={withLang(link.viewPath, locale)}
-                            className="font-medium text-[var(--brand-end)] no-underline hover:underline"
+                            className="text-[var(--brand-start)] no-underline hover:underline"
                           >
                             {link.label}
                           </Link>
@@ -91,15 +57,13 @@ export default async function DocsPage({ searchParams }: DocsPageProps) {
                 </ul>
               </section>
 
-              <section id="recommended-paths" className="scroll-mt-28">
-                <h2 className="docs-overview-h2">{d.recommendedPathsTitle}</h2>
-                <div className="mt-5 grid gap-6 md:grid-cols-2">
+              <section id="recommended-paths" className="mt-10 scroll-mt-20">
+                <h2 className="text-lg font-semibold text-[var(--foreground)]">{d.recommendedPathsTitle}</h2>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   {d.recommendedPaths.map((path) => (
                     <div key={path.title} className="surface-card p-4">
-                      <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[var(--muted-soft)]">
-                        {path.title}
-                      </p>
-                      <ol className="mt-3 list-decimal space-y-2 pl-4 text-sm text-[var(--muted)]">
+                      <p className="font-mono text-xs font-semibold text-[var(--muted-soft)]">{path.title}</p>
+                      <ol className="mt-3 list-decimal space-y-1.5 pl-4 text-sm text-[var(--muted)]">
                         {path.items.map((step) => (
                           <li key={step.viewPath}>
                             <Link
@@ -116,38 +80,38 @@ export default async function DocsPage({ searchParams }: DocsPageProps) {
                 </div>
               </section>
 
-              <section id="doc-map" className="scroll-mt-28">
-                <h2 className="docs-overview-h2">{d.docMapTitle}</h2>
-                <p className="mt-3 text-sm text-[var(--muted)]">{d.docMapLead}</p>
-                <div className="mt-6 grid gap-4 md:grid-cols-2">
-                  {DOC_BRANCHES.map((branch) => (
-                    <Link
-                      key={branch.id}
-                      href={withLang(`/docs/secbot/${branch.id}`, locale)}
-                      className="surface-card block p-4 no-underline hover:border-[var(--brand-end)]"
-                    >
-                      <p className="font-medium text-[var(--foreground)]">{branch.label}</p>
-                      <p className="mt-1 text-sm text-[var(--muted)]">{branch.summary}</p>
-                    </Link>
+              <section id="doc-scope" className="mt-10 scroll-mt-20">
+                <h2 className="text-lg font-semibold text-[var(--foreground)]">{d.scopeTitle}</h2>
+                <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-[var(--muted)]">
+                  {d.scopeBullets.map((line, i) => (
+                    <li key={i}>{line}</li>
                   ))}
-                </div>
+                </ul>
               </section>
-
-              <p className="text-center text-xs text-[var(--muted-soft)]">
-                {d.architectureCreditBefore}{" "}
-                <a
-                  href="https://execgo.site/docs"
-                  className="text-[var(--brand-end)] underline-offset-2 hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {d.architectureCreditLink}
-                </a>
-                {d.architectureCreditAfter}
-              </p>
             </div>
-          </SectionBlock>
-        </main>
+          </main>
+
+          {/* Right sidebar: anchor nav for this overview page */}
+          <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-52 shrink-0 overflow-y-auto border-l border-[var(--line)] p-4 text-sm xl:block">
+            <p className="mb-3 font-mono text-[0.65rem] font-semibold uppercase tracking-wider text-[var(--muted-soft)]">
+              {d.quickNavLabel}
+            </p>
+            <nav>
+              <ul className="space-y-1">
+                {d.anchorNav.map((a) => (
+                  <li key={a.anchor}>
+                    <a
+                      href={`#${a.anchor}`}
+                      className="block rounded-md px-2 py-0.5 text-xs text-[var(--muted)] no-underline hover:text-[var(--foreground)]"
+                    >
+                      {a.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </aside>
+        </div>
         <SiteFooter messages={messages} />
       </div>
     </div>
