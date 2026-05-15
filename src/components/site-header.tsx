@@ -37,7 +37,7 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
   ];
 
   return (
-    <header className="sticky top-0 z-30 border-b border-[var(--line-weak)] bg-[var(--header-bg)] backdrop-blur-md">
+    <header className="sticky top-0 z-30 bg-[var(--header-bg)] backdrop-blur-md">
       <div className="px-3 py-3 sm:px-6 sm:py-4">
         <div className="flex items-start justify-between gap-4">
           <Link href={withLang("/", safeCurrentLang)} className="min-w-0 shrink no-underline">
