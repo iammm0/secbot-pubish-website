@@ -22,7 +22,7 @@ const zhCN = {
   home: {
     heroTitle: "发布站点：稳定发布 + 实验探索",
     heroSubtitle:
-      "Secbot 提供正式 TS 发布版本与实验 PY 版本，帮助你在授权场景中快速搭建 AI 安全测试工作流。",
+      "Secbot 提供正式 TS 发布版本与实验 PY 版本，内置多智能体编排架构（IntentRouter + ExploreAgent + ContextManager），帮助你在授权场景中快速搭建 AI 安全测试工作流。",
     ctaTs: "获取 TS 正式版",
     ctaPy: "体验 PY 实验版",
     tsTitle: "TS 正式版",
@@ -31,15 +31,15 @@ const zhCN = {
     pyCmd: "pip install secbot",
     highlightTitle: "为什么选择 Secbot",
     highlights: [
-      "多推理后端接入，覆盖主流模型平台",
-      "支持 CLI 与 terminal-ui 的一致体验",
-      "围绕授权安全测试设计，强调可靠与可审计",
-      "正式 TS 版与实验 PY 版双轨发布，满足稳定部署与快速试验两类需求",
-      "支持从发现、测试到总结的任务链路，提升安全测试自动化效率",
-      "文档与安装入口清晰，团队成员可以更快上手并统一工作流",
-      "项目持续迭代，版本更新节奏稳定，便于长期维护与升级",
-      "提供 HTTP API 与工具扩展机制，便于与现有平台、流水线或自研编排对接",
-      "Skills 与记忆等扩展能力可沉淀团队知识，减少重复配置与口径不一致",
+      "IntentRouter 单次 LLM 调用将用户意图分为六类，精准路由到简单任务或复杂规划路径",
+      "ExploreAgent 在正式规划前以轻量 ReAct 微循环补全上下文，支持 vuln_db_query 与 browser_session",
+      "BrowserSession 工具遵守 robots 协议并使用可读性提取，适合授权场景下的网页内容获取",
+      "ContextAssemblerService 按模型窗口预算装配历史与记忆，SSE context_usage 实时推送用量至 TUI",
+      "多后端模式（spawn / service / remote）与自动端口选择，避免多实例冲突",
+      "TUI 体验全面升级：启动过渡动画、输入历史切换、鼠标转义过滤、Thought Markdown 渲染",
+      "漏洞数据库统一 schema，适配 CVE / NVD / Exploit-DB / MITRE ATT&CK",
+      "提供 HTTP API 与工具扩展机制，便于与现有平台、CI/CD 流水线或自研编排系统对接",
+      "Skills 与记忆扩展可沉淀团队知识，减少重复配置与口径不一致",
     ],
   },
   docs: {

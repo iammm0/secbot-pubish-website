@@ -22,7 +22,7 @@ const enUS = {
   home: {
     heroTitle: "Official release + experimental track",
     heroSubtitle:
-      "Secbot provides an official TS package and an experimental PY package to help you build AI-driven security workflows in authorized environments.",
+      "Secbot provides an official TS package and an experimental PY package with a multi-agent orchestration architecture (IntentRouter + ExploreAgent + ContextManager), to help you build AI-driven security workflows in authorized environments.",
     ctaTs: "Get TS official release",
     ctaPy: "Try PY experimental release",
     tsTitle: "TS official release",
@@ -31,15 +31,15 @@ const enUS = {
     pyCmd: "pip install secbot",
     highlightTitle: "Why Secbot",
     highlights: [
-      "Multiple inference backends across major model providers",
-      "Unified experience for CLI and terminal-ui workflows",
-      "Designed for authorized security testing with reliable outputs",
-      "Dual-track release model: stable TS package plus experimental PY package",
-      "Supports end-to-end workflow from discovery and testing to reporting",
-      "Clear docs and install paths help teams onboard faster",
-      "Continuous iterations with predictable updates for long-term maintenance",
-      "HTTP API plus tool extension hooks fit existing platforms, CI/CD, or custom orchestration",
-      "Skills and memory-style extensions help teams capture reusable playbooks and reduce drift",
+      "IntentRouter classifies user intent into 6 types in a single LLM call, routing to simple-task or complex-planning paths",
+      "ExploreAgent runs a lightweight ReAct micro-loop before planning to fill context gaps via vuln_db_query and browser_session",
+      "BrowserSession tool respects robots.txt and uses readability extraction for authorized web content retrieval",
+      "ContextAssemblerService assembles history and memory within the model's context budget; SSE context_usage streams live token usage to the TUI",
+      "Multiple backend modes (spawn / service / remote) with automatic port selection to avoid multi-instance conflicts",
+      "TUI fully upgraded: startup transition animation, input history navigation, mouse escape filtering, Thought Markdown rendering",
+      "Unified vulnerability database schema adapting CVE / NVD / Exploit-DB / MITRE ATT&CK",
+      "HTTP API and tool extension hooks integrate with existing platforms, CI/CD pipelines, or custom orchestration",
+      "Skills and memory extensions capture team knowledge, reducing repeated configuration and inconsistency",
     ],
   },
   docs: {

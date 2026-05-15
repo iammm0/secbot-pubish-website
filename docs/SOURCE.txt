@@ -1,11 +1,11 @@
-同步时间(UTC): 2026-04-21T09:54:08Z
-上游仓库: https://github.com/iammm0/secbot.git
+同步时间(UTC): 2026-05-15T07:58:13Z
+上游仓库: /Users/zhuanzmima0000/PersonalProjects/secbot
 分支/引用: pypi-release npm-release
 说明: 由 scripts/sync-secbot-docs.sh 生成；正文 Markdown 按发布分支分别位于 docs/<branch>/。
 
 分支/引用: pypi-release
-上游提交: f015fd3ac84dd2a8622415ffdb0ebd8cb6fdd5d3
+上游提交: 6d8652543efe70ca4fb5a4e1a05de65d623ab6b5
 
 分支/引用: npm-release
-上游提交: 2cc1725ed01591fdc11644d6f6137c18c7702954
+上游提交: 1789accae181c5a42fde0cdec3c9940f08b92565
 
