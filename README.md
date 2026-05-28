@@ -3,6 +3,8 @@
 基于 [Next.js](https://nextjs.org) 的 Secbot 发布与文档门户：首页（含 npm / PyPI 安装命令）、**站内分支文档**（Markdown 渲染）等。文档正文由上游 Secbot 的 `pypi-release`、`npm-release` 两条发布分支同步至本仓库 [`docs/`](./docs/)，**仅在站内** `/docs`、`/docs/secbot/<branch>/...` 预览，不依赖跳转到 GitHub 阅读文档。
 
 > **合规提示**：Secbot 仅适用于获得明确授权的安全测试、研究与教学。请勿对未授权目标进行扫描或利用。
+>
+> **快速迭代提示**：项目仍处于快速迭代阶段。建议 fork 或 star 后准备二次开发、部署或长期使用的用户，优先基于上游 `npm-release` 主分支构建项目，以获得更完整的 TypeScript / Node.js / npm 版本能力与后续更新。
 
 ## 环境要求
 
