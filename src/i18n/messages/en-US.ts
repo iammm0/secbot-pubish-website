@@ -22,17 +22,17 @@ const enUS = {
   home: {
     heroTitle: "AI-powered automated security testing",
     heroSubtitle:
-      "Multi-agent orchestration with IntentRouter, ExploreAgent, and ContextManager. The project is still moving quickly; build from the npm-release source branch for now.",
+      "The npm-release line now centers on a NestJS backend and Ink terminal UI, with 54 TypeScript security tools, SSE execution feedback, and local config persistence. The project is still moving quickly; build from the npm-release source branch for now.",
     ctaTs: "Build from source",
-    tsCmd: "git clone -b npm-release https://github.com/iammm0/secbot.git && cd secbot && npm install && npm run build",
+    tsCmd: "git clone -b npm-release https://github.com/iammm0/secbot.git && cd secbot && npm install && npm run start:stack",
     highlightTitle: "Core capabilities",
     highlights: [
-      "IntentRouter classifies intent into 6 types in a single LLM call, routing tasks precisely",
-      "ExploreAgent runs a lightweight ReAct loop to fill context gaps before planning",
-      "ContextAssembler fits history and memory within the model's context budget",
-      "BrowserSession respects robots.txt with readability extraction",
-      "Unified vulnerability DB schema adapting CVE / NVD / Exploit-DB",
-      "Multiple backend modes with auto port selection: spawn / service / remote",
+      "Node.js 24+ source workflow: run npm install, then npm run start:stack to build and open the TUI",
+      "NestJS backend exposes /health, /api/system/info, and /api/chat SSE execution feedback",
+      "Ink terminal UI can spawn a local backend automatically or connect to an existing API in service mode",
+      "54 TypeScript tools across Security, Defense, Utility, Protocol, OSINT, Cloud, Reporting, Crawler, and Web Research",
+      "DeepSeek and Ollama settings can live in .env or the TUI /model flow, then persist to SQLite / config.yaml",
+      "The Python-to-TypeScript main path migration is complete; the tracked runtime is now NestJS + Ink",
     ],
   },
   docs: {

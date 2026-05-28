@@ -22,17 +22,17 @@ const zhCN = {
   home: {
     heroTitle: "AI 驱动的自动化安全测试平台",
     heroSubtitle:
-      "多智能体编排架构，内置 IntentRouter 意图路由、ExploreAgent 上下文探索与 ContextManager 预算管理。项目仍在快速迭代，当前请优先从 npm-release 分支源码构建。",
+      "npm-release 已收敛到 NestJS 后端与 Ink 终端界面主链路，提供 54 个 TypeScript 安全工具、SSE 执行反馈与本地配置持久化。项目仍在快速迭代，当前请优先从 npm-release 分支源码构建。",
     ctaTs: "查看源码构建",
-    tsCmd: "git clone -b npm-release https://github.com/iammm0/secbot.git && cd secbot && npm install && npm run build",
+    tsCmd: "git clone -b npm-release https://github.com/iammm0/secbot.git && cd secbot && npm install && npm run start:stack",
     highlightTitle: "核心能力",
     highlights: [
-      "IntentRouter 单次 LLM 调用分类六类意图，精准路由任务路径",
-      "ExploreAgent 轻量 ReAct 循环，规划前自动补全上下文",
-      "ContextAssembler 按模型窗口预算装配历史与记忆",
-      "BrowserSession 遵守 robots 协议的网页可读性提取",
-      "漏洞数据库统一 schema，适配 CVE / NVD / Exploit-DB",
-      "多后端模式与自动端口选择，spawn / service / remote",
+      "Node.js 24+ 源码启动链路：npm install 后通过 npm run start:stack 构建并进入 TUI",
+      "NestJS 后端提供 /health、/api/system/info 与 /api/chat SSE 流式执行反馈",
+      "Ink 终端界面支持 spawn 自动拉起后端，也可用 service 模式连接已有 API 服务",
+      "54 个 TypeScript 工具覆盖 Security、Defense、Utility、Protocol、OSINT、Cloud、Reporting、Crawler 与 Web Research",
+      "DeepSeek 与 Ollama 配置可在 .env 或 TUI /model 中维护，并持久化到 SQLite / config.yaml",
+      "Python 到 TypeScript 的主链路迁移已完成，当前受版本控制路径以 NestJS + Ink 为准",
     ],
   },
   docs: {
