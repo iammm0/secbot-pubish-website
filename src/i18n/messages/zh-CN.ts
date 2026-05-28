@@ -22,9 +22,9 @@ const zhCN = {
   home: {
     heroTitle: "AI 驱动的自动化安全测试平台",
     heroSubtitle:
-      "多智能体编排架构，内置 IntentRouter 意图路由、ExploreAgent 上下文探索与 ContextManager 预算管理。一条命令启动，即刻进入授权安全测试工作流。",
-    ctaTs: "npm 安装",
-    tsCmd: "npm i -g @opensec/secbot",
+      "多智能体编排架构，内置 IntentRouter 意图路由、ExploreAgent 上下文探索与 ContextManager 预算管理。项目仍在快速迭代，当前请优先从 npm-release 分支源码构建。",
+    ctaTs: "查看源码构建",
+    tsCmd: "git clone -b npm-release https://github.com/iammm0/secbot.git && cd secbot && npm install && npm run build",
     highlightTitle: "核心能力",
     highlights: [
       "IntentRouter 单次 LLM 调用分类六类意图，精准路由任务路径",

@@ -22,9 +22,9 @@ const enUS = {
   home: {
     heroTitle: "AI-powered automated security testing",
     heroSubtitle:
-      "Multi-agent orchestration with IntentRouter, ExploreAgent, and ContextManager. One command to start your authorized security testing workflow.",
-    ctaTs: "npm install",
-    tsCmd: "npm i -g @opensec/secbot",
+      "Multi-agent orchestration with IntentRouter, ExploreAgent, and ContextManager. The project is still moving quickly; build from the npm-release source branch for now.",
+    ctaTs: "Build from source",
+    tsCmd: "git clone -b npm-release https://github.com/iammm0/secbot.git && cd secbot && npm install && npm run build",
     highlightTitle: "Core capabilities",
     highlights: [
       "IntentRouter classifies intent into 6 types in a single LLM call, routing tasks precisely",

@@ -38,7 +38,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <a
-                href="https://www.npmjs.com/package/@opensec/secbot"
+                href="https://github.com/iammm0/secbot/tree/npm-release"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ui-button ui-button-primary"

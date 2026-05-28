@@ -17,8 +17,8 @@ export const DOC_BRANCHES = [
     label: "TS 正式版",
     shortLabel: "npm-release",
     badge: "Node.js / npm",
-    channel: "npm i -g @opensec/secbot",
-    summary: "Node.js、NestJS 后端与 Ink 终端界面路线，适合作为正式 npm 发布线查看。",
+    channel: "源码构建",
+    summary: "Node.js、NestJS 后端与 Ink 终端界面路线；当前 npm 全局安装暂不作为稳定入口，建议基于 npm-release 源码构建。",
   },
 ] as const;
 
