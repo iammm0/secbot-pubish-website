@@ -82,6 +82,7 @@ const DOC_ORDER = [
   "design-paradigms/skill-plugin-system.md",
   "releases/README.md",
   "releases/v1.0.0.md",
+  "releases/v1.0.1.md",
   "releases/v1.1.0.md",
   "releases/v1.1.1.md",
   "releases/v1.2.0.md",
@@ -99,11 +100,13 @@ const DOC_ORDER = [
   "releases/v1.8.0.md",
   "releases/v1.9.0.md",
   "releases/v1.10.0.md",
+  "releases/v2.0.0.md",
   "releases/v2.0.1.md",
   "releases/v2.0.2.md",
   "releases/v2.0.3.md",
   "releases/v2.0.4.md",
   "releases/v2.0.0-b1.md",
+  "releases/v2.0.0-b2.md",
 ];
 
 function docsRoot(): string {
