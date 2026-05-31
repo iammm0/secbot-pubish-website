@@ -1,9 +1,10 @@
 "use client";
 
-import type { HTMLAttributes } from "react";
+import { isValidElement, type HTMLAttributes, type ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { DocBranchId } from "@/src/lib/docs-fs";
+import { markdownHeadingId } from "@/src/lib/markdown-toc";
 
 type DocMarkdownProps = {
   markdown: string;
@@ -78,10 +79,17 @@ function relativeMarkdownToViewPath(href: string, branchId?: DocBranchId, curren
   return `/docs/secbot/${branchId}/${markdownPathToSlug(normalized)}${withHash}`;
 }
 
-function mkHeading(Tag: "h1" | "h2" | "h3", nextId: () => number) {
+function textFromNode(node: ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textFromNode).join("");
+  if (isValidElement<{ children?: ReactNode }>(node)) return textFromNode(node.props.children);
+  return "";
+}
+
+function mkHeading(Tag: "h1" | "h2" | "h3") {
   return function MdHeading(props: HTMLAttributes<HTMLHeadingElement>) {
     const { children, ...rest } = props;
-    const id = `stoc-${nextId()}`;
+    const id = markdownHeadingId(textFromNode(children));
     return (
       <Tag id={id} {...rest}>
         {children}
@@ -91,17 +99,14 @@ function mkHeading(Tag: "h1" | "h2" | "h3", nextId: () => number) {
 }
 
 export function DocMarkdown({ markdown, branchId, currentDocPath }: DocMarkdownProps) {
-  let headingSeq = 0;
-  const nextHeadingId = () => headingSeq++;
-
   return (
     <div className="doc-markdown">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          h1: mkHeading("h1", nextHeadingId),
-          h2: mkHeading("h2", nextHeadingId),
-          h3: mkHeading("h3", nextHeadingId),
+          h1: mkHeading("h1"),
+          h2: mkHeading("h2"),
+          h3: mkHeading("h3"),
           a: ({ href, children, ...props }) => {
             const internal = href
               ? githubBlobDocsToViewPath(href, branchId) ?? relativeMarkdownToViewPath(href, branchId, currentDocPath)

@@ -9,7 +9,6 @@ import { SiteHeader } from "@/src/components/site-header";
 import { type Locale, defaultLocale, isLocale } from "@/src/i18n/config";
 import { getMessages } from "@/src/i18n/messages";
 import {
-  type DocBranchId,
   isDocBranchId,
   listDocSections,
   listStaticSlugParams,
@@ -46,7 +45,7 @@ export async function generateStaticParams() {
   return listStaticSlugParams();
 }
 
-export async function generateMetadata({ params, searchParams }: BranchDocPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: BranchDocPageProps): Promise<Metadata> {
   const { branch, slug } = await params;
   if (!isDocBranchId(branch)) return {};
   const rel = resolveMarkdownRelPath(branch, slug ?? []);
@@ -81,10 +80,10 @@ export default async function BranchDocPage({ params, searchParams }: BranchDocP
     <div className="min-h-screen bg-[var(--background)]">
       <div className="site-shell flex min-h-screen flex-col">
         <SiteHeader locale={locale} messages={messages} />
-        <div className="flex flex-1">
+        <div className="flex flex-1 flex-col lg:flex-row">
           <DocSidebar sections={sections} branchId={branch} locale={locale} />
 
-          <main className="min-w-0 flex-1 px-4 py-8 sm:px-8">
+          <main className="w-full min-w-0 flex-1 px-4 py-8 sm:px-8">
             <nav className="mb-4 flex flex-wrap items-center gap-x-2 text-xs text-[var(--muted)]">
               <Link href={withLang("/docs", locale)} className="no-underline hover:text-[var(--foreground)]">
                 文档

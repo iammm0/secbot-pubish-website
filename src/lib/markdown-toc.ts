@@ -1,10 +1,22 @@
-/** 与 DocMarkdown 中标题 id 分配顺序一致：按源文件中出现的 h1–h3 顺序编号 stoc-0, stoc-1, … */
-
 export type MarkdownTocItem = {
   depth: number;
   text: string;
   id: string;
 };
+
+export function markdownHeadingId(text: string): string {
+  const slug = text
+    .toLowerCase()
+    .trim()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\p{Letter}\p{Number}\s_-]+/gu, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+
+  return `stoc-${slug || "section"}`;
+}
 
 export function extractMarkdownToc(markdown: string, maxDepth = 3): MarkdownTocItem[] {
   const lines = markdown.split(/\r?\n/);
@@ -17,7 +29,7 @@ export function extractMarkdownToc(markdown: string, maxDepth = 3): MarkdownTocI
     if (depth > maxDepth) continue;
     const text = m[2].trim().replace(/\s+#+\s*$/, "");
     if (!text) continue;
-    const id = `stoc-${items.length}`;
+    const id = markdownHeadingId(text);
     items.push({ depth, text, id });
   }
   return items;

@@ -22,7 +22,7 @@ export default async function Home({ searchParams }: HomeProps) {
       <div className="site-shell flex min-h-screen flex-col">
         <SiteHeader locale={locale} messages={messages} />
         <main className="page-main flex flex-col items-center justify-center px-4">
-          <div className="motion-enter mx-auto max-w-2xl py-20 text-center sm:py-32">
+          <div className="motion-enter mx-auto w-full max-w-2xl py-20 text-center sm:py-32">
             <h1 className="font-mono text-4xl font-bold tracking-tight text-[var(--foreground)] sm:text-5xl">
               {messages.brand.name}
             </h1>

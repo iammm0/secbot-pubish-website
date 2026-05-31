@@ -26,10 +26,10 @@ export default async function DocsPage({ searchParams }: DocsPageProps) {
     <div className="min-h-screen bg-[var(--background)]">
       <div className="site-shell flex min-h-screen flex-col">
         <SiteHeader locale={locale} messages={messages} />
-        <div className="flex flex-1">
+        <div className="flex flex-1 flex-col lg:flex-row">
           <DocSidebar sections={sections} branchId="npm-release" locale={locale} />
 
-          <main className="min-w-0 flex-1 px-4 py-8 sm:px-8">
+          <main className="w-full min-w-0 flex-1 px-4 py-8 sm:px-8">
             <div className="mx-auto max-w-3xl">
               <h1 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">{d.title}</h1>
               <p className="mt-2 text-sm text-[var(--muted)]">{d.subtitle}</p>
