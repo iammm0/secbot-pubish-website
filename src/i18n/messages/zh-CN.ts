@@ -22,17 +22,35 @@ const zhCN = {
   home: {
     heroTitle: "AI 驱动的自动化安全测试平台",
     heroSubtitle:
-      "npm-release 已收敛到 NestJS 后端与 Ink 终端界面主链路，提供 54 个 TypeScript 安全工具、SSE 执行反馈与本地配置持久化。项目仍在快速迭代，当前请优先从 npm-release 分支源码构建。",
+      "Secbot 将安全测试工具、LLM 推理与本地执行环境组合成可审计的工作流，面向获得明确授权的安全测试、研究与教学场景。",
     ctaTs: "查看源码构建",
     tsCmd: "git clone -b npm-release https://github.com/iammm0/secbot.git && cd secbot && npm install && npm run start:stack",
     highlightTitle: "核心能力",
     highlights: [
-      "Node.js 24+ 源码启动链路：npm install 后通过 npm run start:stack 构建并进入 TUI",
-      "NestJS 后端提供 /health、/api/system/info 与 /api/chat SSE 流式执行反馈",
-      "Ink 终端界面支持 spawn 自动拉起后端，也可用 service 模式连接已有 API 服务",
-      "54 个 TypeScript 工具覆盖 Security、Defense、Utility、Protocol、OSINT、Cloud、Reporting、Crawler 与 Web Research",
-      "DeepSeek 与 Ollama 配置可在 .env 或 TUI /model 中维护，并持久化到 SQLite / config.yaml",
-      "Python 到 TypeScript 的主链路迁移已完成，当前受版本控制路径以 NestJS + Ink 为准",
+      {
+        title: "任务规划与工具编排",
+        body: "把授权目标、测试意图和上下文转成可执行步骤，并根据反馈持续调整工具调用。",
+      },
+      {
+        title: "安全工具矩阵",
+        body: "覆盖侦察、协议分析、Web Research、防御检查与报告整理，减少在脚本之间来回切换。",
+      },
+      {
+        title: "流式执行可观测",
+        body: "长任务按阶段输出进度、中间结果和错误，便于中断、复盘和定位问题。",
+      },
+      {
+        title: "模型与环境适配",
+        body: "可接入云端或本地 LLM，在团队网络、成本和隐私约束下选择合适方案。",
+      },
+      {
+        title: "可复现的会话记忆",
+        body: "配置、上下文和运行记录保留在本地，方便审计、复测和持续调优。",
+      },
+      {
+        title: "TUI + API 双入口",
+        body: "终端适合人机协作，HTTP API 适合接入流水线、服务端任务和自动化脚本。",
+      },
     ],
   },
   docs: {
