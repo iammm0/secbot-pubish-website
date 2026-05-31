@@ -12,6 +12,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const themeInitScript = `
+(function () {
+  try {
+    var savedTheme = window.localStorage.getItem("theme");
+    var systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    var theme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : systemTheme;
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (error) {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+})();
+`;
+
 export const metadata: Metadata = {
   title: "secbot",
   description: "Secbot 的发布与文档站点（TS 正式版 + PY 实验版）。",
@@ -33,9 +46,13 @@ export default function RootLayout({
     <html
       lang="zh-CN"
       data-theme="dark"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col text-[var(--foreground)]">{children}</body>
+      <body className="min-h-full flex flex-col text-[var(--foreground)]">
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {children}
+      </body>
     </html>
   );
 }
