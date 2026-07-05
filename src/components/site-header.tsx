@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { BookOpenText, GitBranch, House, Languages, Menu, X } from "lucide-react";
+import { BookOpenText, GitBranch, House, Languages, Menu, PlayCircle, Route, X } from "lucide-react";
 import { ThemeToggle } from "@/src/components/theme-toggle";
-import { type Locale, isLocale } from "@/src/i18n/config";
+import { type Locale } from "@/src/i18n/config";
 import type { SiteMessages } from "@/src/i18n/messages";
 
 type SiteHeaderProps = {
@@ -18,21 +18,29 @@ function withLang(path: string, locale: Locale): string {
 }
 
 export function SiteHeader({ locale, messages }: SiteHeaderProps) {
-  const searchParams = useSearchParams();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const nextLocale: Locale = locale === "zh-CN" ? "en-US" : "zh-CN";
 
-  const currentLang = searchParams.get("lang");
-  const safeCurrentLang = currentLang && isLocale(currentLang) ? currentLang : locale;
-
   const navLinks = [
-    { href: withLang("/", safeCurrentLang), label: messages.nav.home, active: pathname === "/", icon: House },
+    { href: withLang("/", locale), label: messages.nav.home, active: pathname === "/", icon: House },
     {
-      href: withLang("/docs", safeCurrentLang),
+      href: withLang("/docs", locale),
       label: messages.nav.docs,
       active: pathname === "/docs" || pathname.startsWith("/docs/"),
       icon: BookOpenText,
+    },
+    {
+      href: withLang("/docs/secbot", locale),
+      label: messages.nav.start,
+      active: pathname === "/docs/secbot" || pathname.startsWith("/docs/secbot/"),
+      icon: PlayCircle,
+    },
+    {
+      href: withLang("/docs/runtime", locale),
+      label: messages.nav.runtime,
+      active: pathname === "/docs/runtime" || pathname.startsWith("/docs/runtime/"),
+      icon: Route,
     },
   ];
 
@@ -40,8 +48,8 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
     <header className="sticky top-0 z-30 bg-[var(--header-bg)] backdrop-blur-md">
       <div className="px-3 py-3 sm:px-6 sm:py-4">
         <div className="flex items-start justify-between gap-4">
-          <Link href={withLang("/", safeCurrentLang)} className="min-w-0 shrink no-underline">
-            <p className="truncate font-mono text-lg font-semibold tracking-tight text-[var(--foreground)]">{messages.brand.name}</p>
+          <Link href={withLang("/", locale)} className="min-w-0 shrink no-underline">
+            <p className="truncate font-mono text-lg font-semibold text-[var(--foreground)]">{messages.brand.name}</p>
             <p className="hidden text-xs text-[var(--muted)] sm:block">{messages.brand.tagline}</p>
           </Link>
 
@@ -98,7 +106,7 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
         </div>
 
         <nav
-          className={`mt-4 space-y-2 rounded-xl border border-[var(--line)] bg-[var(--panel)] p-3 md:hidden ${
+          className={`mt-4 space-y-2 rounded-lg border border-[var(--line)] bg-[var(--panel)] p-3 md:hidden ${
             mobileOpen ? "block" : "hidden"
           }`}
         >

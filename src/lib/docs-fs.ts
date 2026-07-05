@@ -1,122 +1,97 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const DOCS_DIR = "docs";
+const DOCS_DIR = path.join("content", "docs");
 const DOC_EXT_RE = /\.mdx?$/i;
 
-export const DOC_BRANCHES = [
+export const DOC_SECTIONS = [
   {
-    id: "pypi-release",
-    label: "PY 实验版",
-    shortLabel: "pypi-release",
-    badge: "Python / PyPI",
-    channel: "pip install secbot",
-    summary: "Python CLI 与可选 FastAPI 后端路线，适合用 `secbot` 命令快速体验和集成。",
+    id: "ecosystem",
+    title: "认识 SecBot",
+    shortTitle: "认识",
+    summary: "产品线、安全授权、发布版本与执行模型。",
   },
   {
-    id: "npm-release",
-    label: "TS 正式版",
-    shortLabel: "npm-release",
-    badge: "Node.js / npm",
-    channel: "源码构建",
-    summary: "Node.js 24+、NestJS 后端与 Ink 终端界面主链路；当前 npm 全局安装暂不作为稳定入口，建议基于 npm-release 源码构建。",
+    id: "secbot",
+    title: "开始使用",
+    shortTitle: "使用",
+    summary: "安装、快速开始、TUI、配置、API 与部署。",
+  },
+  {
+    id: "runtime",
+    title: "运行与执行",
+    shortTitle: "执行",
+    summary: "Agent 编排、工具执行、Skills/MCP、记忆与扩展机制。",
+  },
+  {
+    id: "reference",
+    title: "参考资料",
+    shortTitle: "参考",
+    summary: "数据库、提示词、发布说明和变更日志。",
   },
 ] as const;
 
-export type DocBranch = (typeof DOC_BRANCHES)[number];
-export type DocBranchId = DocBranch["id"];
-
-export const DEFAULT_DOC_BRANCH: DocBranchId = "npm-release";
-export const DEFAULT_DOC_REL_PATH = "QUICKSTART.mdx";
+export type DocSectionId = (typeof DOC_SECTIONS)[number]["id"];
 
 export type DocEntry = {
   title: string;
+  description: string;
   relPath: string;
+  sectionId: DocSectionId;
   slug: string[];
   slugKey: string;
   href: string;
-  section: string;
 };
 
-export type DocSection = {
+export type DocNavSection = {
   title: string;
+  summary: string;
+  sectionId: DocSectionId;
   items: DocEntry[];
 };
 
-const SECTION_ORDER = [
-  "入门与安全",
-  "模型与运行环境",
-  "接入与扩展",
-  "部署与发布",
-  "产品与迁移",
-  "数据与测试",
-  "设计范式",
-  "历史版本说明",
-  "其他",
-];
-
-const DOC_ORDER = [
-  "QUICKSTART.md",
-  "SECURITY_WARNING.md",
-  "NODE_SETUP.md",
-  "LLM_PROVIDERS.md",
-  "OLLAMA_SETUP.md",
-  "SQLITE_SETUP.md",
-  "API.md",
-  "TOOL_EXTENSION.md",
-  "SKILLS_AND_MEMORY.md",
-  "PROMPT_GUIDE.md",
-  "DEPLOYMENT.md",
-  "RELEASE.md",
-  "CHANGELOG.md",
-  "TS_MIGRATION_STATUS.md",
-  "UI-DESIGN-AND-INTERACTION.md",
-  "DATABASE_GUIDE.md",
-  "VIRTUAL_TEST_ENVIRONMENT.md",
-  "design-paradigms/README.md",
-  "design-paradigms/agent-architecture.md",
-  "design-paradigms/cli-and-dependencies.md",
-  "design-paradigms/config-and-env.md",
-  "design-paradigms/commit-conventions.md",
-  "design-paradigms/prompt-management.md",
-  "design-paradigms/react-and-tool-calling.md",
-  "design-paradigms/session-and-events.md",
-  "design-paradigms/skill-plugin-system.md",
-  "releases/README.md",
-  "releases/v1.0.0.md",
-  "releases/v1.0.1.md",
-  "releases/v1.1.0.md",
-  "releases/v1.1.1.md",
-  "releases/v1.2.0.md",
-  "releases/v1.2.6.md",
-  "releases/v1.2.7.md",
-  "releases/v1.2.8.md",
-  "releases/v1.2.9.md",
-  "releases/v1.2.10.md",
-  "releases/v1.3.0.md",
-  "releases/v1.4.0.md",
-  "releases/v1.5.0.md",
-  "releases/v1.6.0.md",
-  "releases/v1.6.1.md",
-  "releases/v1.7.0.md",
-  "releases/v1.8.0.md",
-  "releases/v1.9.0.md",
-  "releases/v1.10.0.md",
-  "releases/v2.0.0.md",
-  "releases/v2.0.1.md",
-  "releases/v2.0.2.md",
-  "releases/v2.0.3.md",
-  "releases/v2.0.4.md",
-  "releases/v2.0.0-b1.md",
-  "releases/v2.0.0-b2.md",
-];
+const DOC_ORDER: Record<DocSectionId, string[]> = {
+  ecosystem: [
+    "index.mdx",
+    "product-lines.mdx",
+    "security-and-authorization.mdx",
+    "release-and-versioning.mdx",
+    "execution-model.mdx",
+  ],
+  secbot: [
+    "index.mdx",
+    "installation.mdx",
+    "quick-start.mdx",
+    "terminal-ui.mdx",
+    "environment-variables.mdx",
+    "llm-providers.mdx",
+    "api.mdx",
+    "deployment.mdx",
+  ],
+  runtime: [
+    "index.mdx",
+    "agent-orchestration.mdx",
+    "tools.mdx",
+    "skills-and-mcp.mdx",
+    "tool-extension.mdx",
+    "memory.mdx",
+    "design-paradigms.mdx",
+  ],
+  reference: [
+    "index.mdx",
+    "database-guide.mdx",
+    "prompt-guide.mdx",
+    "release-notes.mdx",
+    "changelog.mdx",
+  ],
+};
 
 function docsRoot(): string {
   return path.join(process.cwd(), DOCS_DIR);
 }
 
-function branchRoot(branchId: DocBranchId): string {
-  return path.join(docsRoot(), branchId);
+function sectionRoot(sectionId: DocSectionId): string {
+  return path.join(docsRoot(), sectionId);
 }
 
 function normalizeSlugSegment(segment: string): string {
@@ -130,47 +105,52 @@ function humanizeSegment(segment: string): string {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function stripFrontmatter(source: string): string {
+  return source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "");
+}
+
+function parseFrontmatter(source: string): Record<string, string> {
+  const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) return {};
+
+  const out: Record<string, string> = {};
+  for (const line of match[1].split(/\r?\n/)) {
+    const m = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+    if (!m) continue;
+    out[m[1]] = m[2].replace(/^["']|["']$/g, "").trim();
+  }
+  return out;
+}
+
 function titleFromDocSource(source: string, fallback: string): string {
-  const titleLine = source.split(/\r?\n/).find((line) => line.trim().startsWith("# "));
+  const frontmatter = parseFrontmatter(source);
+  if (frontmatter.title) return frontmatter.title;
+  const body = stripFrontmatter(source);
+  const titleLine = body.split(/\r?\n/).find((line) => line.trim().startsWith("# "));
   return titleLine ? titleLine.replace(/^#\s+/, "").trim() : fallback;
 }
 
-function sectionForRelPath(rel: string): string {
-  rel = rel.replace(/\.mdx$/i, ".md");
-  if (rel === "QUICKSTART.md" || rel === "SECURITY_WARNING.md") return "入门与安全";
-  if (rel === "NODE_SETUP.md" || rel === "LLM_PROVIDERS.md" || rel === "OLLAMA_SETUP.md" || rel === "SQLITE_SETUP.md") {
-    return "模型与运行环境";
-  }
-  if (rel === "API.md" || rel === "TOOL_EXTENSION.md" || rel === "SKILLS_AND_MEMORY.md" || rel === "PROMPT_GUIDE.md") {
-    return "接入与扩展";
-  }
-  if (rel === "DEPLOYMENT.md" || rel === "RELEASE.md" || rel === "CHANGELOG.md") return "部署与发布";
-  if (rel === "TS_MIGRATION_STATUS.md" || rel === "UI-DESIGN-AND-INTERACTION.md") return "产品与迁移";
-  if (rel === "DATABASE_GUIDE.md" || rel === "VIRTUAL_TEST_ENVIRONMENT.md") return "数据与测试";
-  if (rel.startsWith("design-paradigms/")) return "设计范式";
-  if (rel.startsWith("releases/")) return "历史版本说明";
-  return "其他";
+function descriptionFromDocSource(source: string): string {
+  const frontmatter = parseFrontmatter(source);
+  return frontmatter.description ?? "";
 }
 
-function docOrder(rel: string): number {
-  rel = rel.replace(/\.mdx$/i, ".md");
-  const exact = DOC_ORDER.indexOf(rel);
-  if (exact !== -1) return exact;
-  if (rel.startsWith("releases/")) return DOC_ORDER.length + rel.localeCompare("releases/README.md", "zh-CN");
-  return Number.MAX_SAFE_INTEGER;
+function docOrder(sectionId: DocSectionId, rel: string): number {
+  const normalized = rel.replace(/\\/g, "/");
+  const exact = DOC_ORDER[sectionId].indexOf(normalized);
+  return exact === -1 ? Number.MAX_SAFE_INTEGER : exact;
 }
 
-export function isDocBranchId(value: string): value is DocBranchId {
-  return DOC_BRANCHES.some((branch) => branch.id === value);
+export function isDocSectionId(value: string): value is DocSectionId {
+  return DOC_SECTIONS.some((section) => section.id === value);
 }
 
-export function getDocBranch(value: string): DocBranch | null {
-  return DOC_BRANCHES.find((branch) => branch.id === value) ?? null;
+export function getDocSection(value: string): (typeof DOC_SECTIONS)[number] | null {
+  return DOC_SECTIONS.find((section) => section.id === value) ?? null;
 }
 
-/** 列出指定分支 docs 下所有 .md/.mdx 的 POSIX 相对路径（含大小写，以磁盘为准）。 */
-export function listDocRelPaths(branchId: DocBranchId): string[] {
-  const root = branchRoot(branchId);
+export function listDocRelPaths(sectionId: DocSectionId): string[] {
+  const root = sectionRoot(sectionId);
   if (!fs.existsSync(root)) return [];
 
   const out: string[] = [];
@@ -183,13 +163,18 @@ export function listDocRelPaths(branchId: DocBranchId): string[] {
       }
     }
   };
+
   walk(root);
-  return out.sort((left, right) => docOrder(left) - docOrder(right) || left.localeCompare(right, "zh-CN"));
+  return out.sort(
+    (left, right) =>
+      docOrder(sectionId, left) - docOrder(sectionId, right) ||
+      left.localeCompare(right, "zh-CN"),
+  );
 }
 
-/** URL slug 段一律小写，并对齐常见习惯（下划线转短横线）。 */
 export function relPathToSlugSegments(rel: string): string[] {
   const base = rel.replace(DOC_EXT_RE, "");
+  if (base === "index") return [];
   return base.split("/").map(normalizeSlugSegment);
 }
 
@@ -197,83 +182,80 @@ export function slugKey(slug: string[]): string {
   return slug.map(normalizeSlugSegment).join("/");
 }
 
-/** 根据 URL slug 解析为指定分支 docs 下的相对路径；找不到返回 null。 */
-export function resolveDocRelPath(branchId: DocBranchId, slug: string[]): string | null {
-  if (!slug.length) return null;
+export function resolveDocRelPath(sectionId: DocSectionId, slug: string[]): string | null {
   const key = slugKey(slug);
-  for (const rel of listDocRelPaths(branchId)) {
+
+  for (const rel of listDocRelPaths(sectionId)) {
     if (slugKey(relPathToSlugSegments(rel)) === key) return rel;
   }
+
   return null;
 }
 
-export function getDefaultDocEntry(branchId: DocBranchId): DocEntry | null {
-  const entries = listDocEntries(branchId);
-  return entries.find((entry) => entry.relPath === DEFAULT_DOC_REL_PATH) ?? entries[0] ?? null;
-}
-
-/** 解析后的绝对路径必须通过防穿越校验。 */
-export function safeDocAbsPath(branchId: DocBranchId, rel: string): string | null {
-  const root = path.resolve(branchRoot(branchId));
+export function safeDocAbsPath(sectionId: DocSectionId, rel: string): string | null {
+  const root = path.resolve(sectionRoot(sectionId));
   const abs = path.resolve(root, rel);
   const relFromRoot = path.relative(root, abs);
+
   if (relFromRoot.startsWith("..") || path.isAbsolute(relFromRoot)) return null;
   if (!DOC_EXT_RE.test(relFromRoot)) return null;
   return abs;
 }
 
-export function readDocFile(branchId: DocBranchId, rel: string): string | null {
-  const abs = safeDocAbsPath(branchId, rel);
+export function safeRootDocAbsPath(rel: string): string | null {
+  const root = path.resolve(docsRoot());
+  const abs = path.resolve(root, rel);
+  const relFromRoot = path.relative(root, abs);
+
+  if (relFromRoot.startsWith("..") || path.isAbsolute(relFromRoot)) return null;
+  if (!DOC_EXT_RE.test(relFromRoot)) return null;
+  return abs;
+}
+
+export function readDocFile(sectionId: DocSectionId, rel: string): string | null {
+  const abs = safeDocAbsPath(sectionId, rel);
   if (!abs || !fs.existsSync(abs)) return null;
   return fs.readFileSync(abs, "utf8");
 }
 
-export function listDocEntries(branchId: DocBranchId): DocEntry[] {
-  return listDocRelPaths(branchId).map((relPath) => {
+export function readRootDocFile(rel = "index.mdx"): string | null {
+  const abs = safeRootDocAbsPath(rel);
+  if (!abs || !fs.existsSync(abs)) return null;
+  return fs.readFileSync(abs, "utf8");
+}
+
+export function listDocEntries(sectionId: DocSectionId): DocEntry[] {
+  return listDocRelPaths(sectionId).map((relPath) => {
     const slug = relPathToSlugSegments(relPath);
-    const source = readDocFile(branchId, relPath);
+    const source = readDocFile(sectionId, relPath);
     const fallback = humanizeSegment(path.posix.basename(relPath));
 
     return {
       title: source ? titleFromDocSource(source, fallback) : fallback,
+      description: source ? descriptionFromDocSource(source) : "",
       relPath,
+      sectionId,
       slug,
       slugKey: slugKey(slug),
-      href: `/docs/secbot/${branchId}/${slug.join("/")}`,
-      section: sectionForRelPath(relPath),
+      href: `/docs/${sectionId}${slug.length ? `/${slug.join("/")}` : ""}`,
     };
   });
 }
 
-export function listDocSections(branchId: DocBranchId): DocSection[] {
-  const sections = new Map<string, DocEntry[]>();
-
-  for (const entry of listDocEntries(branchId)) {
-    const items = sections.get(entry.section) ?? [];
-    items.push(entry);
-    sections.set(entry.section, items);
-  }
-
-  return Array.from(sections.entries())
-    .sort(([left], [right]) => SECTION_ORDER.indexOf(left) - SECTION_ORDER.indexOf(right))
-    .map(([title, items]) => ({
-      title,
-      items: items.sort((left, right) => docOrder(left.relPath) - docOrder(right.relPath) || left.relPath.localeCompare(right.relPath, "zh-CN")),
-    }));
+export function listDocNavigationSections(): DocNavSection[] {
+  return DOC_SECTIONS.map((section) => ({
+    title: section.title,
+    summary: section.summary,
+    sectionId: section.id,
+    items: listDocEntries(section.id),
+  })).filter((section) => section.items.length > 0);
 }
 
-export function listStaticSlugParams(): { branch: DocBranchId; slug: string[] }[] {
-  return DOC_BRANCHES.flatMap((branch) => [
-    { branch: branch.id, slug: [] },
-    ...listDocRelPaths(branch.id).map((rel) => ({
-      branch: branch.id,
+export function listStaticSlugParams(): { section: DocSectionId; slug: string[] }[] {
+  return DOC_SECTIONS.flatMap((section) =>
+    listDocRelPaths(section.id).map((rel) => ({
+      section: section.id,
       slug: relPathToSlugSegments(rel),
     })),
-  ]);
-}
-
-export function listLegacyStaticSlugParams(): { slug: string[] }[] {
-  return listDocRelPaths(DEFAULT_DOC_BRANCH).map((rel) => ({
-    slug: relPathToSlugSegments(rel),
-  }));
+  );
 }

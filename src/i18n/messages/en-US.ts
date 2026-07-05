@@ -1,11 +1,13 @@
 const enUS = {
   brand: {
-    name: "Secbot",
+    name: "SecBot",
     tagline: "AI-powered automated security testing bot",
   },
   nav: {
     home: "Home",
     docs: "Docs",
+    start: "Start",
+    runtime: "Runtime",
     github: "GitHub",
   },
   common: {
@@ -22,9 +24,9 @@ const enUS = {
   home: {
     heroTitle: "AI-powered automated security testing",
     heroSubtitle:
-      "Secbot combines security testing tools, LLM reasoning, and local execution into auditable workflows for clearly authorized testing, research, and education.",
-    ctaTs: "Build from source",
-    tsCmd: "git clone -b npm-release https://github.com/iammm0/secbot.git && cd secbot && npm install && npm run start:stack",
+      "SecBot combines security testing tools, LLM reasoning, and local execution into auditable workflows for clearly authorized testing, research, and education.",
+    ctaTs: "Quick start",
+    tsCmd: "git clone https://github.com/iammm0/secbot.git && cd secbot && git checkout release && npm ci && npm run start:stack",
     highlightTitle: "Core capabilities",
     highlights: [
       {
@@ -54,28 +56,28 @@ const enUS = {
     ],
   },
   docs: {
-    title: "Secbot documentation",
-    subtitle: "Complete documentation for the TypeScript / npm release line.",
+    title: "SecBot documentation",
+    subtitle: "Chinese-first documentation organized by ecosystem, usage, and runtime execution.",
     backToHub: "Back to docs",
     quickNavLabel: "Quick nav",
     quickLinks: [
       { label: "Overview", viewPath: "/docs", emphasis: true },
-      { label: "Quickstart", viewPath: "/docs/secbot/npm-release/quickstart" },
-      { label: "Node setup", viewPath: "/docs/secbot/npm-release/node-setup" },
-      { label: "API", viewPath: "/docs/secbot/npm-release/api" },
-      { label: "Security", viewPath: "/docs/secbot/npm-release/security-warning" },
-      { label: "Deployment", viewPath: "/docs/secbot/npm-release/deployment" },
+      { label: "Ecosystem", viewPath: "/docs/ecosystem" },
+      { label: "Quick start", viewPath: "/docs/secbot/quickstart" },
+      { label: "API", viewPath: "/docs/secbot/api" },
+      { label: "Runtime", viewPath: "/docs/runtime" },
+      { label: "Security", viewPath: "/docs/secbot/security" },
     ],
     anchorNav: [
       { label: "Where to start", anchor: "where-to-start" },
       { label: "Recommended paths", anchor: "recommended-paths" },
     ],
     branchDocsTitle: "Documentation",
-    branchDocsIntro: "Complete documentation for the Secbot TypeScript / npm release line.",
+    branchDocsIntro: "Complete documentation for the SecBot TypeScript / npm release line.",
     scopeTitle: "Who this is for",
     scopeBullets: [
-      "Teams using Secbot as a local or shared entry point for AI-driven security workflows.",
-      "Interface and config docs are canonical for the synced revision; see docs/SOURCE.txt for commits.",
+      "Teams using SecBot as a local or shared entry point for AI-driven security workflows.",
+      "Interface and config docs are canonical for the on-site MDX revision synced from local ../secbot.",
     ],
     whereToStartTitle: "Where to start",
     whereToStartIntro:
@@ -84,15 +86,15 @@ const enUS = {
       {
         text: "Getting started:",
         links: [
-          { label: "Quickstart", viewPath: "/docs/secbot/npm-release/quickstart" },
-          { label: "Node setup", viewPath: "/docs/secbot/npm-release/node-setup" },
+          { label: "Quick start", viewPath: "/docs/secbot/quickstart" },
+          { label: "Documentation map", viewPath: "/docs/secbot/documentation-map" },
         ],
       },
       {
         text: "Integration & deployment:",
         links: [
-          { label: "API", viewPath: "/docs/secbot/npm-release/api" },
-          { label: "Deployment", viewPath: "/docs/secbot/npm-release/deployment" },
+          { label: "API", viewPath: "/docs/secbot/api" },
+          { label: "Deployment", viewPath: "/docs/secbot/deployment" },
         ],
       },
     ],
@@ -101,17 +103,17 @@ const enUS = {
       {
         title: "Getting started",
         items: [
-          { label: "Quickstart", viewPath: "/docs/secbot/npm-release/quickstart" },
-          { label: "Node setup", viewPath: "/docs/secbot/npm-release/node-setup" },
-          { label: "LLM providers", viewPath: "/docs/secbot/npm-release/llm-providers" },
+          { label: "Quick start", viewPath: "/docs/secbot/quickstart" },
+          { label: "Documentation map", viewPath: "/docs/secbot/documentation-map" },
+          { label: "LLM providers", viewPath: "/docs/secbot/llm-providers" },
         ],
       },
       {
         title: "Advanced",
         items: [
-          { label: "API", viewPath: "/docs/secbot/npm-release/api" },
-          { label: "Tool extension", viewPath: "/docs/secbot/npm-release/tool-extension" },
-          { label: "Deployment", viewPath: "/docs/secbot/npm-release/deployment" },
+          { label: "API", viewPath: "/docs/secbot/api" },
+          { label: "Tools", viewPath: "/docs/secbot/tools" },
+          { label: "Deployment", viewPath: "/docs/secbot/deployment" },
         ],
       },
     ],
@@ -122,7 +124,7 @@ const enUS = {
     architectureCreditAfter: ".",
     articleLead: "Synced content for the active release branch.",
     onPageTocTitle: "On this page",
-    moreInTree: "Both the design-paradigms and release-notes directories have on-site index pages.",
+    moreInTree: "Docs are organized into ecosystem, secbot, and runtime sections.",
   },
   footer: {
     warning: "Only for authorized security testing, research, and education.",

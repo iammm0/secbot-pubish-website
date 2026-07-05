@@ -1,10 +1,14 @@
-"use client";
-
-import type { MarkdownTocItem } from "@/src/lib/markdown-toc";
+import type { ReactNode } from "react";
 
 type DocTocSidebarProps = {
   title: string;
-  items: MarkdownTocItem[];
+  items: Array<{
+    title?: ReactNode;
+    text?: ReactNode;
+    url?: string;
+    id?: string;
+    depth?: number;
+  }>;
 };
 
 export function DocTocSidebar({ title, items }: DocTocSidebarProps) {
@@ -12,23 +16,31 @@ export function DocTocSidebar({ title, items }: DocTocSidebarProps) {
 
   return (
     <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-52 shrink-0 overflow-y-auto border-l border-[var(--line)] p-4 text-sm xl:block">
-      <p className="mb-3 font-mono text-[0.65rem] font-semibold uppercase tracking-wider text-[var(--muted-soft)]">
+      <p className="mb-3 font-mono text-[0.65rem] font-semibold uppercase text-[var(--muted-soft)]">
         {title}
       </p>
       <nav aria-label={title}>
         <ul className="space-y-1">
-          {items.map((it) => (
-            <li key={it.id}>
+          {items.map((it, index) => {
+            const label = it.title ?? it.text ?? "";
+            const href = it.url ?? (it.id ? `#${it.id}` : "#");
+            const depth = it.depth ?? 2;
+
+            if (label === "" || label === null || label === undefined || label === false) return null;
+
+            return (
+            <li key={`${href}-${index}`}>
               <a
-                href={`#${it.id}`}
+                href={href}
                 className={`block rounded-md px-2 py-0.5 text-xs no-underline transition-colors text-[var(--muted)] hover:text-[var(--foreground)] ${
-                  it.depth >= 3 ? "pl-4" : ""
+                  depth >= 3 ? "pl-4" : ""
                 }`}
               >
-                {it.text}
+                {label}
               </a>
             </li>
-          ))}
+            );
+          })}
         </ul>
       </nav>
     </aside>

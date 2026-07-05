@@ -10,7 +10,7 @@ export function DocPageToc({ title, items }: DocPageTocProps) {
 
   return (
     <nav className="doc-onpage-toc mt-12 border-t border-[var(--line-weak)] pt-8" aria-label={title}>
-      <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted-soft)]">{title}</p>
+      <p className="font-mono text-xs font-semibold uppercase text-[var(--muted-soft)]">{title}</p>
       <ul className="mt-3 space-y-1.5 text-sm text-[var(--muted)]">
         {items.map((it) => (
           <li

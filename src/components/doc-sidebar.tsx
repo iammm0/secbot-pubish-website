@@ -3,38 +3,36 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
-import type { DocSection } from "@/src/lib/docs-fs";
-import type { Locale } from "@/src/i18n/config";
+import type { DocsNavSection } from "@/src/lib/docs-nav";
 
 type DocSidebarProps = {
-  sections: DocSection[];
-  branchId: string;
-  locale: Locale;
+  sections: DocsNavSection[];
 };
 
-function withLang(path: string, locale: Locale) {
-  return `${path}?lang=${locale}`;
-}
-
-export function DocSidebar({ sections, branchId, locale }: DocSidebarProps) {
+export function DocSidebar({ sections }: DocSidebarProps) {
   const pathname = usePathname();
-  const mobileLabel = locale === "zh-CN" ? "文档目录" : "Docs menu";
-  const branchLabel = branchId === "npm-release" ? "TS" : "PY";
+  const mobileLabel = "文档目录";
 
   function renderNav(linkClassName: (active: boolean) => string) {
     return sections.map((section) => (
       <div key={section.title} className="mb-4 last:mb-0">
-        <p className="mb-1.5 font-mono text-[0.65rem] font-semibold uppercase tracking-wider text-[var(--muted-soft)]">
+        <Link
+          href={section.href}
+          className={`mb-1.5 block rounded-md px-2 py-1 font-mono text-[0.68rem] font-semibold uppercase no-underline transition-colors ${
+            pathname === section.href
+              ? "bg-[var(--surface-muted)] text-[var(--foreground)]"
+              : "text-[var(--muted-soft)] hover:text-[var(--foreground)]"
+          }`}
+        >
           {section.title}
-        </p>
+        </Link>
         <ul className="space-y-0.5">
           {section.items.map((item) => {
-            const href = withLang(item.href, locale);
             const active = pathname === item.href;
 
             return (
-              <li key={item.slugKey}>
-                <Link href={href} className={linkClassName(active)}>
+              <li key={item.href}>
+                <Link href={item.href} className={`${linkClassName(active)} ${item.depth > 0 ? "pl-5" : ""}`}>
                   {item.title}
                 </Link>
               </li>
@@ -51,7 +49,7 @@ export function DocSidebar({ sections, branchId, locale }: DocSidebarProps) {
         <details className="group">
           <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--foreground)]">
             <span className="inline-flex min-w-0 items-center gap-2">
-              <span className="font-mono text-xs text-[var(--muted-soft)]">{branchLabel}</span>
+              <span className="font-mono text-xs text-[var(--muted-soft)]">DOCS</span>
               <span className="truncate">{mobileLabel}</span>
             </span>
             <ChevronDown className="h-4 w-4 shrink-0 text-[var(--muted)] transition-transform group-open:rotate-180" />

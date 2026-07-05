@@ -26,13 +26,13 @@ const themeInitScript = `
 `;
 
 export const metadata: Metadata = {
-  title: "secbot",
-  description: "Secbot 的发布与文档站点（TS 正式版 + PY 实验版）。",
+  title: "SecBot 文档",
+  description: "SecBot 的中文文档站：生态边界、开始使用、运行与执行链路。",
   openGraph: {
-    title: "Secbot 发布站",
-    description: "Secbot 的发布与文档站点（TS 正式版 + PY 实验版）。",
+    title: "SecBot 文档",
+    description: "SecBot 的中文文档站：生态边界、开始使用、运行与执行链路。",
     url: "https://github.com/iammm0/secbot",
-    siteName: "Secbot",
+    siteName: "SecBot",
     type: "website",
   },
 };

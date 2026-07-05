@@ -1,0 +1,10 @@
+{
+  "title": "SecBot 文档",
+  "pages": [
+    "index",
+    "ecosystem",
+    "secbot",
+    "runtime",
+    "reference"
+  ]
+}

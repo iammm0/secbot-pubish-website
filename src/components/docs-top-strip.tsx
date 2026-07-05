@@ -19,7 +19,7 @@ export function DocsTopStrip({ locale, messages, anchorNav }: DocsTopStripProps)
   return (
     <div className="docs-top-strip border-b border-[var(--line-weak)] bg-[var(--surface-muted)]">
       <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-3 sm:px-6">
-        <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted-soft)]">
+        <p className="font-mono text-[0.65rem] font-semibold uppercase text-[var(--muted-soft)]">
           {quickNavLabel}
         </p>
         <nav className="flex flex-wrap gap-x-3 gap-y-2 text-sm" aria-label={quickNavLabel}>

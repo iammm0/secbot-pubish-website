@@ -1,0 +1,10 @@
+{
+  "title": "认识 SecBot",
+  "pages": [
+    "index",
+    "product-lines",
+    "security-and-authorization",
+    "release-and-versioning",
+    "execution-model"
+  ]
+}

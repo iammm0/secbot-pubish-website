@@ -1,11 +1,13 @@
 const zhCN = {
   brand: {
-    name: "Secbot",
+    name: "SecBot",
     tagline: "AI 驱动的自动化安全测试机器人",
   },
   nav: {
     home: "首页",
     docs: "文档",
+    start: "开始使用",
+    runtime: "运行与执行",
     github: "GitHub",
   },
   common: {
@@ -22,9 +24,9 @@ const zhCN = {
   home: {
     heroTitle: "AI 驱动的自动化安全测试平台",
     heroSubtitle:
-      "Secbot 将安全测试工具、LLM 推理与本地执行环境组合成可审计的工作流，面向获得明确授权的安全测试、研究与教学场景。",
-    ctaTs: "查看源码构建",
-    tsCmd: "git clone -b npm-release https://github.com/iammm0/secbot.git && cd secbot && npm install && npm run start:stack",
+      "SecBot 将安全测试工具、LLM 推理与本地执行环境组合成可审计的工作流，面向获得明确授权的安全测试、研究与教学场景。",
+    ctaTs: "快速开始",
+    tsCmd: "git clone https://github.com/iammm0/secbot.git && cd secbot && git checkout release && npm ci && npm run start:stack",
     highlightTitle: "核心能力",
     highlights: [
       {
@@ -54,28 +56,28 @@ const zhCN = {
     ],
   },
   docs: {
-    title: "Secbot 文档",
-    subtitle: "基于 TypeScript / npm 发布线的完整文档。",
+    title: "SecBot 文档",
+    subtitle: "按生态边界、主项目使用、运行与执行链路组织的中文文档。",
     backToHub: "返回文档目录",
     quickNavLabel: "快速导航",
     quickLinks: [
       { label: "文档总览", viewPath: "/docs", emphasis: true },
-      { label: "快速开始", viewPath: "/docs/secbot/npm-release/quickstart" },
-      { label: "Node 环境", viewPath: "/docs/secbot/npm-release/node-setup" },
-      { label: "API 接口", viewPath: "/docs/secbot/npm-release/api" },
-      { label: "安全声明", viewPath: "/docs/secbot/npm-release/security-warning" },
-      { label: "部署说明", viewPath: "/docs/secbot/npm-release/deployment" },
+      { label: "认识 SecBot", viewPath: "/docs/ecosystem" },
+      { label: "快速开始", viewPath: "/docs/secbot/quickstart" },
+      { label: "API 接口", viewPath: "/docs/secbot/api" },
+      { label: "运行与执行", viewPath: "/docs/runtime" },
+      { label: "安全与授权", viewPath: "/docs/secbot/security" },
     ],
     anchorNav: [
       { label: "从哪里读起", anchor: "where-to-start" },
       { label: "推荐阅读路径", anchor: "recommended-paths" },
     ],
     branchDocsTitle: "文档",
-    branchDocsIntro: "Secbot TypeScript / npm 发布线的完整文档集合。",
+    branchDocsIntro: "SecBot TypeScript / npm 发布线的完整文档集合。",
     scopeTitle: "适用场景",
     scopeBullets: [
-      "需要把 Secbot 作为本地或团队环境里的 AI 安全测试工作流入口。",
-      "接口与配置说明以站内版本为准；同步提交记录见 docs/SOURCE.txt。",
+      "需要把 SecBot 作为本地或团队环境里的 AI 安全测试工作流入口。",
+      "接口与配置说明以站内 MDX 版本为准；同步内容来自本地 ../secbot。",
     ],
     whereToStartTitle: "从哪里读起",
     whereToStartIntro:
@@ -84,15 +86,15 @@ const zhCN = {
       {
         text: "快速上手：",
         links: [
-          { label: "快速开始", viewPath: "/docs/secbot/npm-release/quickstart" },
-          { label: "Node 环境", viewPath: "/docs/secbot/npm-release/node-setup" },
+          { label: "快速开始", viewPath: "/docs/secbot/quickstart" },
+          { label: "文档地图", viewPath: "/docs/secbot/documentation-map" },
         ],
       },
       {
         text: "接入与部署：",
         links: [
-          { label: "API 接口", viewPath: "/docs/secbot/npm-release/api" },
-          { label: "部署说明", viewPath: "/docs/secbot/npm-release/deployment" },
+          { label: "API 接口", viewPath: "/docs/secbot/api" },
+          { label: "部署说明", viewPath: "/docs/secbot/deployment" },
         ],
       },
     ],
@@ -101,17 +103,17 @@ const zhCN = {
       {
         title: "新手入门",
         items: [
-          { label: "快速开始", viewPath: "/docs/secbot/npm-release/quickstart" },
-          { label: "Node 环境", viewPath: "/docs/secbot/npm-release/node-setup" },
-          { label: "LLM 提供商", viewPath: "/docs/secbot/npm-release/llm-providers" },
+          { label: "快速开始", viewPath: "/docs/secbot/quickstart" },
+          { label: "文档地图", viewPath: "/docs/secbot/documentation-map" },
+          { label: "LLM 配置", viewPath: "/docs/secbot/llm-providers" },
         ],
       },
       {
         title: "进阶使用",
         items: [
-          { label: "API 接口", viewPath: "/docs/secbot/npm-release/api" },
-          { label: "工具扩展", viewPath: "/docs/secbot/npm-release/tool-extension" },
-          { label: "部署说明", viewPath: "/docs/secbot/npm-release/deployment" },
+          { label: "API 接口", viewPath: "/docs/secbot/api" },
+          { label: "工具清单", viewPath: "/docs/secbot/tools" },
+          { label: "部署说明", viewPath: "/docs/secbot/deployment" },
         ],
       },
     ],
@@ -122,7 +124,7 @@ const zhCN = {
     architectureCreditAfter: "。",
     articleLead: "以下为当前发布分支同步至本站的正文。",
     onPageTocTitle: "本页目录",
-    moreInTree: "设计范式目录与历史发布说明目录都提供了站内索引页。",
+    moreInTree: "文档按 ecosystem、secbot、runtime 三段组织。",
   },
   footer: {
     warning: "仅用于获得明确授权的安全测试、研究与教学。",

@@ -5,12 +5,12 @@ import { isValidElement, type AnchorHTMLAttributes, type ComponentPropsWithoutRe
 import * as runtime from "react/jsx-runtime";
 import remarkGfm from "remark-gfm";
 import type { Locale } from "@/src/i18n/config";
-import type { DocBranchId } from "@/src/lib/docs-fs";
+import type { DocSectionId } from "@/src/lib/docs-fs";
 import { markdownHeadingId } from "@/src/lib/markdown-toc";
 
 type DocMdxProps = {
   source: string;
-  branchId?: DocBranchId;
+  sectionId?: DocSectionId;
   currentDocPath?: string;
   locale?: Locale;
 };
@@ -40,25 +40,52 @@ function withLocaleHref(href: string, locale?: Locale): string {
   return hash ? `${localized}#${hash}` : localized;
 }
 
-function githubBlobDocsToViewPath(href: string, fallbackBranchId?: DocBranchId): string | null {
+function githubBlobDocsToViewPath(href: string): string | null {
   try {
     const u = new URL(href);
     if (u.hostname !== "github.com") return null;
-    const match = u.pathname.match(/^\/iammm0\/secbot\/blob\/([^/]+)\/docs\/(.+)$/i);
+    const match = u.pathname.match(/^\/iammm0\/secbot\/blob\/[^/]+\/docs\/(.+)$/i);
     if (!match) return null;
-    const branch = match[1] === "pypi-release" || match[1] === "npm-release" ? match[1] : fallbackBranchId;
-    if (!branch) return null;
-    const tail = match[2];
+    const tail = match[1];
     if (!tail.toLowerCase().match(/\.mdx?$/)) return null;
     const decoded = tail.split("/").map((p) => decodeURIComponent(p)).join("/");
-    return `/docs/secbot/${branch}/${docPathToSlug(decoded)}`;
+    return sourceDocToSitePath(decoded);
   } catch {
     return null;
   }
 }
 
-function relativeDocToViewPath(href: string, branchId?: DocBranchId, currentDocPath?: string): string | null {
-  if (!branchId || !currentDocPath) return null;
+function sourceDocToSitePath(sourcePath: string): string | null {
+  const normalized = sourcePath.replace(/\\/g, "/").replace(/\.mdx?$/i, ".md");
+  const map = new Map<string, string>([
+    ["docs/wiki/Product-Lines.md", "/docs/ecosystem/product-lines"],
+    ["docs/wiki/Security.md", "/docs/ecosystem/security-and-authorization"],
+    ["docs/wiki/Release-and-Versioning.md", "/docs/ecosystem/release-and-versioning"],
+    ["docs/wiki/Architecture.md", "/docs/ecosystem/execution-model"],
+    ["docs/wiki/Installation.md", "/docs/secbot/installation"],
+    ["docs/wiki/Quick-Start.md", "/docs/secbot/quick-start"],
+    ["docs/wiki/Terminal-UI.md", "/docs/secbot/terminal-ui"],
+    ["docs/wiki/Environment-Variables.md", "/docs/secbot/environment-variables"],
+    ["docs/LLM_PROVIDERS.md", "/docs/secbot/llm-providers"],
+    ["docs/API.md", "/docs/secbot/api"],
+    ["docs/DEPLOYMENT.md", "/docs/secbot/deployment"],
+    ["docs/wiki/Agent-Orchestration.md", "/docs/runtime/agent-orchestration"],
+    ["docs/wiki/Tools.md", "/docs/runtime/tools"],
+    ["docs/wiki/Skills-and-MCP.md", "/docs/runtime/skills-and-mcp"],
+    ["docs/TOOL_EXTENSION.md", "/docs/runtime/tool-extension"],
+    ["docs/SKILLS_AND_MEMORY.md", "/docs/runtime/memory"],
+    ["docs/design-paradigms/README.md", "/docs/runtime/design-paradigms"],
+    ["docs/DATABASE_GUIDE.md", "/docs/reference/database-guide"],
+    ["docs/PROMPT_GUIDE.md", "/docs/reference/prompt-guide"],
+    ["docs/releases/README.md", "/docs/reference/release-notes"],
+    ["docs/CHANGELOG.md", "/docs/reference/changelog"],
+  ]);
+
+  return map.get(normalized) ?? null;
+}
+
+function relativeDocToViewPath(href: string, sectionId?: DocSectionId, currentDocPath?: string): string | null {
+  if (!sectionId || !currentDocPath) return null;
   if (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:") || href.startsWith("#")) {
     return null;
   }
@@ -86,7 +113,7 @@ function relativeDocToViewPath(href: string, branchId?: DocBranchId, currentDocP
 
   if (!normalized.toLowerCase().match(/\.mdx?$/)) return null;
   const withHash = hash ? `#${hash}` : "";
-  return `/docs/secbot/${branchId}/${docPathToSlug(normalized)}${withHash}`;
+  return `/docs/${sectionId}/${docPathToSlug(normalized)}${withHash}`;
 }
 
 function textFromNode(node: ReactNode): string {
@@ -162,7 +189,33 @@ function MdxBadge({ children }: { children: ReactNode }) {
   return <span className="mdx-badge">{children}</span>;
 }
 
-export async function DocMdx({ source, branchId, currentDocPath, locale }: DocMdxProps) {
+function DocsGrid({ children }: { children: ReactNode }) {
+  return <div className="docs-card-grid">{children}</div>;
+}
+
+function DocsCard({
+  href,
+  eyebrow,
+  title,
+  description,
+}: {
+  href: string;
+  eyebrow?: string;
+  title: string;
+  description: string;
+}) {
+  const dest = withLocaleHref(href, undefined);
+
+  return (
+    <Link href={dest} className="docs-card no-underline">
+      {eyebrow ? <span className="docs-card-eyebrow">{eyebrow}</span> : null}
+      <span className="docs-card-title">{title}</span>
+      <span className="docs-card-description">{description}</span>
+    </Link>
+  );
+}
+
+export async function DocMdx({ source, sectionId, currentDocPath, locale }: DocMdxProps) {
   const mdx = await evaluate(source, {
     ...runtime,
     remarkPlugins: [remarkGfm],
@@ -178,9 +231,11 @@ export async function DocMdx({ source, branchId, currentDocPath, locale }: DocMd
     Callout: MdxCallout,
     Note: MdxCallout,
     Badge: MdxBadge,
+    DocsGrid,
+    DocsCard,
     a: ({ href, children, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) => {
       const internal = href
-        ? githubBlobDocsToViewPath(href, branchId) ?? relativeDocToViewPath(href, branchId, currentDocPath)
+        ? githubBlobDocsToViewPath(href) ?? relativeDocToViewPath(href, sectionId, currentDocPath)
         : null;
       const dest = withLocaleHref(internal ?? href ?? "#", locale);
       const isExternal = Boolean(href?.startsWith("http")) && !internal;

@@ -1,0 +1,13 @@
+{
+  "title": "开始使用",
+  "pages": [
+    "index",
+    "installation",
+    "quick-start",
+    "terminal-ui",
+    "environment-variables",
+    "llm-providers",
+    "api",
+    "deployment"
+  ]
+}
