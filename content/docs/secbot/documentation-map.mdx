@@ -1,6 +1,6 @@
 ---
 title: "文档地图"
-description: "按任务组织 SecBot 主项目文档，帮助快速定位同步生成的页面。"
+description: "按任务组织 SecBot 主项目文档，并补充源仓库文档目录来源。"
 ---
 
 如果不确定先读哪一页，可以按任务进入：
@@ -18,4 +18,54 @@ description: "按任务组织 SecBot 主项目文档，帮助快速定位同步�
 | 发布和打包 | [发布](/docs/secbot/release) |
 | 使用终端界面 | [终端界面](/docs/secbot/ui) |
 
-这些页面由 `scripts/sync-secbot-docs.mjs` 从本地 `../secbot` 读取并转写为 MDX；如果某个源文档内部链接没有对应站内页面，脚本会把链接回退到 GitHub 源文件。
+下方内容来自 `../secbot` 的文档目录源文件；同步时优先读取 `docs/zh/README.md`，再按实际存在文件 fallback。
+
+---
+
+本目录是 [GitHub Wiki](https://github.com/iammm0/secbot/wiki) 的源 Markdown。
+
+## 在线阅读（无需 Wiki Git）
+
+https://github.com/iammm0/secbot/tree/release/docs/wiki
+
+## 同步到 GitHub Wiki
+
+Wiki 的 `.wiki.git` 仓库在**首次保存 Wiki 页面**后才会创建。
+
+### 一次性初始化（仅第一次）
+
+1. 打开 https://github.com/iammm0/secbot/wiki/_new
+2. 标题填 `Home`，内容随意（例如 `# Secbot Wiki`），点击 **Save Page**
+
+### 自动发布
+
+初始化完成后，任选其一：
+
+```bash
+# 本地
+./scripts/publish-wiki-local.sh
+
+# 或 GitHub Actions
+gh workflow run publish-wiki.yml --ref release
+```
+
+修改 `docs/wiki/**` 并 push 到 `release` 分支时，也会自动触发 **Publish Wiki** workflow。
+
+## 页面列表
+
+| 文件 | 主题 |
+| --- | --- |
+| `Home.md` | 首页 |
+| `Product-Lines.md` | 三条产品线 |
+| `Installation.md` | 安装 |
+| `Quick-Start.md` | 快速开始 |
+| `Architecture.md` | 架构 |
+| `Agent-Orchestration.md` | 智能体编排 |
+| `Terminal-UI.md` | 终端 UI |
+| `Tools.md` | 工具 |
+| `Skills-and-MCP.md` | Skills / MCP |
+| `Environment-Variables.md` | 环境变量 |
+| `Release-and-Versioning.md` | 发布与版本 |
+| `Development.md` | 开发 |
+| `Security.md` | 安全合规 |
+| `_Sidebar.md` | Wiki 侧栏 |

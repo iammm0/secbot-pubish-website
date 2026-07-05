@@ -36,7 +36,7 @@ npm run dev
 
 ## 文档同步
 
-同步脚本为 [`scripts/sync-secbot-docs.mjs`](./scripts/sync-secbot-docs.mjs)。它只读取本地 `../secbot`，不会克隆远程仓库，也不会读取独立 runtime 仓库。
+同步脚本入口为 [`scripts/sync-docs-content.mjs`](./scripts/sync-docs-content.mjs)，核心实现位于 [`scripts/sync-secbot-docs.mjs`](./scripts/sync-secbot-docs.mjs)。它只读取本地 `../secbot`，不会克隆远程仓库，也不会读取独立 runtime 仓库。
 
 同步规则：
 
@@ -57,7 +57,8 @@ npm run dev
 | [`source.config.ts`](./source.config.ts) | Fumadocs MDX 配置 |
 | [`src/lib/source.ts`](./src/lib/source.ts) | Fumadocs source loader |
 | [`src/lib/docs-nav.ts`](./src/lib/docs-nav.ts) | 文档侧边栏顺序与上一篇/下一篇 |
-| [`scripts/sync-secbot-docs.mjs`](./scripts/sync-secbot-docs.mjs) | 本地 SecBot 文档同步脚本 |
+| [`scripts/sync-docs-content.mjs`](./scripts/sync-docs-content.mjs) | 本地 SecBot 文档同步入口 |
+| [`scripts/sync-secbot-docs.mjs`](./scripts/sync-secbot-docs.mjs) | 本地 SecBot 文档同步实现 |
 
 ## 部署
 

@@ -21,6 +21,32 @@ const managedPages = [
     description: "按当前 release 仓库真实存在的 server 与 terminal-ui 链路启动 SecBot。",
   },
   {
+    target: "secbot/documentation-map.mdx",
+    sources: ["docs/zh/README.md", "docs/README.md", "docs/wiki/README.md", "README.zh-CN.md", "README_CN.md", "README.md"],
+    title: "文档地图",
+    description: "按任务组织 SecBot 主项目文档，并补充源仓库文档目录来源。",
+    intro: [
+      "如果不确定先读哪一页，可以按任务进入：",
+      "",
+      "| 任务 | 页面 |",
+      "| --- | --- |",
+      "| 了解项目能力 | [功能概览](/docs/secbot/features) |",
+      "| 第一次运行 | [快速开始](/docs/secbot/quickstart) |",
+      "| 配置模型 | [LLM 配置](/docs/secbot/llm-providers) |",
+      "| 接入后端 | [API 接口](/docs/secbot/api) |",
+      "| 部署服务 | [部署](/docs/secbot/deployment) |",
+      "| 查看工具能力 | [工具清单](/docs/secbot/tools) |",
+      "| 维护状态与上下文 | [技能与记忆](/docs/secbot/skills-and-memory) 与 [数据库](/docs/secbot/database) |",
+      "| 确认合规边界 | [安全与授权](/docs/secbot/security) |",
+      "| 发布和打包 | [发布](/docs/secbot/release) |",
+      "| 使用终端界面 | [终端界面](/docs/secbot/ui) |",
+      "",
+      "下方内容来自 `../secbot` 的文档目录源文件；同步时优先读取 `docs/zh/README.md`，再按实际存在文件 fallback。",
+      "",
+      "---",
+    ].join("\n"),
+  },
+  {
     target: "secbot/api.mdx",
     sources: ["docs/zh/API.md", "docs/API.md"],
     title: "API 接口",
@@ -211,28 +237,6 @@ const manualPages = {
       "1. 阅读 [安全与授权](/docs/secbot/security)，确认使用边界。",
       "2. 按 [快速开始](/docs/secbot/quickstart) 配置 Node.js、npm、LLM 和启动命令。",
       "3. 需要服务化时继续阅读 [API 接口](/docs/secbot/api) 与 [部署](/docs/secbot/deployment)。",
-    ].join("\n"),
-  }),
-  "secbot/documentation-map.mdx": manualPage({
-    title: "文档地图",
-    description: "按任务组织 SecBot 主项目文档，帮助快速定位同步生成的页面。",
-    body: [
-      "如果不确定先读哪一页，可以按任务进入：",
-      "",
-      "| 任务 | 页面 |",
-      "| --- | --- |",
-      "| 了解项目能力 | [功能概览](/docs/secbot/features) |",
-      "| 第一次运行 | [快速开始](/docs/secbot/quickstart) |",
-      "| 配置模型 | [LLM 配置](/docs/secbot/llm-providers) |",
-      "| 接入后端 | [API 接口](/docs/secbot/api) |",
-      "| 部署服务 | [部署](/docs/secbot/deployment) |",
-      "| 查看工具能力 | [工具清单](/docs/secbot/tools) |",
-      "| 维护状态与上下文 | [技能与记忆](/docs/secbot/skills-and-memory) 与 [数据库](/docs/secbot/database) |",
-      "| 确认合规边界 | [安全与授权](/docs/secbot/security) |",
-      "| 发布和打包 | [发布](/docs/secbot/release) |",
-      "| 使用终端界面 | [终端界面](/docs/secbot/ui) |",
-      "",
-      "这些页面由 `scripts/sync-secbot-docs.mjs` 从本地 `../secbot` 读取并转写为 MDX；如果某个源文档内部链接没有对应站内页面，脚本会把链接回退到 GitHub 源文件。",
     ].join("\n"),
   }),
   "runtime/index.mdx": manualPage({
@@ -476,11 +480,13 @@ function toMdx(source, page) {
   const withoutFrontmatter = stripFrontmatter(source).trim();
   const { title, body } = extractTitle(withoutFrontmatter, page.title);
   const description = page.description ?? inferDescription(body);
-  const rewritten = normalizeFenceLanguages(
-    rewriteWikiLinks(
-      rewriteMarkdownLinks(
-        normalizeAutolinks(escapeMdxExpressions(escapeTextPlaceholders(body))),
-        page.sourcePath,
+  const rewritten = trimTrailingWhitespace(
+    normalizeFenceLanguages(
+      rewriteWikiLinks(
+        rewriteMarkdownLinks(
+          normalizeAutolinks(escapeMdxExpressions(escapeTextPlaceholders(body))),
+          page.sourcePath,
+        ),
       ),
     ),
   ).trim();
@@ -491,7 +497,7 @@ function toMdx(source, page) {
     `description: ${JSON.stringify(description)}`,
     "---",
     "",
-    rewritten,
+    page.intro ? `${page.intro.trim()}\n\n${rewritten}` : rewritten,
     "",
   ].join("\n");
 }
@@ -685,6 +691,13 @@ function normalizeFenceLanguages(source) {
     if (normalized === "mermaid") return "```text";
     return match;
   });
+}
+
+function trimTrailingWhitespace(source) {
+  return source
+    .split(/\r?\n/)
+    .map((line) => line.trimEnd())
+    .join("\n");
 }
 
 function targetToUrl(target) {
