@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { SiteFooter } from "@/src/components/site-footer";
-import { DocMarkdown } from "@/src/components/doc-markdown";
+import { DocMdx } from "@/src/components/doc-mdx";
 import { DocSidebar } from "@/src/components/doc-sidebar";
 import { DocTocSidebar } from "@/src/components/doc-toc-sidebar";
 import { SiteHeader } from "@/src/components/site-header";
 import { type Locale, defaultLocale, isLocale } from "@/src/i18n/config";
 import { getMessages } from "@/src/i18n/messages";
 import {
+  getDefaultDocEntry,
   isDocBranchId,
   listDocSections,
   listStaticSlugParams,
-  readMarkdownFile,
-  resolveMarkdownRelPath,
+  readDocFile,
+  resolveDocRelPath,
 } from "@/src/lib/docs-fs";
 import { extractMarkdownToc } from "@/src/lib/markdown-toc";
 
@@ -26,16 +27,16 @@ function withLang(path: string, locale: Locale) {
   return `${path}?lang=${locale}`;
 }
 
-function titleFromMarkdown(markdown: string, fallback: string): string {
-  const titleLine = markdown.split(/\r?\n/).find((line) => line.trim().startsWith("# "));
+function titleFromMdx(source: string, fallback: string): string {
+  const titleLine = source.split(/\r?\n/).find((line) => line.trim().startsWith("# "));
   return titleLine ? titleLine.replace(/^#\s+/, "").trim() : fallback;
 }
 
-function stripLeadingTitle(markdown: string): string {
-  const lines = markdown.split(/\r?\n/);
+function stripLeadingTitle(source: string): string {
+  const lines = source.split(/\r?\n/);
   let index = 0;
   while (index < lines.length && !lines[index].trim()) index += 1;
-  if (!lines[index]?.trim().startsWith("# ")) return markdown;
+  if (!lines[index]?.trim().startsWith("# ")) return source;
   index += 1;
   while (index < lines.length && !lines[index].trim()) index += 1;
   return lines.slice(index).join("\n");
@@ -48,11 +49,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: BranchDocPageProps): Promise<Metadata> {
   const { branch, slug } = await params;
   if (!isDocBranchId(branch)) return {};
-  const rel = resolveMarkdownRelPath(branch, slug ?? []);
+  const rel = resolveDocRelPath(branch, slug ?? []);
   if (!rel) return {};
-  const md = readMarkdownFile(branch, rel);
-  if (!md) return {};
-  const title = titleFromMarkdown(md, rel);
+  const source = readDocFile(branch, rel);
+  if (!source) return {};
+  const title = titleFromMdx(source, rel);
   return { title: `${title} – Secbot Docs` };
 }
 
@@ -65,20 +66,25 @@ export default async function BranchDocPage({ params, searchParams }: BranchDocP
 
   if (!isDocBranchId(branchParam)) notFound();
   const branch = branchParam;
-  const rel = resolveMarkdownRelPath(branch, slug ?? []);
+  const defaultEntry = getDefaultDocEntry(branch);
+  if (!slug?.length && defaultEntry) {
+    redirect(withLang(defaultEntry.href, locale));
+  }
+
+  const rel = resolveDocRelPath(branch, slug ?? []);
   if (!rel) notFound();
 
-  const rawMarkdown = readMarkdownFile(branch, rel);
-  if (!rawMarkdown) notFound();
+  const rawMdx = readDocFile(branch, rel);
+  if (!rawMdx) notFound();
 
-  const title = titleFromMarkdown(rawMarkdown, rel);
-  const content = stripLeadingTitle(rawMarkdown);
-  const toc = extractMarkdownToc(rawMarkdown);
+  const title = titleFromMdx(rawMdx, rel);
+  const content = stripLeadingTitle(rawMdx);
+  const toc = extractMarkdownToc(rawMdx);
   const sections = listDocSections(branch);
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      <div className="site-shell flex min-h-screen flex-col">
+      <div className="docs-shell flex min-h-screen flex-col">
         <SiteHeader locale={locale} messages={messages} />
         <div className="flex flex-1 flex-col lg:flex-row">
           <DocSidebar sections={sections} branchId={branch} locale={locale} />
@@ -95,7 +101,7 @@ export default async function BranchDocPage({ params, searchParams }: BranchDocP
             <h1 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">{title}</h1>
 
             <div className="mt-6">
-              <DocMarkdown markdown={content} branchId={branch} currentDocPath={rel} />
+              <DocMdx source={content} branchId={branch} currentDocPath={rel} locale={locale} />
             </div>
           </main>
 

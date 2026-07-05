@@ -24,7 +24,7 @@ export default async function DocsPage({ searchParams }: DocsPageProps) {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      <div className="site-shell flex min-h-screen flex-col">
+      <div className="docs-shell flex min-h-screen flex-col">
         <SiteHeader locale={locale} messages={messages} />
         <div className="flex flex-1 flex-col lg:flex-row">
           <DocSidebar sections={sections} branchId="npm-release" locale={locale} />

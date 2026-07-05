@@ -2,4 +2,4 @@
 上游仓库: /Users/zhuanzmima0000/PersonalProjects/secbot
 分支/引用: pypi-release
 上游提交: 6d8652543efe70ca4fb5a4e1a05de65d623ab6b5
-说明: 由 scripts/sync-secbot-docs.sh 生成；正文 Markdown 来自上游 docs/。
+说明: 由 scripts/sync-secbot-docs.sh 生成；正文 MDX 来自上游 docs/。

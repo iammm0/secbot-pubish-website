@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const DOCS_DIR = "docs";
+const DOC_EXT_RE = /\.mdx?$/i;
 
 export const DOC_BRANCHES = [
   {
@@ -26,6 +27,7 @@ export type DocBranch = (typeof DOC_BRANCHES)[number];
 export type DocBranchId = DocBranch["id"];
 
 export const DEFAULT_DOC_BRANCH: DocBranchId = "npm-release";
+export const DEFAULT_DOC_REL_PATH = "QUICKSTART.mdx";
 
 export type DocEntry = {
   title: string;
@@ -123,17 +125,18 @@ function normalizeSlugSegment(segment: string): string {
 
 function humanizeSegment(segment: string): string {
   return segment
-    .replace(/\.md$/i, "")
+    .replace(DOC_EXT_RE, "")
     .replace(/[-_]/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-function titleFromMarkdown(markdown: string, fallback: string): string {
-  const titleLine = markdown.split(/\r?\n/).find((line) => line.trim().startsWith("# "));
+function titleFromDocSource(source: string, fallback: string): string {
+  const titleLine = source.split(/\r?\n/).find((line) => line.trim().startsWith("# "));
   return titleLine ? titleLine.replace(/^#\s+/, "").trim() : fallback;
 }
 
 function sectionForRelPath(rel: string): string {
+  rel = rel.replace(/\.mdx$/i, ".md");
   if (rel === "QUICKSTART.md" || rel === "SECURITY_WARNING.md") return "入门与安全";
   if (rel === "NODE_SETUP.md" || rel === "LLM_PROVIDERS.md" || rel === "OLLAMA_SETUP.md" || rel === "SQLITE_SETUP.md") {
     return "模型与运行环境";
@@ -150,6 +153,7 @@ function sectionForRelPath(rel: string): string {
 }
 
 function docOrder(rel: string): number {
+  rel = rel.replace(/\.mdx$/i, ".md");
   const exact = DOC_ORDER.indexOf(rel);
   if (exact !== -1) return exact;
   if (rel.startsWith("releases/")) return DOC_ORDER.length + rel.localeCompare("releases/README.md", "zh-CN");
@@ -164,8 +168,8 @@ export function getDocBranch(value: string): DocBranch | null {
   return DOC_BRANCHES.find((branch) => branch.id === value) ?? null;
 }
 
-/** 列出指定分支 docs 下所有 .md 的 POSIX 相对路径（含大小写，以磁盘为准）。 */
-export function listMarkdownRelPaths(branchId: DocBranchId): string[] {
+/** 列出指定分支 docs 下所有 .md/.mdx 的 POSIX 相对路径（含大小写，以磁盘为准）。 */
+export function listDocRelPaths(branchId: DocBranchId): string[] {
   const root = branchRoot(branchId);
   if (!fs.existsSync(root)) return [];
 
@@ -174,7 +178,7 @@ export function listMarkdownRelPaths(branchId: DocBranchId): string[] {
     for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
       const abs = path.join(dir, ent.name);
       if (ent.isDirectory()) walk(abs);
-      else if (ent.isFile() && ent.name.endsWith(".md")) {
+      else if (ent.isFile() && DOC_EXT_RE.test(ent.name)) {
         out.push(path.relative(root, abs).split(path.sep).join("/"));
       }
     }
@@ -185,7 +189,7 @@ export function listMarkdownRelPaths(branchId: DocBranchId): string[] {
 
 /** URL slug 段一律小写，并对齐常见习惯（下划线转短横线）。 */
 export function relPathToSlugSegments(rel: string): string[] {
-  const base = rel.endsWith(".md") ? rel.slice(0, -3) : rel;
+  const base = rel.replace(DOC_EXT_RE, "");
   return base.split("/").map(normalizeSlugSegment);
 }
 
@@ -194,39 +198,44 @@ export function slugKey(slug: string[]): string {
 }
 
 /** 根据 URL slug 解析为指定分支 docs 下的相对路径；找不到返回 null。 */
-export function resolveMarkdownRelPath(branchId: DocBranchId, slug: string[]): string | null {
+export function resolveDocRelPath(branchId: DocBranchId, slug: string[]): string | null {
   if (!slug.length) return null;
   const key = slugKey(slug);
-  for (const rel of listMarkdownRelPaths(branchId)) {
+  for (const rel of listDocRelPaths(branchId)) {
     if (slugKey(relPathToSlugSegments(rel)) === key) return rel;
   }
   return null;
 }
 
+export function getDefaultDocEntry(branchId: DocBranchId): DocEntry | null {
+  const entries = listDocEntries(branchId);
+  return entries.find((entry) => entry.relPath === DEFAULT_DOC_REL_PATH) ?? entries[0] ?? null;
+}
+
 /** 解析后的绝对路径必须通过防穿越校验。 */
-export function safeMarkdownAbsPath(branchId: DocBranchId, rel: string): string | null {
+export function safeDocAbsPath(branchId: DocBranchId, rel: string): string | null {
   const root = path.resolve(branchRoot(branchId));
   const abs = path.resolve(root, rel);
   const relFromRoot = path.relative(root, abs);
   if (relFromRoot.startsWith("..") || path.isAbsolute(relFromRoot)) return null;
-  if (!relFromRoot.toLowerCase().endsWith(".md")) return null;
+  if (!DOC_EXT_RE.test(relFromRoot)) return null;
   return abs;
 }
 
-export function readMarkdownFile(branchId: DocBranchId, rel: string): string | null {
-  const abs = safeMarkdownAbsPath(branchId, rel);
+export function readDocFile(branchId: DocBranchId, rel: string): string | null {
+  const abs = safeDocAbsPath(branchId, rel);
   if (!abs || !fs.existsSync(abs)) return null;
   return fs.readFileSync(abs, "utf8");
 }
 
 export function listDocEntries(branchId: DocBranchId): DocEntry[] {
-  return listMarkdownRelPaths(branchId).map((relPath) => {
+  return listDocRelPaths(branchId).map((relPath) => {
     const slug = relPathToSlugSegments(relPath);
-    const markdown = readMarkdownFile(branchId, relPath);
+    const source = readDocFile(branchId, relPath);
     const fallback = humanizeSegment(path.posix.basename(relPath));
 
     return {
-      title: markdown ? titleFromMarkdown(markdown, fallback) : fallback,
+      title: source ? titleFromDocSource(source, fallback) : fallback,
       relPath,
       slug,
       slugKey: slugKey(slug),
@@ -256,7 +265,7 @@ export function listDocSections(branchId: DocBranchId): DocSection[] {
 export function listStaticSlugParams(): { branch: DocBranchId; slug: string[] }[] {
   return DOC_BRANCHES.flatMap((branch) => [
     { branch: branch.id, slug: [] },
-    ...listMarkdownRelPaths(branch.id).map((rel) => ({
+    ...listDocRelPaths(branch.id).map((rel) => ({
       branch: branch.id,
       slug: relPathToSlugSegments(rel),
     })),
@@ -264,7 +273,7 @@ export function listStaticSlugParams(): { branch: DocBranchId; slug: string[] }[
 }
 
 export function listLegacyStaticSlugParams(): { slug: string[] }[] {
-  return listMarkdownRelPaths(DEFAULT_DOC_BRANCH).map((rel) => ({
+  return listDocRelPaths(DEFAULT_DOC_BRANCH).map((rel) => ({
     slug: relPathToSlugSegments(rel),
   }));
 }

@@ -33,7 +33,7 @@ SYNC_TIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
   echo "同步时间(UTC): ${SYNC_TIME}"
   echo "上游仓库: ${REPO_URL}"
   echo "分支/引用: ${REFS}"
-  echo "说明: 由 scripts/sync-secbot-docs.sh 生成；正文 Markdown 按发布分支分别位于 docs/<branch>/。"
+  echo "说明: 由 scripts/sync-secbot-docs.sh 生成；正文 MDX 按发布分支分别位于 docs/<branch>/。"
   echo
 } >"$ROOT/docs/SOURCE.txt"
 
@@ -44,6 +44,9 @@ for REF in $REFS; do
   TARGET_DIR="$ROOT/docs/$REF"
   mkdir -p "$TARGET_DIR"
   rsync -a --delete "$UPSTREAM_DIR/docs/" "$TARGET_DIR/"
+  find "$TARGET_DIR" -type f -name '*.md' -print0 | while IFS= read -r -d '' file; do
+    mv "$file" "${file%.md}.mdx"
+  done
 
   COMMIT="$(git -C "$UPSTREAM_DIR" rev-parse HEAD)"
   cat >"$TARGET_DIR/SOURCE.txt" <<EOF
@@ -51,7 +54,7 @@ for REF in $REFS; do
 上游仓库: ${REPO_URL}
 分支/引用: ${REF}
 上游提交: ${COMMIT}
-说明: 由 scripts/sync-secbot-docs.sh 生成；正文 Markdown 来自上游 docs/。
+说明: 由 scripts/sync-secbot-docs.sh 生成；正文 MDX 来自上游 docs/。
 EOF
 
   {

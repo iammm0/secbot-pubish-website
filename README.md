@@ -1,6 +1,6 @@
 # Secbot 发布站点（secbot-publish-website）
 
-基于 [Next.js](https://nextjs.org) 的 Secbot 发布与文档门户：首页（含 npm / PyPI 安装命令）、**站内分支文档**（Markdown 渲染）等。文档正文由上游 Secbot 的 `pypi-release`、`npm-release` 两条发布分支同步至本仓库 [`docs/`](./docs/)，**仅在站内** `/docs`、`/docs/secbot/<branch>/...` 预览，不依赖跳转到 GitHub 阅读文档。
+基于 [Next.js](https://nextjs.org) 的 Secbot 发布与文档门户：首页（含 npm / PyPI 安装命令）、**站内分支文档**（MDX 渲染）等。文档正文由上游 Secbot 的 `pypi-release`、`npm-release` 两条发布分支同步至本仓库 [`docs/`](./docs/)，并在站内 `/docs`、`/docs/secbot/<branch>/...` 作为 MDX 文档页展示，不依赖跳转到 GitHub 阅读文档。
 
 > **合规提示**：Secbot 仅适用于获得明确授权的安全测试、研究与教学。请勿对未授权目标进行扫描或利用。
 >
@@ -50,12 +50,12 @@ REFS="pypi-release npm-release" bash scripts/sync-secbot-docs.sh
 | 路径 | 说明 |
 |------|------|
 | [`app/`](./app/) | App Router 页面与布局 |
-| [`app/docs/`](./app/docs/) | 文档中心 `/docs`（按分支导读，参考 [execgo.site/docs](https://execgo.site/docs) 信息架构） |
+| [`app/docs/`](./app/docs/) | 文档中心 `/docs`（按分支导读，页面布局参考 [damn-agent](https://github.com/iammm0/damn-agent) 文档站） |
 | [`app/docs/secbot/[branch]/[[...slug]]/`](./app/docs/secbot/[branch]/[[...slug]]/) | 分支文档 `/docs/secbot/pypi-release/...`、`/docs/secbot/npm-release/...` |
 | [`app/docs/view/[[...slug]]/`](./app/docs/view/) | 旧路径兼容入口，跳转到默认 `pypi-release` 文档 |
-| [`docs/`](./docs/) | 同步自上游两条发布分支的 Markdown 与 `SOURCE.txt` |
+| [`docs/`](./docs/) | 同步自上游两条发布分支并转为 MDX 的文档与 `SOURCE.txt` |
 | [`scripts/`](./scripts/) | 文档同步脚本与导览模板 |
-| [`src/components/`](./src/components/) | 站点组件（含 `doc-markdown`） |
+| [`src/components/`](./src/components/) | 站点组件（含 `doc-mdx`） |
 | [`src/i18n/`](./src/i18n/) | 中英文文案 |
 | [`src/lib/docs-fs.ts`](./src/lib/docs-fs.ts) | 文档路径列举与 slug 解析 |
 

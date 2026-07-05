@@ -93,6 +93,12 @@ a {
   margin: 0 auto;
 }
 
+.docs-shell {
+  width: min(88rem, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
 .page-main {
   flex: 1;
 }
@@ -236,18 +242,19 @@ a {
   }
 }
 
-/* Markdown 文档正文 */
-.doc-markdown {
+/* MDX 文档正文 */
+.doc-mdx {
   color: var(--foreground);
   font-size: 0.95rem;
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
 
-.doc-markdown h1,
-.doc-markdown h2,
-.doc-markdown h3,
-.doc-markdown h4 {
+.doc-mdx h1,
+.doc-mdx h2,
+.doc-mdx h3,
+.doc-mdx h4 {
+  scroll-margin-top: 5rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.25;
@@ -256,45 +263,45 @@ a {
   color: var(--foreground);
 }
 
-.doc-markdown h1 {
+.doc-mdx h1 {
   font-size: 1.6rem;
   border-bottom: 1px solid var(--line);
   padding-bottom: 0.35rem;
 }
 
-.doc-markdown h2 {
+.doc-mdx h2 {
   font-size: 1.25rem;
 }
 
-.doc-markdown h3 {
+.doc-mdx h3 {
   font-size: 1.05rem;
 }
 
-.doc-markdown p {
+.doc-mdx p {
   margin: 0.75rem 0;
 }
 
-.doc-markdown a {
+.doc-mdx a {
   color: var(--brand-start);
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
 
-.doc-markdown a:hover {
+.doc-mdx a:hover {
   color: var(--brand-end);
 }
 
-.doc-markdown ul,
-.doc-markdown ol {
+.doc-mdx ul,
+.doc-mdx ol {
   margin: 0.65rem 0 0.65rem 1.25rem;
   padding: 0;
 }
 
-.doc-markdown li {
+.doc-mdx li {
   margin: 0.35rem 0;
 }
 
-.doc-markdown blockquote {
+.doc-mdx blockquote {
   margin: 1rem 0;
   padding: 0.5rem 0 0.5rem 1rem;
   border-left: 3px solid var(--brand-start);
@@ -303,7 +310,7 @@ a {
   border-radius: 0 0.4rem 0.4rem 0;
 }
 
-.doc-markdown code {
+.doc-mdx code {
   font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
   font-size: 0.86em;
   padding: 0.12em 0.38em;
@@ -312,8 +319,7 @@ a {
   border: 1px solid var(--line);
 }
 
-.doc-markdown pre {
-  margin: 1rem 0;
+.doc-mdx pre {
   padding: 1rem 1.1rem;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -322,7 +328,33 @@ a {
   background: var(--surface-muted);
 }
 
-.doc-markdown pre code {
+.doc-mdx .mdx-code-frame {
+  margin: 1rem 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  background: var(--surface-muted);
+}
+
+.doc-mdx .mdx-code-frame pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.doc-mdx .mdx-code-label {
+  border-bottom: 1px solid var(--line);
+  padding: 0.45rem 1.1rem;
+  font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-soft);
+  background: color-mix(in srgb, var(--surface-muted) 82%, var(--background));
+}
+
+.doc-mdx pre code {
   font-size: 0.82rem;
   padding: 0;
   border: 0;
@@ -330,39 +362,92 @@ a {
   line-height: 1.55;
 }
 
-.doc-markdown table {
-  display: block;
-  width: 100%;
-  max-width: 100%;
+.doc-mdx .mdx-table-frame {
+  margin: 1rem 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+
+.doc-mdx table {
+  width: 100%;
+  max-width: 100%;
   border-collapse: collapse;
-  margin: 1rem 0;
+  margin: 0;
   font-size: 0.9rem;
 }
 
-.doc-markdown th,
-.doc-markdown td {
+.doc-mdx th,
+.doc-mdx td {
   border: 1px solid var(--line);
   padding: 0.45rem 0.6rem;
   text-align: left;
 }
 
-.doc-markdown th {
+.doc-mdx th {
   background: var(--surface-muted);
   font-weight: 600;
 }
 
-.doc-markdown hr {
+.doc-mdx hr {
   border: 0;
   border-top: 1px solid var(--line);
   margin: 1.75rem 0;
 }
 
-.doc-markdown img {
+.doc-mdx img {
   max-width: 100%;
   height: auto;
   border-radius: 0.4rem;
+}
+
+.doc-mdx .mdx-callout {
+  margin: 1rem 0;
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: 0.55rem;
+  padding: 0.85rem 1rem;
+  background: var(--surface-muted);
+  color: var(--muted);
+}
+
+.doc-mdx .mdx-callout-note {
+  border-left-color: var(--brand-start);
+}
+
+.doc-mdx .mdx-callout-warning {
+  border-left-color: #f59e0b;
+}
+
+.doc-mdx .mdx-callout-success {
+  border-left-color: #22c55e;
+}
+
+.doc-mdx .mdx-callout-title {
+  margin: 0 0 0.35rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.doc-mdx .mdx-callout > div > :first-child {
+  margin-top: 0;
+}
+
+.doc-mdx .mdx-callout > div > :last-child {
+  margin-bottom: 0;
+}
+
+.doc-mdx .mdx-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.05rem 0.45rem;
+  font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72em;
+  color: var(--foreground);
+  background: var(--surface-muted);
 }
 
 /* 文档总览 */
