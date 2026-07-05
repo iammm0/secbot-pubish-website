@@ -49,13 +49,13 @@ export function DocSidebar({ sections }: DocSidebarProps) {
         <details className="group">
           <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--foreground)]">
             <span className="inline-flex min-w-0 items-center gap-2">
-              <span className="font-mono text-xs text-[var(--muted-soft)]">DOCS</span>
+              <span className="font-mono text-xs text-[var(--muted-soft)]">文档</span>
               <span className="truncate">{mobileLabel}</span>
             </span>
             <ChevronDown className="h-4 w-4 shrink-0 text-[var(--muted)] transition-transform group-open:rotate-180" />
           </summary>
           <nav
-            aria-label="Documentation navigation"
+            aria-label="文档导航"
             className="mt-3 max-h-[62vh] overflow-y-auto rounded-lg border border-[var(--line)] bg-[var(--surface)] p-3"
           >
             {renderNav((active) =>
@@ -70,7 +70,7 @@ export function DocSidebar({ sections }: DocSidebarProps) {
       </div>
 
       <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto overscroll-contain border-r border-[var(--line)] p-4 text-sm lg:block xl:w-60">
-        <nav aria-label="Documentation navigation">
+        <nav aria-label="文档导航">
           {renderNav((active) =>
             `block rounded-md px-2 py-1 text-xs no-underline transition-colors ${
               active

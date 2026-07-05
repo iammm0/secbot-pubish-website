@@ -1,0 +1,20 @@
+---
+title: "执行流"
+description: "SecBot 从用户消息到上下文探索、规划执行、工具调用和总结持久化的内部流程。"
+---
+
+执行流由 `ChatService` 统一调度。它不直接把用户输入交给工具，而是先维护会话、分类意图、补充上下文，再决定走问答、简单任务还是复杂任务。
+
+## 主流程
+
+1. `ChatService.handleMessage` 创建或恢复 session，并把用户消息写入会话。
+2. `IntentRouter` 输出 `small_talk`、`meta`、`qa`、`clarify_needed`、`task_simple` 或 `task_complex`。
+3. `ExploreAgent` 在需要时做只读、低成本探索，把事实写入上下文池。
+4. `ContextAssemblerService` 汇总会话、记忆、客户端 shell 和探索结果。
+5. 简单任务直接交给 ReAct Agent，复杂任务由 `PlannerAgent` 生成 Todo 后交给 `TaskExecutor`。
+6. `TaskExecutor` 按依赖层执行 Todo，向事件总线和 SSE 输出计划、阶段、工具调用和结果。
+7. 需要报告时由 `SummaryAgent` 生成结构化总结，并把轮次写回数据库。
+
+## 事件可观测性
+
+SSE 事件用于把长任务拆成可观察阶段。前端或调用方应优先监听连接、规划、任务阶段、工具调用、错误和完成事件，而不是只等待最终文本。

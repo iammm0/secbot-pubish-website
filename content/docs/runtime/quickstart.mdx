@@ -1,0 +1,37 @@
+---
+title: "运行链路速查"
+description: "用最少步骤确认 SecBot 后端、TUI、API 和执行链路处于可用状态。"
+---
+
+运行链路排查时，先确认入口、模型、后端和 SSE 都可用，再看 Agent 或工具层。
+
+## 后端健康检查
+
+```bash
+npm ci
+npm run build
+node server/dist/main.js
+curl http://127.0.0.1:8000/health
+```
+
+## TUI 本地完整栈
+
+```bash
+npm run start:stack
+```
+
+默认情况下 TUI 使用 `spawn` 模式拉起本地后端。连接已有后端时使用：
+
+```bash
+SECBOT_TUI_BACKEND=service SECBOT_API_URL=http://127.0.0.1:8000 npm run start:tui
+```
+
+## API 最小验证
+
+```bash
+curl -N -X POST http://127.0.0.1:8000/api/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"message":"你是谁？"}'
+```
+
+如果能收到 SSE 事件，说明入口、后端和流式输出已经连通。

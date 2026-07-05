@@ -19,7 +19,7 @@ function getSystemTheme(): Theme {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-export function ThemeToggle({ ariaLabel, className = "", showLabel = false, label = "Theme" }: ThemeToggleProps) {
+export function ThemeToggle({ ariaLabel, className = "", showLabel = false, label = "主题" }: ThemeToggleProps) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window === "undefined") {
       return "dark";

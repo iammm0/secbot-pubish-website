@@ -1,69 +1,76 @@
-# Secbot 发布站点（secbot-publish-website）
+# SecBot 发布站点（secbot-publish-website）
 
-基于 [Next.js](https://nextjs.org) 的 Secbot 发布与文档门户：首页（含 npm / PyPI 安装命令）、**站内分支文档**（MDX 渲染）等。文档正文由上游 Secbot 的 `pypi-release`、`npm-release` 两条发布分支同步至本仓库 [`docs/`](./docs/)，并在站内 `/docs`、`/docs/secbot/<branch>/...` 作为 MDX 文档页展示，不依赖跳转到 GitHub 阅读文档。
+这是 SecBot 的中文发布与文档站点，基于 Next.js App Router 与 Fumadocs MDX 构建。站内文档不再按历史发布分支展开，而是按读者任务组织为三段：
 
-> **合规提示**：Secbot 仅适用于获得明确授权的安全测试、研究与教学。请勿对未授权目标进行扫描或利用。
->
-> **快速迭代提示**：项目仍处于快速迭代阶段，当前 npm 全局安装命令暂不可作为稳定可用入口。建议 fork 或 star 后准备二次开发、部署或长期使用的用户，优先基于上游 `npm-release` 主分支源码构建项目，以获得更完整的 TypeScript / Node.js / npm 版本能力与后续更新。
+- `/docs/ecosystem`：产品定位、版本边界、仓库边界和执行模型。
+- `/docs/secbot`：主项目使用文档，正文从本地 `../secbot` 同步并转成 MDX。
+- `/docs/runtime`：SecBot 内部运行与执行链路说明；这里的 runtime 不是独立仓库。
+
+> 合规提示：SecBot 仅适用于获得明确授权的安全测试、研究与教学。请勿对未授权目标进行扫描、利用或远程控制。
 
 ## 环境要求
 
-- Node.js 20+（与 `package.json` 中 `@types/node` 一致即可；推荐与团队统一版本）
+- Node.js 20+（建议与团队统一版本）
 - npm 10+
+- 本地同级目录存在 `../secbot`
 
 ## 本地开发
 
 ```bash
 npm ci
+npm run sync:docs
 npm run dev
 ```
 
-浏览器访问 [http://localhost:3000](http://localhost:3000)。语言可通过页面上的语言切换或 URL 查询参数 `?lang=zh-CN` / `?lang=en-US` 切换。
+浏览器访问 [http://localhost:3000](http://localhost:3000)。
 
-其他常用命令：
+常用命令：
 
 | 命令 | 说明 |
-|------|------|
-| `npm run build` | 生产构建（会预渲染全部文档页） |
+| --- | --- |
+| `npm run sync:docs` | 从本地 `../secbot` 读取中文优先的 Markdown 源文档，重建 `content/docs` |
+| `npm run dev` | 启动 Next.js 开发服务器 |
+| `npm run build` | 生产构建，并生成 Fumadocs `.source` 数据 |
 | `npm run start` | 启动生产服务器 |
-| `npm run lint` | ESLint |
-| `npm run sync:docs` | 从上游浅克隆并同步 `docs/`（见下文） |
+| `npm run lint` | ESLint 检查 |
 
-## 同步上游文档
+## 文档同步
 
-仓库内 [`scripts/sync-secbot-docs.sh`](./scripts/sync-secbot-docs.sh) 会将 [iammm0/secbot](https://github.com/iammm0/secbot) 的 `docs/` 同步到项目根目录 `docs/<branch>/`。当前默认同步 `pypi-release` 与 `npm-release` 两条发布分支，克隆目录位于 `vendor/_secbot-upstream/`（已加入 `.gitignore`，且不参与 TypeScript/ESLint 检查）。
+同步脚本为 [`scripts/sync-secbot-docs.mjs`](./scripts/sync-secbot-docs.mjs)。它只读取本地 `../secbot`，不会克隆远程仓库，也不会读取独立 runtime 仓库。
 
-也可通过环境变量指定其他分支或引用：
+同步规则：
 
-```bash
-npm run sync:docs
-# 或
-REF=pypi-release bash scripts/sync-secbot-docs.sh
-# 或
-REFS="pypi-release npm-release" bash scripts/sync-secbot-docs.sh
-```
+- `content/docs/secbot/*` 中的主项目页面由 `../secbot` 的 Markdown 源生成。
+- `content/docs/ecosystem/*` 和 `content/docs/runtime/*` 是站点内手写 MDX 页面。
+- 如果源文档内部链接对应站内页面，脚本会重写为 `/docs/...`。
+- 如果源文档链接没有站内页面，脚本会回退到 GitHub `iammm0/secbot` 的 `release` 分支源文件。
+- 脚本会转义 MDX 表达式、处理 `<placeholder>` 与自动链接，并规避 Fumadocs/Shiki 对部分代码块语言的限制。
 
-同步后会更新根目录 `docs/SOURCE.txt`（记录所有分支与提交），并在每个分支目录写入各自的 `SOURCE.txt`。同步脚本还会将 [`scripts/templates/docs-hub-README.md`](./scripts/templates/docs-hub-README.md) 复制为 `docs/README.md`（本站导览）。
-
-## 项目结构（摘要）
+## 项目结构
 
 | 路径 | 说明 |
-|------|------|
-| [`app/`](./app/) | App Router 页面与布局 |
-| [`app/docs/`](./app/docs/) | 文档中心 `/docs`（按分支导读，页面布局参考 [damn-agent](https://github.com/iammm0/damn-agent) 文档站） |
-| [`app/docs/secbot/[branch]/[[...slug]]/`](./app/docs/secbot/[branch]/[[...slug]]/) | 分支文档 `/docs/secbot/pypi-release/...`、`/docs/secbot/npm-release/...` |
-| [`app/docs/view/[[...slug]]/`](./app/docs/view/) | 旧路径兼容入口，跳转到默认 `pypi-release` 文档 |
-| [`docs/`](./docs/) | 同步自上游两条发布分支并转为 MDX 的文档与 `SOURCE.txt` |
-| [`scripts/`](./scripts/) | 文档同步脚本与导览模板 |
-| [`src/components/`](./src/components/) | 站点组件（含 `doc-mdx`） |
-| [`src/i18n/`](./src/i18n/) | 中英文文案 |
-| [`src/lib/docs-fs.ts`](./src/lib/docs-fs.ts) | 文档路径列举与 slug 解析 |
+| --- | --- |
+| [`app/`](./app/) | Next.js App Router 页面与布局 |
+| [`app/docs/[[...slug]]/`](./app/docs/[[...slug]]/) | Fumadocs 文档路由 |
+| [`content/docs/`](./content/docs/) | MDX 文档内容与 Fumadocs `meta.json` |
+| [`mdx-components.tsx`](./mdx-components.tsx) | 站内 MDX 组件映射 |
+| [`source.config.ts`](./source.config.ts) | Fumadocs MDX 配置 |
+| [`src/lib/source.ts`](./src/lib/source.ts) | Fumadocs source loader |
+| [`src/lib/docs-nav.ts`](./src/lib/docs-nav.ts) | 文档侧边栏顺序与上一篇/下一篇 |
+| [`scripts/sync-secbot-docs.mjs`](./scripts/sync-secbot-docs.mjs) | 本地 SecBot 文档同步脚本 |
 
 ## 部署
 
-构建产物为标准 Next.js 应用，可部署至支持 Node 的平台（如 Vercel、自有服务器等）。部署前请执行 `npm run build` 确认通过。
+构建产物为标准 Next.js 应用，可部署至 Vercel 或自有 Node.js 服务。部署前请执行：
+
+```bash
+npm run sync:docs
+npm run lint
+npm run build
+```
 
 ## 相关链接
 
-- 上游项目：<https://github.com/iammm0/secbot>
-- Next.js 文档：<https://nextjs.org/docs>
+- 上游主项目：[iammm0/secbot](https://github.com/iammm0/secbot)
+- 文档布局参考：[iammm0/damn-agent](https://github.com/iammm0/damn-agent)
+- Next.js 文档：[nextjs.org/docs](https://nextjs.org/docs)

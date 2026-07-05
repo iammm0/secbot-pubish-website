@@ -1,0 +1,21 @@
+---
+title: "任务与工具"
+description: "SecBot Todo 执行、工具分类、敏感工具边界、Skills 与 MCP 的运行时关系。"
+---
+
+`PlannerAgent` 会把复杂任务拆成 Todo，`TaskExecutor` 再根据依赖关系得到执行层。每一层内的 Todo 可以并行执行，跨层保持顺序约束。
+
+## 工具注册
+
+`ToolsService` 从各分类 `index.ts` 静态导入工具数组，再合并为工具注册表。当前分类包括：
+
+- `security`、`defense`、`utility`、`protocol`、`osint`、`cloud`
+- `reporting`、`control`、`crawler`、`web_research`、`skills`、`mcp`、`vuln_db`
+
+## 敏感工具边界
+
+工具可以在构造时标记为 sensitive。Explore 阶段只做只读上下文补全，应拒绝破坏性或需要授权确认的工具。MCP 默认也不暴露敏感能力，除非显式配置允许。
+
+## Skills 与 MCP
+
+Skills 是本地知识资产与工具封装入口；MCP 负责把外部能力接入工具层。运行时把它们纳入同一工具发现和调用路径，但合规边界仍由工具分类、敏感标记和执行策略共同约束。

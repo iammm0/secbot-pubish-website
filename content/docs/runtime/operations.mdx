@@ -1,0 +1,27 @@
+---
+title: "运行检查"
+description: "SecBot 运行时的环境变量、日志、数据库、模型配置和常见排障顺序。"
+---
+
+排障时按入口到执行层逐级确认，避免一开始就怀疑 Agent 逻辑。
+
+## 检查顺序
+
+1. Node.js 与 npm 版本满足当前仓库要求。
+2. `.env` 中模型 provider、API key、base URL 和 model 名称可用。
+3. 后端健康检查 `/health` 正常。
+4. TUI 连接模式正确：本地体验用 `spawn`，连接已有服务用 `service`。
+5. SQLite 路径可写，日志目录可写。
+6. `/api/tools` 能看到预期工具分类。
+7. SSE 调用能收到连接、规划、工具和完成事件。
+
+## 常见位置
+
+| 内容 | 位置 |
+| --- | --- |
+| 后端入口 | `server/src/main.ts` |
+| 聊天编排 | `server/src/modules/chat/chat.service.ts` |
+| 工具注册 | `server/src/modules/tools/tools.service.ts` |
+| TUI 入口 | `terminal-ui/src/cli.tsx` |
+| 本地后端日志 | `logs/backend-runtime.log` |
+| SQLite 默认数据 | `data/` |

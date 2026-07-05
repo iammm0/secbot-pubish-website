@@ -1,0 +1,22 @@
+---
+title: "版本与边界"
+description: "SecBot 产品线、发布方式、独立版本管理和 runtime 命名边界。"
+---
+
+SecBot 相关项目采用独立版本管理。`secbot-components` 是本机工作区容器，不应被当成一个总仓库发布；其中 `secbot` 与 `secbot-publish-website` 分别维护自己的分支、提交和发布节奏。
+
+## 产品线
+
+| 产品线 | 说明 |
+| --- | --- |
+| v2 TypeScript | 当前主产品线，默认围绕 `release` 分支、NestJS 后端和 Ink TUI。 |
+| v1 Python Legacy | 历史 Python 线，独立维护，不与 v2 共用运行时。 |
+| Go Demo | 技术验证或实验性质，不作为正式发布线承诺。 |
+
+## 发布方式
+
+当前 v2 以 GitHub Release `.tgz` 作为用户安装包，不把 npmjs 公开发布当作主渠道。发布前检查以 `secbot` 仓库里的 `package.json`、release workflow 和验证脚本为准。
+
+## runtime 的含义
+
+本站 `/docs/runtime` 中的 runtime 表示 SecBot 内部运行与执行链路，包括意图分类、上下文拼装、规划、任务执行、工具调用、SSE 事件和本地持久化。它不是独立仓库，也不是需要额外同步的远程项目。

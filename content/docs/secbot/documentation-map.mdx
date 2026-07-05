@@ -1,0 +1,21 @@
+---
+title: "文档地图"
+description: "按任务组织 SecBot 主项目文档，帮助快速定位同步生成的页面。"
+---
+
+如果不确定先读哪一页，可以按任务进入：
+
+| 任务 | 页面 |
+| --- | --- |
+| 了解项目能力 | [功能概览](/docs/secbot/features) |
+| 第一次运行 | [快速开始](/docs/secbot/quickstart) |
+| 配置模型 | [LLM 配置](/docs/secbot/llm-providers) |
+| 接入后端 | [API 接口](/docs/secbot/api) |
+| 部署服务 | [部署](/docs/secbot/deployment) |
+| 查看工具能力 | [工具清单](/docs/secbot/tools) |
+| 维护状态与上下文 | [技能与记忆](/docs/secbot/skills-and-memory) 与 [数据库](/docs/secbot/database) |
+| 确认合规边界 | [安全与授权](/docs/secbot/security) |
+| 发布和打包 | [发布](/docs/secbot/release) |
+| 使用终端界面 | [终端界面](/docs/secbot/ui) |
+
+这些页面由 `scripts/sync-secbot-docs.mjs` 从本地 `../secbot` 读取并转写为 MDX；如果某个源文档内部链接没有对应站内页面，脚本会把链接回退到 GitHub 源文件。

@@ -1,22 +1,19 @@
 ---
-title: 开始使用 SecBot
-description: 安装、配置、启动、TUI、API 与部署路径。
+title: "开始使用 SecBot"
+description: "面向安装、启动、配置、API 接入、部署和日常维护的主项目文档入口。"
 ---
 
-本节面向想把 SecBot 跑起来、接入服务或部署到团队环境的读者。你不需要先理解内部 Agent 架构，也可以从这里开始。
+本节面向想把 SecBot 跑起来、接入服务或部署到团队环境的读者。这里的页面大多从本地 `../secbot` 的中文 Markdown 文档同步生成，并在构建时转成 MDX。
 
 <DocsGrid>
-  <DocsCard href="/docs/secbot/installation" eyebrow="安装" title="安装" description="从 GitHub Release tarball 或 release 分支源码构建。"/>
-  <DocsCard href="/docs/secbot/quick-start" eyebrow="启动" title="快速开始" description="配置 LLM，启动完整栈，连接已有后端，并使用常用命令。"/>
-  <DocsCard href="/docs/secbot/terminal-ui" eyebrow="TUI" title="终端界面" description="spawn/service 模式、主会话视图、内容块和斜杠命令。"/>
-  <DocsCard href="/docs/secbot/environment-variables" eyebrow="配置" title="环境变量" description="LLM、服务数据、SecBot 行为、漏洞库和 TUI 持久化配置。"/>
-  <DocsCard href="/docs/secbot/llm-providers" eyebrow="模型" title="LLM 配置" description="DeepSeek、Ollama、OpenAI 与兼容中转配置。"/>
-  <DocsCard href="/docs/secbot/api" eyebrow="接口" title="API 接口" description="聊天、Agent、系统、工具、数据库、记忆、网络、防御等接口。"/>
-  <DocsCard href="/docs/secbot/deployment" eyebrow="运维" title="部署" description="后端部署、TUI 边界、Release 包、systemd 和排障。"/>
+  <DocsCard href="/docs/secbot/quickstart" eyebrow="启动" title="快速开始" description="配置模型、启动后端和 TUI，并完成基础验证。"/>
+  <DocsCard href="/docs/secbot/api" eyebrow="接口" title="API 接口" description="聊天、SSE、工具、系统、数据库、记忆、网络、会话等接口。"/>
+  <DocsCard href="/docs/secbot/deployment" eyebrow="部署" title="部署" description="源码部署、构建产物、Release 包、进程管理和排障。"/>
+  <DocsCard href="/docs/secbot/documentation-map" eyebrow="地图" title="文档地图" description="按任务快速定位所有 SecBot 文档页面。"/>
 </DocsGrid>
 
 ## 最短路径
 
-1. 阅读 [安全与授权](/docs/ecosystem/security-and-authorization)，确认使用边界。
-2. 按 [安装](/docs/secbot/installation) 准备 Node.js 24+ 和包。
-3. 按 [快速开始](/docs/secbot/quick-start) 配置 LLM 并启动 TUI。
+1. 阅读 [安全与授权](/docs/secbot/security)，确认使用边界。
+2. 按 [快速开始](/docs/secbot/quickstart) 配置 Node.js、npm、LLM 和启动命令。
+3. 需要服务化时继续阅读 [API 接口](/docs/secbot/api) 与 [部署](/docs/secbot/deployment)。

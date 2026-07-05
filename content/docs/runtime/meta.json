@@ -2,11 +2,9 @@
   "title": "运行与执行",
   "pages": [
     "index",
-    "agent-orchestration",
-    "tools",
-    "skills-and-mcp",
-    "tool-extension",
-    "memory",
-    "design-paradigms"
+    "quickstart",
+    "execution-flow",
+    "tasks",
+    "operations"
   ]
 }

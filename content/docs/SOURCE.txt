@@ -1,4 +1,0 @@
-同步时间(UTC): 2026-07-05T18:51:50.532Z
-本地源仓库: C:\Users\physi\PycharmProjects\secbot-components\secbot
-源仓库提交: 6e338ef25d59da36a2fc6013a784932778635fb2
-说明: 由 scripts/sync-secbot-docs.mjs 生成到 content/docs；主路径按 ecosystem / secbot / runtime / reference 组织。

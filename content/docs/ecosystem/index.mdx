@@ -1,17 +1,21 @@
 ---
-title: 认识 SecBot
-description: SecBot 的产品定位、产品线、授权边界、发布方式和执行模型总览。
+title: "认识 SecBot"
+description: "建立 SecBot 的产品定位、仓库边界、版本边界和执行模型总览。"
 ---
 
-本节用于建立 SecBot 的稳定心智模型：它不是单一脚本集合，而是面向授权安全测试的 AI 工作台。当前主产品线是 v2 TypeScript，运行入口包括终端 UI、NestJS API 和 MCP server。
+本节用于建立 SecBot 的稳定心智模型。当前主线是 v2 TypeScript 产品线，核心在本地 `../secbot` 仓库中：`server/` 提供 NestJS API 与 Agent 执行，`terminal-ui/` 提供 Ink 终端交互。
 
 <DocsGrid>
-  <DocsCard href="/docs/ecosystem/product-lines" eyebrow="产品线" title="产品线说明" description="区分 v2 TypeScript、v1 Python Legacy 和 Go Demo。"/>
-  <DocsCard href="/docs/ecosystem/security-and-authorization" eyebrow="安全" title="安全与授权" description="授权测试声明、敏感工具策略、法律与数据边界。"/>
-  <DocsCard href="/docs/ecosystem/release-and-versioning" eyebrow="发布" title="发布与版本" description="GitHub Release tarball、版本叙事和维护者发布流程。"/>
-  <DocsCard href="/docs/ecosystem/execution-model" eyebrow="模型" title="执行模型" description="TUI、NestJS、SQLite、漏洞库、向量记忆和 LLM provider 的关系。"/>
+  <DocsCard href="/docs/ecosystem/execution-model" eyebrow="模型" title="执行模型" description="Web/API/TUI、ChatService、Agent、任务执行器和工具层如何协作。"/>
+  <DocsCard href="/docs/ecosystem/versioning" eyebrow="版本" title="版本与边界" description="v2 TypeScript、Python Legacy、Go Demo 和运行时概念的边界。"/>
 </DocsGrid>
 
-## 关于 runtime 命名
+## 仓库边界
 
-本站保留 `/docs/runtime` URL，但这里的 runtime 指 **SecBot 内部运行与执行链路**，不是独立仓库。它覆盖 Agent 编排、工具执行、Skills/MCP、记忆与扩展机制。
+SecBot 的文档站只从本地 `../secbot` 读取主项目文档。`runtime` 是本站文档分区名，表示内部运行与执行层；它不对应独立的 `secbot-runtime` 仓库。
+
+## 当前读者任务
+
+- 想把项目跑起来：进入 [开始使用](/docs/secbot)。
+- 想理解请求如何被规划和执行：进入 [运行与执行](/docs/runtime)。
+- 想确认版本线和发布方式：阅读 [版本与边界](/docs/ecosystem/versioning)。

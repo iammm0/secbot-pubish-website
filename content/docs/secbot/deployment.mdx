@@ -1,6 +1,6 @@
 ---
 title: "部署"
-description: "从源码部署后端、TUI 与后端边界、Release 包、systemd、验证与排障。"
+description: "从源码、构建产物、GitHub Release 包和进程管理角度部署 SecBot。"
 ---
 
 本文档只描述当前仓库可维护的部署方式：`server/` NestJS 后端服务，以及可选的本地 `terminal-ui/` 终端界面。仓库当前没有官方 Dockerfile、docker-compose、移动端或桌面端部署产物。
@@ -29,7 +29,7 @@ npm install
 
 DeepSeek 示例：
 
-```
+```bash
 LLM_PROVIDER=deepseek
 DEEPSEEK_API_KEY=sk-your-api-key
 DEEPSEEK_MODEL=deepseek-chat
@@ -37,7 +37,7 @@ DEEPSEEK_MODEL=deepseek-chat
 
 Ollama 示例：
 
-```
+```bash
 LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=llama3.2
@@ -149,7 +149,7 @@ data/opencomsagent.db
 
 生产环境建议显式设置绝对路径：
 
-```
+```bash
 DATABASE_PATH=/srv/secbot/data/secbot.db
 ```
 
@@ -255,7 +255,7 @@ curl http://127.0.0.1:8000/api/system/info
 ## 10. 相关文档
 
 - [API.md](/docs/secbot/api)
-- [QUICKSTART.md](https://github.com/iammm0/secbot/blob/release/docs/QUICKSTART.md)
+- [QUICKSTART.md](/docs/secbot/quickstart)
 - [LLM_PROVIDERS.md](/docs/secbot/llm-providers)
 - [OLLAMA_SETUP.md](https://github.com/iammm0/secbot/blob/release/docs/OLLAMA_SETUP.md)
-- [RELEASE.md](https://github.com/iammm0/secbot/blob/release/docs/RELEASE.md)
+- [RELEASE.md](/docs/secbot/release)

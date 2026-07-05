@@ -1,30 +1,13 @@
 ---
-title: 运行与执行
-description: SecBot 内部 Agent 编排、工具执行、Skills/MCP、记忆和扩展机制。
+title: "运行与执行"
+description: "SecBot 内部运行链路、任务规划、工具执行和运维检查的文档入口。"
 ---
 
-本节解释 SecBot 如何把用户意图变成可观察、可审计的安全自动化执行链路。这里的 runtime 是文档分区名，表示内部运行与执行层，不对应独立仓库。
+本节解释 SecBot 如何把用户意图变成可观察、可审计的安全自动化执行链路。这里的 runtime 是文档分区名，不对应独立仓库。
 
 <DocsGrid>
-  <DocsCard href="/docs/runtime/agent-orchestration" eyebrow="编排" title="Agent 编排" description="IntentRouter、ExploreAgent、Planner、TaskExecutor、SummaryAgent 与 SSE 事件。"/>
-  <DocsCard href="/docs/runtime/tools" eyebrow="工具" title="工具清单" description="security、web-research、vuln-db、protocol、osint、cloud、defense 等工具类别。"/>
-  <DocsCard href="/docs/runtime/skills-and-mcp" eyebrow="Skills" title="Skills 与 MCP" description="REST、TUI、CLI、Agent 工具统一 Skills 层和 secbot-mcp。"/>
-  <DocsCard href="/docs/runtime/tool-extension" eyebrow="扩展" title="工具扩展" description="实现 BaseTool、注册分类、验证工具列表和敏感工具维护。"/>
-  <DocsCard href="/docs/runtime/memory" eyebrow="记忆" title="技能与记忆系统" description="短期、情景、长期记忆与向量检索 API。"/>
-  <DocsCard href="/docs/runtime/design-paradigms" eyebrow="范式" title="设计范式" description="Agent 架构、ReAct、事件总线、配置、提示词和插件系统经验。"/>
+  <DocsCard href="/docs/runtime/quickstart" eyebrow="检查" title="运行链路速查" description="后端、TUI、API 和最小任务的快速验证路径。"/>
+  <DocsCard href="/docs/runtime/execution-flow" eyebrow="流转" title="执行流" description="ChatService、IntentRouter、ExploreAgent、Planner、TaskExecutor 与 SSE。"/>
+  <DocsCard href="/docs/runtime/tasks" eyebrow="任务" title="任务与工具" description="Todo、任务分层、ToolsService 分类、敏感工具和 Skills/MCP。"/>
+  <DocsCard href="/docs/runtime/operations" eyebrow="运维" title="运行检查" description="环境变量、日志、数据库、模型配置和常见排障点。"/>
 </DocsGrid>
-
-## 执行链路
-
-```mermaid
-flowchart TD
-  A["用户消息"] --> B["ChatService"]
-  B --> C["IntentRouter"]
-  C -->|needs_explore| D["ExploreAgent"]
-  D --> E["ContextStore / ContextAssembler"]
-  C --> F["SecurityReActAgent 或 PlannerAgent"]
-  F --> G["TaskExecutor"]
-  G --> H["ToolsService"]
-  H --> I["安全工具 / MCP / Skills"]
-  I --> J["SummaryAgent / Report"]
-```

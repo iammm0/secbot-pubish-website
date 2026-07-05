@@ -2,12 +2,17 @@
   "title": "开始使用",
   "pages": [
     "index",
-    "installation",
-    "quick-start",
-    "terminal-ui",
-    "environment-variables",
-    "llm-providers",
+    "quickstart",
+    "documentation-map",
+    "features",
     "api",
-    "deployment"
+    "deployment",
+    "llm-providers",
+    "tools",
+    "skills-and-memory",
+    "database",
+    "security",
+    "release",
+    "ui"
   ]
 }
