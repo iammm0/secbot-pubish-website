@@ -72,7 +72,7 @@ export default async function DocsRoutePage({ params }: DocsRouteProps) {
     <div className="min-h-screen bg-[var(--background)]">
       <div className="docs-shell flex min-h-screen flex-col">
         <SiteHeader locale={defaultLocale} messages={messages} />
-        <div className="flex flex-1 flex-col lg:flex-row">
+        <div className="docs-layout flex flex-1 flex-col lg:flex-row">
           <DocSidebar sections={navSections} />
 
           <main className="w-full min-w-0 flex-1 px-4 py-8 sm:px-8 xl:px-10">

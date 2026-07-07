@@ -46,7 +46,7 @@ export function DocSidebar({ sections }: DocSidebarProps) {
 
   return (
     <>
-      <div className="border-b border-[var(--line)] bg-[var(--background)] px-3 py-3 lg:hidden">
+      <div className="doc-mobile-nav border-b border-[var(--line)] bg-[var(--background)] px-3 py-3 lg:hidden">
         <details className="group">
           <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--foreground)]">
             <span className="inline-flex min-w-0 items-center gap-2">
@@ -70,7 +70,7 @@ export function DocSidebar({ sections }: DocSidebarProps) {
         </details>
       </div>
 
-      <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto overscroll-contain border-r border-[var(--line)] p-4 text-sm lg:block xl:w-60">
+      <aside className="doc-sidebar-panel hidden w-56 shrink-0 border-r border-[var(--line)] p-4 text-sm lg:block xl:w-60">
         <nav aria-label="文档导航">
           {renderNav((active) =>
             `doc-nav-link block rounded-md px-2 py-1 text-xs no-underline transition-colors ${

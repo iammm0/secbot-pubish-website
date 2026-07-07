@@ -15,7 +15,7 @@ export function DocTocSidebar({ title, items }: DocTocSidebarProps) {
   if (!items.length) return null;
 
   return (
-    <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-52 shrink-0 overflow-y-auto border-l border-[var(--line)] p-4 text-sm xl:block">
+    <aside className="doc-toc-panel hidden w-52 shrink-0 border-l border-[var(--line)] p-4 text-sm xl:block">
       <p className="mb-3 font-mono text-[0.65rem] font-semibold uppercase text-[var(--muted-soft)]">
         {title}
       </p>
