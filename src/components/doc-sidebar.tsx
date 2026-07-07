@@ -18,7 +18,8 @@ export function DocSidebar({ sections }: DocSidebarProps) {
       <div key={section.title} className="mb-4 last:mb-0">
         <Link
           href={section.href}
-          className={`mb-1.5 block rounded-md px-2 py-1 font-mono text-[0.68rem] font-semibold uppercase no-underline transition-colors ${
+          aria-current={pathname === section.href ? "page" : undefined}
+          className={`doc-nav-section mb-1.5 block rounded-md px-2 py-1 font-mono text-[0.68rem] font-semibold uppercase no-underline transition-colors ${
             pathname === section.href
               ? "bg-[var(--surface-muted)] text-[var(--foreground)]"
               : "text-[var(--muted-soft)] hover:text-[var(--foreground)]"
@@ -32,7 +33,7 @@ export function DocSidebar({ sections }: DocSidebarProps) {
 
             return (
               <li key={item.href}>
-                <Link href={item.href} className={`${linkClassName(active)} ${item.depth > 0 ? "pl-5" : ""}`}>
+                <Link href={item.href} aria-current={active ? "page" : undefined} className={`${linkClassName(active)} ${item.depth > 0 ? "pl-5" : ""}`}>
                   {item.title}
                 </Link>
               </li>
@@ -59,7 +60,7 @@ export function DocSidebar({ sections }: DocSidebarProps) {
             className="mt-3 max-h-[62vh] overflow-y-auto rounded-lg border border-[var(--line)] bg-[var(--surface)] p-3"
           >
             {renderNav((active) =>
-              `block rounded-md px-2 py-1.5 text-sm no-underline transition-colors ${
+              `doc-nav-link block rounded-md px-2 py-1.5 text-sm no-underline transition-colors ${
                 active
                   ? "bg-[var(--surface-muted)] text-[var(--foreground)]"
                   : "text-[var(--muted)] hover:text-[var(--foreground)]"
@@ -72,7 +73,7 @@ export function DocSidebar({ sections }: DocSidebarProps) {
       <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto overscroll-contain border-r border-[var(--line)] p-4 text-sm lg:block xl:w-60">
         <nav aria-label="文档导航">
           {renderNav((active) =>
-            `block rounded-md px-2 py-1 text-xs no-underline transition-colors ${
+            `doc-nav-link block rounded-md px-2 py-1 text-xs no-underline transition-colors ${
               active
                 ? "bg-[var(--surface-muted)] text-[var(--foreground)]"
                 : "text-[var(--muted)] hover:text-[var(--foreground)]"

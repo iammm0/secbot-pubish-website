@@ -32,7 +32,7 @@ export function DocTocSidebar({ title, items }: DocTocSidebarProps) {
             <li key={`${href}-${index}`}>
               <a
                 href={href}
-                className={`block rounded-md px-2 py-0.5 text-xs no-underline transition-colors text-[var(--muted)] hover:text-[var(--foreground)] ${
+                className={`doc-toc-link block rounded-md px-2 py-0.5 text-xs no-underline transition-colors text-[var(--muted)] hover:text-[var(--foreground)] ${
                   depth >= 3 ? "pl-4" : ""
                 }`}
               >

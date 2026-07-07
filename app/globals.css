@@ -18,6 +18,9 @@
   --brand-soft: rgba(34, 197, 94, 0.08);
   --focus-ring: #22c55e;
   --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-snap: cubic-bezier(0.16, 1, 0.3, 1);
+  --doc-glow: rgba(34, 197, 94, 0.18);
 }
 
 :root[data-theme="light"] {
@@ -36,6 +39,7 @@
   --brand-soft: rgba(22, 163, 74, 0.06);
   --focus-ring: #16a34a;
   --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.06);
+  --doc-glow: rgba(22, 163, 74, 0.14);
 }
 
 @theme inline {
@@ -73,9 +77,18 @@ body {
   line-height: 1.6;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 a {
   color: inherit;
-  transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 180ms ease,
+    transform 180ms var(--motion-ease);
   text-decoration: none;
 }
 
@@ -140,11 +153,17 @@ a {
   border: 1px solid var(--line);
   border-radius: 0.5rem;
   background: var(--surface);
-  transition: border-color 150ms ease;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 220ms ease,
+    transform 220ms var(--motion-ease);
 }
 
 .surface-card:hover {
   border-color: var(--muted-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
 }
 
 .command-block {
@@ -177,12 +196,17 @@ a {
   text-decoration: none;
   color: var(--foreground);
   background: transparent;
-  transition: border-color 150ms ease, background-color 150ms ease;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 180ms ease,
+    transform 180ms var(--motion-ease);
 }
 
 .ui-button:hover {
   border-color: var(--muted-soft);
   background: var(--surface-muted);
+  transform: translateY(-1px);
 }
 
 .ui-button-primary {
@@ -204,6 +228,7 @@ a {
 
 .nav-link:hover {
   color: var(--foreground);
+  transform: translateY(-1px);
 }
 
 .nav-link-active {
@@ -222,7 +247,7 @@ a {
 }
 
 .motion-enter {
-  animation: rise-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: rise-in 0.5s var(--motion-ease) both;
 }
 
 .motion-enter-delay-1 {
@@ -233,6 +258,36 @@ a {
   animation-delay: 0.16s;
 }
 
+@keyframes doc-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes doc-sheen {
+  from {
+    transform: translateX(-120%) skewX(-14deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-14deg);
+  }
+}
+
+@keyframes doc-pulse-line {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  50% {
+    opacity: 0.72;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motion-enter,
   .motion-enter-delay-1,
@@ -241,8 +296,21 @@ a {
   }
 
   a,
-  button {
+  button,
+  .surface-card,
+  .doc-mdx *,
+  .doc-mdx *::before,
+  .doc-mdx *::after,
+  .doc-nav-link,
+  .doc-toc-link {
     transition: none !important;
+  }
+
+  .doc-mdx > *,
+  .docs-card::before,
+  .docs-card::after,
+  .mdx-callout::before {
+    animation: none !important;
   }
 }
 
@@ -252,6 +320,22 @@ a {
   font-size: 0.95rem;
   line-height: 1.7;
   overflow-wrap: anywhere;
+}
+
+.doc-mdx > :where(p, ul, ol, blockquote, hr, .mdx-code-frame, .mdx-table-frame, .docs-card-grid, .mdx-callout) {
+  animation: doc-reveal 420ms var(--motion-ease) both;
+}
+
+.doc-mdx > :where(h2, h3, h4) {
+  animation: doc-reveal 500ms var(--motion-snap) both;
+}
+
+.doc-mdx > :nth-child(2n) {
+  animation-delay: 35ms;
+}
+
+.doc-mdx > :nth-child(3n) {
+  animation-delay: 70ms;
 }
 
 .doc-mdx h1,
@@ -275,6 +359,30 @@ a {
 
 .doc-mdx h2 {
   font-size: 1.25rem;
+  position: relative;
+  padding-left: 0.7rem;
+}
+
+.doc-mdx h2::before {
+  position: absolute;
+  left: 0;
+  top: 0.2rem;
+  bottom: 0.18rem;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--brand-start);
+  content: "";
+  opacity: 0.7;
+  transform: scaleY(0.72);
+  transform-origin: center;
+  transition:
+    opacity 180ms ease,
+    transform 220ms var(--motion-ease);
+}
+
+.doc-mdx h2:hover::before {
+  opacity: 1;
+  transform: scaleY(1);
 }
 
 .doc-mdx h3 {
@@ -289,10 +397,12 @@ a {
   color: var(--brand-start);
   text-decoration: underline;
   text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
 }
 
 .doc-mdx a:hover {
   color: var(--brand-end);
+  text-underline-offset: 0.28em;
 }
 
 .doc-mdx ul,
@@ -312,6 +422,16 @@ a {
   color: var(--muted);
   background: var(--surface-muted);
   border-radius: 0 0.4rem 0.4rem 0;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms var(--motion-ease);
+}
+
+.doc-mdx blockquote:hover {
+  border-left-color: var(--brand-end);
+  background: color-mix(in srgb, var(--surface-muted) 92%, var(--brand-start));
+  transform: translateX(2px);
 }
 
 .doc-mdx code {
@@ -321,6 +441,15 @@ a {
   border-radius: 0.3rem;
   background: var(--surface-muted);
   border: 1px solid var(--line);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.doc-mdx :not(pre) > code:hover {
+  border-color: color-mix(in srgb, var(--brand-start) 45%, var(--line));
+  background: color-mix(in srgb, var(--surface-muted) 86%, var(--brand-start));
 }
 
 .doc-mdx pre {
@@ -338,6 +467,16 @@ a {
   border: 1px solid var(--line);
   border-radius: 0.55rem;
   background: var(--surface-muted);
+  transition:
+    border-color 180ms ease,
+    box-shadow 220ms ease,
+    transform 220ms var(--motion-ease);
+}
+
+.doc-mdx .mdx-code-frame:hover {
+  border-color: color-mix(in srgb, var(--brand-start) 42%, var(--line));
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
 }
 
 .doc-mdx .mdx-code-frame pre {
@@ -356,6 +495,14 @@ a {
   text-transform: uppercase;
   color: var(--muted-soft);
   background: color-mix(in srgb, var(--surface-muted) 82%, var(--background));
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.doc-mdx .mdx-code-frame:hover .mdx-code-label {
+  color: var(--brand-start);
+  background: color-mix(in srgb, var(--surface-muted) 76%, var(--brand-start));
 }
 
 .doc-mdx pre code {
@@ -372,6 +519,14 @@ a {
   -webkit-overflow-scrolling: touch;
   border: 1px solid var(--line);
   border-radius: 0.5rem;
+  transition:
+    border-color 180ms ease,
+    box-shadow 220ms ease;
+}
+
+.doc-mdx .mdx-table-frame:hover {
+  border-color: color-mix(in srgb, var(--brand-start) 35%, var(--line));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
 .doc-mdx table {
@@ -394,6 +549,14 @@ a {
   font-weight: 600;
 }
 
+.doc-mdx tr {
+  transition: background-color 140ms ease;
+}
+
+.doc-mdx tbody tr:hover {
+  background: color-mix(in srgb, var(--surface-muted) 82%, var(--brand-start));
+}
+
 .doc-mdx hr {
   border: 0;
   border-top: 1px solid var(--line);
@@ -414,6 +577,28 @@ a {
   padding: 0.85rem 1rem;
   background: var(--surface-muted);
   color: var(--muted);
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 220ms ease,
+    transform 220ms var(--motion-ease);
+}
+
+.doc-mdx .mdx-callout::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: currentColor;
+  content: "";
+  animation: doc-pulse-line 2.8s ease-in-out infinite;
+}
+
+.doc-mdx .mdx-callout:hover {
+  background: color-mix(in srgb, var(--surface-muted) 92%, var(--brand-start));
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
 }
 
 .doc-mdx .mdx-callout-note {
@@ -452,6 +637,16 @@ a {
   font-size: 0.72em;
   color: var(--foreground);
   background: var(--surface-muted);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms var(--motion-ease);
+}
+
+.doc-mdx .mdx-badge:hover {
+  border-color: color-mix(in srgb, var(--brand-start) 46%, var(--line));
+  background: color-mix(in srgb, var(--surface-muted) 84%, var(--brand-start));
+  transform: translateY(-1px);
 }
 
 .doc-mdx .docs-card-grid {
@@ -466,17 +661,68 @@ a {
   min-height: 9rem;
   flex-direction: column;
   gap: 0.45rem;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 0.5rem;
   padding: 1rem;
   color: inherit;
   text-decoration: none;
   background: var(--surface);
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 240ms ease,
+    transform 240ms var(--motion-ease);
+}
+
+.doc-mdx .docs-card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: -1;
+  width: 3px;
+  background: linear-gradient(180deg, var(--brand-start), var(--brand-end));
+  content: "";
+  opacity: 0;
+  transform: scaleY(0.4);
+  transform-origin: center;
+  transition:
+    opacity 200ms ease,
+    transform 260ms var(--motion-ease);
+}
+
+.doc-mdx .docs-card::after {
+  position: absolute;
+  inset: -35% auto -35% -30%;
+  z-index: -1;
+  width: 45%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-120%) skewX(-14deg);
 }
 
 .doc-mdx .docs-card:hover {
   border-color: var(--brand-start);
   background: color-mix(in srgb, var(--surface) 88%, var(--brand-start));
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+}
+
+.doc-mdx .docs-card:hover::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.doc-mdx .docs-card:hover::after {
+  opacity: 1;
+  animation: doc-sheen 700ms var(--motion-ease);
+}
+
+.doc-mdx .docs-card:focus-visible {
+  box-shadow: 0 0 0 3px var(--doc-glow);
 }
 
 .doc-mdx .docs-card-eyebrow {
@@ -494,6 +740,11 @@ a {
   font-weight: 600;
   line-height: 1.35;
   color: var(--foreground);
+  transition: color 180ms ease;
+}
+
+.doc-mdx .docs-card:hover .docs-card-title {
+  color: var(--brand-start);
 }
 
 .doc-mdx .docs-card-description {
@@ -501,6 +752,60 @@ a {
   font-size: 0.86rem;
   line-height: 1.55;
   color: var(--muted);
+  transition: color 180ms ease;
+}
+
+.doc-mdx .docs-card:hover .docs-card-description {
+  color: color-mix(in srgb, var(--muted) 78%, var(--foreground));
+}
+
+.doc-nav-section,
+.doc-nav-link,
+.doc-toc-link {
+  position: relative;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    transform 180ms var(--motion-ease),
+    box-shadow 180ms ease;
+}
+
+.doc-nav-section:hover,
+.doc-nav-link:hover,
+.doc-toc-link:hover {
+  transform: translateX(3px);
+}
+
+.doc-nav-link::before,
+.doc-toc-link::before {
+  position: absolute;
+  left: 0.25rem;
+  top: 50%;
+  width: 3px;
+  height: 1rem;
+  border-radius: 999px;
+  background: var(--brand-start);
+  content: "";
+  opacity: 0;
+  transform: translateY(-50%) scaleY(0.45);
+  transition:
+    opacity 160ms ease,
+    transform 180ms var(--motion-ease);
+}
+
+.doc-nav-link:hover::before,
+.doc-toc-link:hover::before {
+  opacity: 0.72;
+  transform: translateY(-50%) scaleY(1);
+}
+
+.doc-nav-link[aria-current="page"]::before {
+  opacity: 1;
+  transform: translateY(-50%) scaleY(1);
+}
+
+details[open] > nav {
+  animation: doc-reveal 220ms var(--motion-ease) both;
 }
 
 /* 文档总览 */
