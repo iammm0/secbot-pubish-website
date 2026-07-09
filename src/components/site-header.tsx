@@ -53,7 +53,7 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
             <p className="hidden text-xs text-[var(--muted)] sm:block">{messages.brand.tagline}</p>
           </Link>
 
-          <nav className="hidden items-center gap-1 text-sm md:flex">
+          <nav className="site-desktop-nav items-center gap-1 text-sm">
             {navLinks.map((item) => (
               <Link
                 key={item.href}
@@ -95,7 +95,7 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
 
           <button
             type="button"
-            className="ui-button shrink-0 md:hidden"
+            className="site-menu-button ui-button shrink-0"
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-expanded={mobileOpen}
             aria-label={mobileOpen ? messages.common.closeMenu : messages.common.openMenu}
@@ -106,7 +106,7 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
         </div>
 
         <nav
-          className={`mt-4 space-y-2 rounded-lg border border-[var(--line)] bg-[var(--panel)] p-3 md:hidden ${
+          className={`site-mobile-nav-panel mt-4 space-y-2 rounded-lg border border-[var(--line)] bg-[var(--panel)] p-3 ${
             mobileOpen ? "block" : "hidden"
           }`}
         >

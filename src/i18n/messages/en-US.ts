@@ -26,7 +26,7 @@ const enUS = {
     heroSubtitle:
       "SecBot combines security testing tools, LLM reasoning, and local execution into auditable workflows for clearly authorized testing, research, and education.",
     ctaTs: "Quick start",
-    tsCmd: "git clone https://github.com/iammm0/secbot.git && cd secbot && git checkout release && npm ci && npm run start:stack",
+    tsCmd: "git clone https://github.com/iammm0/secbot.git\ncd secbot\ngit checkout release\nnpm ci\nnpm run start:stack",
     highlightTitle: "Core capabilities",
     highlights: [
       {

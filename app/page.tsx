@@ -1,5 +1,17 @@
 import Link from "next/link";
-import { Activity, BookOpenText, BrainCircuit, Database, GitBranch, Network, Route, ShieldCheck, Terminal } from "lucide-react";
+import Image from "next/image";
+import {
+  Activity,
+  ArrowRight,
+  BookOpenText,
+  BrainCircuit,
+  Database,
+  GitBranch,
+  Network,
+  Route,
+  ShieldCheck,
+  Terminal,
+} from "lucide-react";
 import { CopyCommandBlock } from "@/src/components/copy-command-block";
 import { SiteFooter } from "@/src/components/site-footer";
 import { SiteHeader } from "@/src/components/site-header";
@@ -11,6 +23,7 @@ type HomeProps = {
 };
 
 const capabilityIcons = [BrainCircuit, ShieldCheck, Activity, Network, Database, Terminal];
+const heroSignals = ["NestJS API", "Ink TUI", "Agent 编排", "Tools / MCP"];
 const docEntrypoints = [
   {
     href: "/docs/ecosystem",
@@ -46,60 +59,66 @@ export default async function Home({ searchParams }: HomeProps) {
       <div className="site-shell flex min-h-screen flex-col">
         <SiteHeader locale={locale} messages={messages} />
         <main className="page-main">
-          <section className="relative isolate overflow-hidden border-b border-[var(--line)] bg-black px-4 py-14 sm:px-8 lg:px-12">
-            <div
-              className="absolute inset-0 -z-20 bg-cover bg-center opacity-45"
-              style={{ backgroundImage: "url('/secbot-main.png')" }}
-              aria-hidden="true"
-            />
-            <div className="absolute inset-0 -z-10 bg-[rgba(0,0,0,0.72)]" aria-hidden="true" />
+          <section className="home-hero">
+            <div className="motion-enter home-hero-inner">
+              <div className="home-hero-content">
+                <div className="home-hero-copy">
+                  <p className="home-hero-kicker">授权安全自动化工作台</p>
+                  <h1 className="home-hero-title">{messages.brand.name}</h1>
+                  <p className="home-hero-subtitle">{messages.home.heroSubtitle}</p>
 
-            <div className="motion-enter mx-auto flex min-h-[30rem] w-full max-w-7xl flex-col justify-center">
-              <p className="font-mono text-sm font-semibold text-[var(--brand-start)]">授权安全自动化工作台</p>
-              <h1 className="mt-4 font-mono text-5xl font-bold text-white sm:text-6xl">
-                {messages.brand.name}
-              </h1>
-              <p className="mt-5 max-w-3xl text-lg leading-8 text-zinc-200 sm:text-xl">
-              {messages.home.heroSubtitle}
-            </p>
+                  <div className="home-signal-row" aria-label="SecBot 核心组成">
+                    {heroSignals.map((item) => (
+                      <span key={item}>{item}</span>
+                    ))}
+                  </div>
 
-              <div className="cta-row mt-8 flex flex-wrap gap-3">
-                <Link href="/docs" className="ui-button ui-button-primary">
-                  <BookOpenText className="h-4 w-4" />
-                  文档总览
-                </Link>
-                <Link href="/docs/secbot/quickstart" className="ui-button">
-                  <Terminal className="h-4 w-4" />
-                  {messages.home.ctaTs}
-                </Link>
-                <a
-                  href="https://github.com/iammm0/secbot"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ui-button"
-                >
-                  <GitBranch className="h-4 w-4" />
-                  {messages.common.viewGithub}
-                </a>
+                  <div className="cta-row home-hero-actions">
+                    <Link href="/docs" className="ui-button ui-button-primary">
+                      <BookOpenText className="h-4 w-4" />
+                      文档总览
+                    </Link>
+                    <Link href="/docs/secbot/quickstart" className="ui-button ui-button-hero">
+                      <Terminal className="h-4 w-4" />
+                      {messages.home.ctaTs}
+                    </Link>
+                    <a
+                      href="https://github.com/iammm0/secbot"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ui-button ui-button-hero"
+                    >
+                      <GitBranch className="h-4 w-4" />
+                      {messages.common.viewGithub}
+                    </a>
+                  </div>
+
+                  <p className="home-hero-note">
+                    仅用于已获得明确授权的安全测试、研究与教学。本站文档按 ecosystem / secbot / runtime 重排，runtime 指内部运行与执行链路，不是独立仓库。
+                  </p>
+                </div>
+
+                <div className="home-hero-art" aria-hidden="true">
+                  <div className="home-hero-art-chrome">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                  <Image
+                    src="/secbot-main.png"
+                    alt=""
+                    width={1481}
+                    height={760}
+                    priority
+                    sizes="(min-width: 1024px) 43vw, 100vw"
+                  />
+                </div>
               </div>
-
-              <div className="mt-8 w-full max-w-3xl">
-              <CopyCommandBlock
-                command={messages.home.tsCmd}
-                hint={messages.common.copyHint}
-                copyLabel={messages.common.copyCommand}
-                copiedLabel={messages.common.copied}
-              />
-            </div>
-
-              <p className="mt-5 max-w-3xl text-sm leading-6 text-zinc-300">
-                仅用于已获得明确授权的安全测试、研究与教学。本站文档按 ecosystem / secbot / runtime 重排，runtime 指内部运行与执行链路，不是独立仓库。
-              </p>
             </div>
           </section>
 
           <section
-            className="motion-enter motion-enter-delay-1 mx-auto w-full max-w-7xl px-4 py-12 sm:px-8 lg:px-12"
+            className="home-docs-section motion-enter motion-enter-delay-1 mx-auto w-full max-w-7xl px-4 py-12 sm:px-8 lg:px-12"
             aria-labelledby="docs-entrypoints"
           >
             <div className="section-head">
@@ -112,20 +131,50 @@ export default async function Home({ searchParams }: HomeProps) {
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
-              {docEntrypoints.map((item) => {
+              {docEntrypoints.map((item, index) => {
                 const Icon = item.icon;
 
                 return (
-                  <Link key={item.href} href={item.href} className="surface-card block p-5 no-underline">
-                    <div className="flex items-center justify-between gap-4">
-                      <span className="font-mono text-xs font-semibold text-[var(--brand-start)]">{item.eyebrow}</span>
-                      <Icon className="h-5 w-5 text-[var(--muted)]" aria-hidden="true" />
+                  <Link key={item.href} href={item.href} className="doc-entry-card surface-card group">
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="doc-entry-index">{String(index + 1).padStart(2, "0")}</span>
+                      <span className="doc-entry-icon">
+                        <Icon className="h-5 w-5" aria-hidden="true" />
+                      </span>
                     </div>
-                    <h3 className="mt-4 font-mono text-lg font-semibold text-[var(--foreground)]">{item.title}</h3>
-                    <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{item.body}</p>
+                    <p className="doc-entry-eyebrow">{item.eyebrow}</p>
+                    <h3>{item.title}</h3>
+                    <p>{item.body}</p>
+                    <span className="doc-entry-action">
+                      进入文档
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </span>
                   </Link>
                 );
               })}
+            </div>
+          </section>
+
+          <section
+            className="motion-enter motion-enter-delay-2 mx-auto w-full max-w-7xl px-4 pb-12 sm:px-8 lg:px-12"
+            aria-labelledby="local-run"
+          >
+            <div className="home-run-panel">
+              <div className="home-run-copy">
+                <p className="home-run-kicker">本地运行</p>
+                <h2 id="local-run">先把 SecBot 跑起来</h2>
+                <p>
+                  release 分支是当前网站文档对应的主线。复制命令后可在本地启动完整栈，再进入快速开始查看配置与验证步骤。
+                </p>
+              </div>
+              <div className="home-command-panel">
+                <CopyCommandBlock
+                  command={messages.home.tsCmd}
+                  hint={messages.common.copyHint}
+                  copyLabel={messages.common.copyCommand}
+                  copiedLabel={messages.common.copied}
+                />
+              </div>
             </div>
           </section>
 

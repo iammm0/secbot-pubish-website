@@ -26,7 +26,7 @@ const zhCN = {
     heroSubtitle:
       "SecBot 将安全测试工具、LLM 推理与本地执行环境组合成可审计的工作流，面向获得明确授权的安全测试、研究与教学场景。",
     ctaTs: "快速开始",
-    tsCmd: "git clone https://github.com/iammm0/secbot.git && cd secbot && git checkout release && npm ci && npm run start:stack",
+    tsCmd: "git clone https://github.com/iammm0/secbot.git\ncd secbot\ngit checkout release\nnpm ci\nnpm run start:stack",
     highlightTitle: "核心能力",
     highlights: [
       {
