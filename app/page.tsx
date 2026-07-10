@@ -99,11 +99,6 @@ export default async function Home({ searchParams }: HomeProps) {
                 </div>
 
                 <div className="home-hero-art" aria-hidden="true">
-                  <div className="home-hero-art-chrome">
-                    <span />
-                    <span />
-                    <span />
-                  </div>
                   <Image
                     src="/secbot-main.png"
                     alt=""

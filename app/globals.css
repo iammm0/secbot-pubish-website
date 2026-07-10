@@ -355,35 +355,6 @@ a {
   pointer-events: none;
 }
 
-.home-hero-art-chrome {
-  display: flex;
-  gap: 0.35rem;
-  align-items: center;
-  height: 1.75rem;
-  padding: 0 0.7rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, #18181b, #0f0f11);
-}
-
-.home-hero-art-chrome span {
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 999px;
-  background: #3f3f46;
-}
-
-.home-hero-art-chrome span:first-child {
-  background: #ef4444;
-}
-
-.home-hero-art-chrome span:nth-child(2) {
-  background: #f59e0b;
-}
-
-.home-hero-art-chrome span:nth-child(3) {
-  background: #22c55e;
-}
-
 .home-hero-art img {
   display: block;
   width: 100%;
