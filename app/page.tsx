@@ -98,16 +98,17 @@ export default async function Home({ searchParams }: HomeProps) {
                   </p>
                 </div>
 
-                <div className="home-hero-art" aria-hidden="true">
+                <figure className="home-hero-art">
                   <Image
-                    src="/secbot-main.png"
-                    alt=""
-                    width={1481}
-                    height={760}
+                    src="/secbot-demo.gif"
+                    alt="SecBot 终端界面演示"
+                    width={960}
+                    height={554}
+                    unoptimized
                     priority
                     sizes="(min-width: 1024px) 43vw, 100vw"
                   />
-                </div>
+                </figure>
               </div>
             </div>
           </section>
