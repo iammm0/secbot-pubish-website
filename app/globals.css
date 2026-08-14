@@ -885,7 +885,24 @@ a {
   padding: 0;
   border: 0;
   background: transparent;
+  color: var(--foreground);
   line-height: 1.55;
+}
+
+/*
+ * fumadocs-ui 的 shiki.css 用 .dark 切换 --shiki-dark；
+ * 本站主题挂在 data-theme 上，需同步，否则暗色下仍用浅色语法色（几乎看不见）。
+ */
+:root[data-theme="dark"] .shiki:not(.not-fumadocs-codeblock *) code span,
+:root[data-theme="dark"] code.shiki:not(.not-fumadocs-code *) span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+}
+
+:root[data-theme="light"] .shiki:not(.not-fumadocs-codeblock *) code span,
+:root[data-theme="light"] code.shiki:not(.not-fumadocs-code *) span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
 }
 
 .doc-mdx .mdx-table-frame {

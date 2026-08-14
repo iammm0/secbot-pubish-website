@@ -29,13 +29,17 @@ export function ThemeToggle({ ariaLabel, className = "", showLabel = false, labe
   });
 
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
+    const root = document.documentElement;
+    root.setAttribute("data-theme", theme);
+    root.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
   function toggleTheme() {
     const nextTheme: Theme = theme === "dark" ? "light" : "dark";
     setTheme(nextTheme);
-    document.documentElement.setAttribute("data-theme", nextTheme);
+    const root = document.documentElement;
+    root.setAttribute("data-theme", nextTheme);
+    root.classList.toggle("dark", nextTheme === "dark");
     window.localStorage.setItem("theme", nextTheme);
   }
 

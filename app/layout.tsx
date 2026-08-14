@@ -15,12 +15,15 @@ const geistMono = Geist_Mono({
 const themeInitScript = `
 (function () {
   try {
+    var root = document.documentElement;
     var savedTheme = window.localStorage.getItem("theme");
     var systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     var theme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : systemTheme;
-    document.documentElement.setAttribute("data-theme", theme);
+    root.setAttribute("data-theme", theme);
+    root.classList.toggle("dark", theme === "dark");
   } catch (error) {
     document.documentElement.setAttribute("data-theme", "dark");
+    document.documentElement.classList.add("dark");
   }
 })();
 `;
