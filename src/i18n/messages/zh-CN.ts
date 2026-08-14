@@ -12,7 +12,6 @@ const zhCN = {
   },
   common: {
     viewGithub: "查看 GitHub",
-    language: "English",
     copyHint: "可直接复制使用",
     copyCommand: "复制命令",
     copied: "已复制",

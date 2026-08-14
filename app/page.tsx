@@ -15,12 +15,7 @@ import {
 import { CopyCommandBlock } from "@/src/components/copy-command-block";
 import { SiteFooter } from "@/src/components/site-footer";
 import { SiteHeader } from "@/src/components/site-header";
-import { type Locale, defaultLocale, isLocale } from "@/src/i18n/config";
 import { getMessages } from "@/src/i18n/messages";
-
-type HomeProps = {
-  searchParams?: Promise<{ lang?: string }>;
-};
 
 const capabilityIcons = [BrainCircuit, ShieldCheck, Activity, Network, Database, Terminal];
 const heroSignals = ["NestJS API", "Ink TUI", "Agent 编排", "Tools / MCP"];
@@ -48,16 +43,13 @@ const docEntrypoints = [
   },
 ];
 
-export default async function Home({ searchParams }: HomeProps) {
-  const params = await searchParams;
-  const lang = params?.lang;
-  const locale: Locale = lang && isLocale(lang) ? lang : defaultLocale;
-  const messages = getMessages(locale);
+export default async function Home() {
+  const messages = getMessages();
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
       <div className="site-shell flex min-h-screen flex-col">
-        <SiteHeader locale={locale} messages={messages} />
+        <SiteHeader messages={messages} />
         <main className="page-main">
           <section className="home-hero">
             <div className="motion-enter home-hero-inner">

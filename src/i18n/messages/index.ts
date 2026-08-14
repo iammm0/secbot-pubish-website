@@ -1,14 +1,10 @@
-import { defaultLocale, type Locale } from "@/src/i18n/config";
-import enUS from "@/src/i18n/messages/en-US";
 import zhCN from "@/src/i18n/messages/zh-CN";
 
 export type SiteMessages = typeof zhCN;
 
-const dict: Record<Locale, SiteMessages> = {
-  "zh-CN": zhCN,
-  "en-US": enUS,
-};
+/** 站点文案（仅中文，不再做语言切换） */
+export const messages: SiteMessages = zhCN;
 
-export function getMessages(locale: Locale): SiteMessages {
-  return dict[locale] ?? dict[defaultLocale];
+export function getMessages(): SiteMessages {
+  return messages;
 }

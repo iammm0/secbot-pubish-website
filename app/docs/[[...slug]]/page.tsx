@@ -5,7 +5,6 @@ import { DocSidebar } from "@/src/components/doc-sidebar";
 import { DocTocSidebar } from "@/src/components/doc-toc-sidebar";
 import { SiteFooter } from "@/src/components/site-footer";
 import { SiteHeader } from "@/src/components/site-header";
-import { defaultLocale } from "@/src/i18n/config";
 import { getMessages } from "@/src/i18n/messages";
 import { getDocsNavSections, getDocSiblings } from "@/src/lib/docs-nav";
 import { source } from "@/src/lib/source";
@@ -58,7 +57,7 @@ export default async function DocsRoutePage({ params }: DocsRouteProps) {
     notFound();
   }
 
-  const messages = getMessages(defaultLocale);
+  const messages = getMessages();
   const navSections = getDocsNavSections();
   const { previous, next } = getDocSiblings(slug);
   const MDXContent = page.data.body;
@@ -71,7 +70,7 @@ export default async function DocsRoutePage({ params }: DocsRouteProps) {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       <div className="docs-shell flex min-h-screen flex-col">
-        <SiteHeader locale={defaultLocale} messages={messages} />
+        <SiteHeader messages={messages} />
         <div className="docs-layout flex flex-1 flex-col lg:flex-row">
           <DocSidebar sections={navSections} />
 

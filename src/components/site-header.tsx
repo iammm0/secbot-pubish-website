@@ -3,41 +3,34 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { BookOpenText, GitBranch, House, Languages, Menu, PlayCircle, Route, X } from "lucide-react";
+import { BookOpenText, GitBranch, House, Menu, PlayCircle, Route, X } from "lucide-react";
 import { ThemeToggle } from "@/src/components/theme-toggle";
-import { type Locale } from "@/src/i18n/config";
 import type { SiteMessages } from "@/src/i18n/messages";
 
 type SiteHeaderProps = {
-  locale: Locale;
   messages: SiteMessages;
 };
 
-function withLang(path: string, locale: Locale): string {
-  return `${path}?lang=${locale}`;
-}
-
-export function SiteHeader({ locale, messages }: SiteHeaderProps) {
+export function SiteHeader({ messages }: SiteHeaderProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const nextLocale: Locale = locale === "zh-CN" ? "en-US" : "zh-CN";
 
   const navLinks = [
-    { href: withLang("/", locale), label: messages.nav.home, active: pathname === "/", icon: House },
+    { href: "/", label: messages.nav.home, active: pathname === "/", icon: House },
     {
-      href: withLang("/docs", locale),
+      href: "/docs",
       label: messages.nav.docs,
       active: pathname === "/docs" || pathname.startsWith("/docs/"),
       icon: BookOpenText,
     },
     {
-      href: withLang("/docs/secbot", locale),
+      href: "/docs/secbot",
       label: messages.nav.start,
       active: pathname === "/docs/secbot" || pathname.startsWith("/docs/secbot/"),
       icon: PlayCircle,
     },
     {
-      href: withLang("/docs/runtime", locale),
+      href: "/docs/runtime",
       label: messages.nav.runtime,
       active: pathname === "/docs/runtime" || pathname.startsWith("/docs/runtime/"),
       icon: Route,
@@ -48,7 +41,7 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
     <header className="sticky top-0 z-30 bg-[var(--header-bg)] backdrop-blur-md">
       <div className="px-3 py-3 sm:px-6 sm:py-4">
         <div className="flex items-start justify-between gap-4">
-          <Link href={withLang("/", locale)} className="min-w-0 shrink no-underline">
+          <Link href="/" className="min-w-0 shrink no-underline">
             <p className="truncate font-mono text-lg font-semibold text-[var(--foreground)]">{messages.brand.name}</p>
             <p className="hidden text-xs text-[var(--muted)] sm:block">{messages.brand.tagline}</p>
           </Link>
@@ -81,15 +74,6 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
                 {messages.nav.github}
               </span>
             </a>
-            <Link
-              href={withLang(pathname || "/", nextLocale)}
-              className="ui-button"
-              aria-label={messages.common.language}
-              title={messages.common.language}
-            >
-              <Languages className="h-4 w-4" />
-              {messages.common.language}
-            </Link>
             <ThemeToggle ariaLabel={messages.common.toggleTheme} showLabel label={messages.common.themeLabel} />
           </nav>
 
@@ -140,10 +124,6 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
             </span>
           </a>
           <div className="mt-3 flex items-center gap-2 border-t border-[var(--line-weak)] pt-3">
-            <Link href={withLang(pathname || "/", nextLocale)} className="ui-button" onClick={() => setMobileOpen(false)}>
-              <Languages className="h-4 w-4" />
-              {messages.common.language}
-            </Link>
             <ThemeToggle ariaLabel={messages.common.toggleTheme} showLabel label={messages.common.themeLabel} />
           </div>
         </nav>
