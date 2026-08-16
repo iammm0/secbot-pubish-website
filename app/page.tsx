@@ -18,7 +18,6 @@ import { SiteHeader } from "@/src/components/site-header";
 import { getMessages } from "@/src/i18n/messages";
 
 const capabilityIcons = [BrainCircuit, ShieldCheck, Activity, Network, Database, Terminal];
-const heroSignals = ["NestJS API", "Ink TUI", "Agent 编排", "Tools / MCP"];
 const docEntrypoints = [
   {
     href: "/docs/ecosystem",
@@ -55,16 +54,8 @@ export default async function Home() {
             <div className="motion-enter home-hero-inner">
               <div className="home-hero-content">
                 <div className="home-hero-copy">
-                  <p className="home-hero-kicker">授权安全自动化工作台</p>
                   <h1 className="home-hero-title">{messages.brand.name}</h1>
                   <p className="home-hero-subtitle">{messages.home.heroSubtitle}</p>
-
-                  <div className="home-signal-row" aria-label="SecBot 核心组成">
-                    {heroSignals.map((item) => (
-                      <span key={item}>{item}</span>
-                    ))}
-                  </div>
-
                   <div className="cta-row home-hero-actions">
                     <Link href="/docs" className="ui-button ui-button-primary">
                       <BookOpenText className="h-4 w-4" />
@@ -84,10 +75,6 @@ export default async function Home() {
                       {messages.common.viewGithub}
                     </a>
                   </div>
-
-                  <p className="home-hero-note">
-                    仅用于已获得明确授权的安全测试、研究与教学。本站文档按 ecosystem / secbot / runtime 重排，runtime 指内部运行与执行链路，不是独立仓库。
-                  </p>
                 </div>
 
                 <figure className="home-hero-art">
