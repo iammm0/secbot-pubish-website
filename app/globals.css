@@ -253,22 +253,22 @@ a {
 
 .home-hero-inner {
   width: 100%;
-  max-width: 74rem;
-  min-height: clamp(24rem, 50vh, 33rem);
+  max-width: 96rem;
+  min-height: clamp(28rem, 62vh, 44rem);
   margin: 0 auto;
   display: grid;
   align-items: center;
 }
 
 .home-hero-copy {
-  max-width: 41rem;
+  max-width: 30rem;
 }
 
 .home-hero-content {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.82fr);
+  grid-template-columns: minmax(0, 0.72fr) minmax(28rem, 1.55fr);
   align-items: center;
-  gap: clamp(2rem, 5vw, 5rem);
+  gap: clamp(1.25rem, 3vw, 2.75rem);
 }
 
 .home-hero-kicker {
@@ -286,20 +286,22 @@ a {
 }
 
 .home-hero-title {
-  margin-top: 0.95rem;
+  margin-top: 0;
   font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
-  font-size: clamp(3.25rem, 6vw, 5.55rem);
-  line-height: 0.95;
-  font-weight: 750;
-  letter-spacing: 0;
+  font-size: clamp(4.6rem, 11vw, 8.75rem);
+  line-height: 0.82;
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  text-transform: uppercase;
   color: var(--foreground);
+  text-wrap: balance;
 }
 
 .home-hero-subtitle {
-  margin-top: 1rem;
-  max-width: 39rem;
-  font-size: clamp(1rem, 1.2vw, 1.18rem);
-  line-height: 1.78;
+  margin-top: 1.35rem;
+  max-width: 28rem;
+  font-size: clamp(0.95rem, 1.05vw, 1.08rem);
+  line-height: 1.72;
   color: color-mix(in srgb, var(--muted) 82%, var(--foreground));
 }
 
@@ -335,8 +337,9 @@ a {
 
 .home-hero-art {
   position: relative;
-  justify-self: end;
-  width: min(100%, 34rem);
+  justify-self: stretch;
+  width: 100%;
+  max-width: 64rem;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--line) 72%, var(--brand-start));
   border-radius: 0.5rem;
@@ -602,7 +605,8 @@ a {
 
   .home-hero-art {
     justify-self: stretch;
-    width: min(100%, 42rem);
+    width: 100%;
+    max-width: 64rem;
   }
 
   .home-run-copy {
@@ -1240,7 +1244,8 @@ details[open] > nav {
   }
 
   .home-hero-title {
-    font-size: 2.95rem;
+    font-size: clamp(3.8rem, 16vw, 5.2rem);
+    letter-spacing: -0.06em;
   }
 
   .home-hero-subtitle {
@@ -1259,7 +1264,7 @@ details[open] > nav {
   }
 
   .home-hero-art {
-    max-height: 9rem;
+    max-height: none;
   }
 
   .home-hero-art img {
@@ -1294,6 +1299,119 @@ details[open] > nav {
 
   .home-docs-section {
     padding-top: 2rem;
+  }
+}
+
+.home-showcase-section {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: clamp(2.2rem, 4vw, 3.6rem) 1rem 0.5rem;
+}
+
+.home-showcase-head {
+  max-width: 40rem;
+  margin-bottom: clamp(1.4rem, 3vw, 2.1rem);
+}
+
+.home-showcase-lead {
+  margin-top: 0.65rem;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--muted) 88%, var(--foreground));
+}
+
+.home-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.9rem, 2vw, 1.35rem);
+}
+
+.home-showcase-item {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.home-showcase-item-wide {
+  grid-column: 1 / -1;
+}
+
+.home-showcase-frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--line) 70%, var(--brand-start));
+  border-radius: 0.45rem;
+  background: #070708;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+}
+
+.home-showcase-frame::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(125deg, rgba(255, 255, 255, 0.06), transparent 36%),
+    linear-gradient(180deg, transparent 72%, rgba(0, 0, 0, 0.18));
+  content: "";
+  pointer-events: none;
+}
+
+.home-showcase-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.home-showcase-item figcaption {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  padding-inline: 0.1rem;
+}
+
+.home-showcase-label {
+  font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  color: var(--brand-start);
+}
+
+.home-showcase-title {
+  font-size: 0.92rem;
+  color: color-mix(in srgb, var(--muted) 70%, var(--foreground));
+}
+
+.home-doc-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.35rem;
+}
+
+.home-doc-links a {
+  font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  font-size: 0.92rem;
+  color: color-mix(in srgb, var(--foreground) 88%, var(--brand-start));
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  padding-bottom: 0.15rem;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.home-doc-links a:hover {
+  color: var(--brand-start);
+  border-bottom-color: color-mix(in srgb, var(--brand-start) 55%, transparent);
+}
+
+@media (max-width: 767px) {
+  .home-showcase-section {
+    padding-inline: 1rem;
+  }
+
+  .home-showcase-grid {
+    grid-template-columns: 1fr;
   }
 }
 
