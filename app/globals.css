@@ -265,10 +265,10 @@ a {
 }
 
 .home-hero-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .home-hero-kicker {
@@ -337,9 +337,8 @@ a {
 
 .home-hero-art {
   position: relative;
-  justify-self: stretch;
-  width: 100%;
-  max-width: 64rem;
+  width: min(100%, 64rem);
+  margin: 0 auto;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--line) 72%, var(--brand-start));
   border-radius: 0.5rem;
@@ -604,9 +603,8 @@ a {
   }
 
   .home-hero-art {
-    justify-self: stretch;
-    width: 100%;
-    max-width: 64rem;
+    width: min(100%, 64rem);
+    margin: 0 auto;
   }
 
   .home-run-copy {
