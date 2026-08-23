@@ -266,9 +266,9 @@ a {
 
 .home-hero-content {
   display: grid;
-  grid-template-columns: minmax(0, 0.72fr) minmax(28rem, 1.55fr);
+  grid-template-columns: 1fr;
+  justify-items: center;
   align-items: center;
-  gap: clamp(1.25rem, 3vw, 2.75rem);
 }
 
 .home-hero-kicker {

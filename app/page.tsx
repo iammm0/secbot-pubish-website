@@ -47,10 +47,6 @@ export default async function Home() {
           <section className="home-hero">
             <div className="motion-enter home-hero-inner">
               <div className="home-hero-content">
-                <div className="home-hero-copy">
-                  <h1 className="home-hero-title">{messages.brand.name}</h1>
-                </div>
-
                 <figure className="home-hero-art">
                   <Image
                     src="/demos/tui-hero.gif"
