@@ -33,11 +33,24 @@ const themeInitScript = `
 export const metadata: Metadata = {
   title: "SecBot 文档",
   description: "SecBot 的中文文档站：生态边界、开始使用、运行与执行链路。",
+  icons: {
+    icon: "/secbot-icon.png",
+    shortcut: "/secbot-icon.png",
+    apple: "/secbot-icon.png",
+  },
   openGraph: {
     title: "SecBot 文档",
     description: "SecBot 的中文文档站：生态边界、开始使用、运行与执行链路。",
     url: "https://github.com/iammm0/secbot",
     siteName: "SecBot",
+    images: [
+      {
+        url: "/secbot-icon.png",
+        width: 1254,
+        height: 1254,
+        alt: "SecBot 机器人图标",
+      },
+    ],
     type: "website",
   },
 };

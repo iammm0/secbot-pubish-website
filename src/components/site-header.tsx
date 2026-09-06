@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { BookOpenText, GitBranch, House, Menu, PlayCircle, Route, X } from "lucide-react";
@@ -41,9 +42,20 @@ export function SiteHeader({ messages }: SiteHeaderProps) {
     <header className="sticky top-0 z-30 bg-[var(--header-bg)] backdrop-blur-md">
       <div className="px-3 py-3 sm:px-6 sm:py-4">
         <div className="flex items-start justify-between gap-4">
-          <Link href="/" className="min-w-0 shrink no-underline">
-            <p className="truncate font-mono text-lg font-semibold text-[var(--foreground)]">{messages.brand.name}</p>
-            <p className="hidden text-xs text-[var(--muted)] sm:block">{messages.brand.tagline}</p>
+          <Link href="/" className="flex min-w-0 shrink items-center gap-3 no-underline">
+            <Image
+              src="/secbot-icon.png"
+              alt=""
+              aria-hidden="true"
+              width={44}
+              height={44}
+              className="h-11 w-11 shrink-0 object-contain"
+              priority
+            />
+            <div className="min-w-0">
+              <p className="truncate font-mono text-lg font-semibold text-[var(--foreground)]">{messages.brand.name}</p>
+              <p className="hidden text-xs text-[var(--muted)] sm:block">{messages.brand.tagline}</p>
+            </div>
           </Link>
 
           <nav className="site-desktop-nav items-center gap-1 text-sm">
