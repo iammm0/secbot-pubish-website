@@ -12,26 +12,26 @@ import { getMessages } from "@/src/i18n/messages";
 const showcaseDemos = [
   {
     src: "/demos/web-home.gif",
-    alt: "SecBot Web 首页输入演示",
-    label: "Web",
-    title: "浏览器入口",
+    alt: "SecBot 桌面版首页输入演示",
+    label: "Desktop",
+    title: "首页与对话入口",
   },
   {
     src: "/demos/web-tools.gif",
-    alt: "SecBot Web 工具清单演示",
-    label: "Web",
+    alt: "SecBot 桌面版内置工具清单演示",
+    label: "Desktop",
     title: "内置工具矩阵",
   },
   {
     src: "/demos/web-settings.gif",
-    alt: "SecBot Web 设置面板演示",
-    label: "Web",
+    alt: "SecBot 桌面版设置面板演示",
+    label: "Desktop",
     title: "设置面板",
   },
   {
     src: "/demos/web-model.gif",
-    alt: "SecBot Web 模型与主题配置演示",
-    label: "Web",
+    alt: "SecBot 桌面版模型与主题配置演示",
+    label: "Desktop",
     title: "模型与主题",
   },
 ] as const;
@@ -50,9 +50,9 @@ export default async function Home() {
                 <figure className="home-hero-art">
                   <Image
                     src="/demos/tui-hero.gif"
-                    alt="SecBot 终端界面演示"
+                    alt="SecBot 桌面版巡检本机服务工作流演示"
                     width={960}
-                    height={554}
+                    height={600}
                     unoptimized
                     priority
                     sizes="(min-width: 1024px) 68vw, 100vw"
