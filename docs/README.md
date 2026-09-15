@@ -1,28 +1,25 @@
 # Secbot 文档导览
 
-本站 `docs/` 目录由上游 Secbot 开源项目的 `docs/` 同步而来（同步记录见同目录 `SOURCE.txt`）。当前发布站按上游发布分支拆分文档：
+本站 `docs/` 目录由上游 Secbot 开源项目的 `docs/` 同步而来（同步记录见同目录 `SOURCE.txt`）。**当前唯一维护的上游分支是 `release`**。
 
-> **快速迭代提示**：项目仍处于快速迭代阶段，当前 npm 全局安装命令暂不可作为稳定可用入口。建议 fork 或 star 后准备二次开发、部署或长期使用的用户，优先基于上游 `npm-release` 主分支源码构建项目，以获得更完整的 TypeScript / Node.js / npm 版本能力与后续更新。
+> Python 的 `pypi-release` 与 Go 的 `pure-go` 已冻结，只作历史归档。新功能与文档请以 `release` 为准。站内现行文档入口是 `/docs/secbot`（对应上游 `release`），不要再把 `pypi-release` / 旧 `npm-release` 路径当作默认安装指南。
 
-| 发布分支 | 版本路线 | 站内入口 |
-|----------|----------|----------|
-| `pypi-release` | Python CLI / FastAPI / PyPI | `/docs/secbot/pypi-release` |
-| `npm-release` | TypeScript / Node.js / npm | `/docs/secbot/npm-release` |
+| 上游分支 | 状态 | 站内入口 |
+|----------|------|----------|
+| `release` | **唯一维护中** · TypeScript / NestJS / TUI / Web · Desktop | `/docs/secbot` |
+| `pypi-release` | **已冻结** · Python CLI / FastAPI 历史文档 | `/docs/secbot/pypi-release`（归档） |
+| 旧 `npm-release` 快照 | 历史镜像，已被 `release` 取代 | `/docs/secbot/npm-release`（归档） |
 
-## 常用入口
+## 常用入口（当前产品）
 
-| 文档 | pypi-release | npm-release |
-|------|--------------|-------------|
-| 快速开始 | `/docs/secbot/pypi-release/quickstart` | `/docs/secbot/npm-release/quickstart` |
-| API | `/docs/secbot/pypi-release/api` | `/docs/secbot/npm-release/api` |
-| 模型提供商 | `/docs/secbot/pypi-release/llm-providers` | `/docs/secbot/npm-release/llm-providers` |
-| 部署 | `/docs/secbot/pypi-release/deployment` | `/docs/secbot/npm-release/deployment` |
-| 发布流程 | `/docs/secbot/pypi-release/release` | `/docs/secbot/npm-release/release` |
+| 文档 | 路径 |
+|------|------|
+| 快速开始 | `/docs/secbot/quickstart` |
+| API | `/docs/secbot/api` |
+| 模型提供商 | `/docs/secbot/llm-providers` |
+| 部署 | `/docs/secbot/deployment` |
+| 发布流程 | `/docs/secbot/release` |
 
-## 分支差异
-
-- `pypi-release` 删除了旧的 Node / UI 专属说明，更聚焦 Python CLI、`secbot server` 与 SQLite 持久化配置。
-- `npm-release` 保留并更新了 Node 环境、Terminal UI、NestJS 后端与 TypeScript 迁移状态等文档。
-- 历史兼容路径 `/docs/view/...` 会跳转到默认的 `pypi-release` 文档；新的站内链接请优先使用 `/docs/secbot/<branch>/...`。
+历史兼容路径 `/docs/view/...` 以及 `/docs/secbot/pypi-release/...` 仅用于查阅旧 Python 文档，不再作为新用户入口。
 
 正文内若含有指向**源码树**的相对链接，在站内可能无法解析，需结合本地克隆的 Secbot 工程查看对应文件。
