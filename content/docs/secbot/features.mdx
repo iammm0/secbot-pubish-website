@@ -67,47 +67,46 @@ description: "SecBot 的定位、安全边界、主要能力、技术栈和仓�
 
 ### 整体架构一览
 
-```text
+```mermaid
 flowchart LR
   subgraph FrontendClients["前端 / Clients"]
-    user[用户]
-    tui["terminal-ui (Ink)"]
+    user["用户"]
+    tui["terminal-ui (Ink) / Desktop"]
   end
 
   user --> tui
-
-  tui -->|HTTP / SSE| api["NestJS /api/chat"]
+  tui -->|"HTTP / SSE"| api["NestJS /api/chat"]
 
   subgraph BackendRouter["会话编排"]
     api --> chatSvc["ChatService"]
-    chatSvc --> intent["IntentRouter\n(一次分类)"]
-    intent --> explore["ExploreAgent\n(可选)"]
-    explore --> ctx["ContextAssembler\n+ ContextStore"]
-    intent --> taskPath["task_simple /\ntask_complex"]
+    chatSvc --> intent["IntentRouter (一次分类)"]
+    intent --> explore["ExploreAgent (可选)"]
+    explore --> ctx["ContextAssembler + ContextStore"]
+    intent --> taskPath["task_simple / task_complex"]
   end
 
   subgraph PlanningExecution["规划 & 执行"]
-    taskPath --> planner["PlannerAgent\n(复杂任务)"]
+    taskPath --> planner["PlannerAgent (复杂任务)"]
     planner --> executor["TaskExecutor"]
-    taskPath --> react["SecurityReActAgent\n(简单任务)"]
+    taskPath --> react["SecurityReActAgent (简单任务)"]
     executor --> coord["CoordinatorAgent"]
-    coord --> specialists["专职子 Agent\n(ReAct)"]
+    coord --> specialists["专职子 Agent (ReAct)"]
   end
 
   subgraph ToolsLayer["工具层"]
-    specialists --> toolsMod["ToolsModule\n(vuln-db / browser_session /\nweb-research / …)"]
+    specialists --> toolsMod["ToolsModule (vuln-db / browser_session / ExecGo / MCP)"]
     explore --> toolsMod
     react --> toolsMod
   end
 
-  toolsMod --> db[(SQLite)]
+  toolsMod --> db[("SQLite 数据库")]
 
   subgraph SummaryStorage["总结与记忆"]
-    coord --> memoryMod[MemoryModule]
-    coord --> summary["SummaryAgent\n(按需)"]
+    coord --> memoryMod["MemoryModule"]
+    coord --> summary["SummaryAgent (按需)"]
   end
 
-  chatSvc -->|SSE\nintent / explore /\ncontext_usage| sse[SSE Stream]
+  chatSvc -->|"SSE (intent / explore / context_usage)"| sse["SSE Stream"]
   sse --> tui
 ```
 

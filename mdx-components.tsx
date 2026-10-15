@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { isValidElement, type AnchorHTMLAttributes, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import type { MDXComponents } from "mdx/types";
+import { Mermaid } from "@/src/components/mermaid";
 
 function codeLanguage(children: ReactNode): string | null {
   const node = Array.isArray(children) ? children.find(isValidElement) : children;
@@ -10,8 +11,26 @@ function codeLanguage(children: ReactNode): string | null {
   return match?.[1] ?? null;
 }
 
+function codeText(children: ReactNode): string {
+  const node = Array.isArray(children) ? children.find(isValidElement) : children;
+  if (!isValidElement(node)) return "";
+  const codeProps = node.props as { children?: ReactNode };
+  if (typeof codeProps.children === "string") return codeProps.children;
+  if (Array.isArray(codeProps.children)) {
+    return codeProps.children.map((c) => (typeof c === "string" ? c : "")).join("");
+  }
+  return "";
+}
+
 function MdxPre({ children, ...props }: ComponentPropsWithoutRef<"pre">) {
   const lang = codeLanguage(children);
+
+  if (lang === "mermaid") {
+    const text = codeText(children);
+    if (text) {
+      return <Mermaid chart={text.trim()} />;
+    }
+  }
 
   return (
     <div className="mdx-code-frame">
@@ -123,6 +142,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Badge: MdxBadge,
     DocsGrid,
     DocsCard,
+    Mermaid,
     ...components,
   };
 }

@@ -1,10 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import {
-  BookOpenText,
-  GitBranch,
-  Terminal,
-} from "lucide-react";
 import { SiteFooter } from "@/src/components/site-footer";
 import { SiteHeader } from "@/src/components/site-header";
 import { getMessages } from "@/src/i18n/messages";

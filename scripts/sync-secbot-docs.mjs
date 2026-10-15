@@ -688,7 +688,7 @@ function normalizeFenceLanguages(source) {
   return source.replace(/^```([A-Za-z0-9_-]+)\s*$/gm, (match, language) => {
     const normalized = language.toLowerCase();
     if (normalized === "env" || normalized === "dotenv") return "```bash";
-    if (normalized === "mermaid") return "```text";
+    if (normalized === "mermaid") return "```mermaid";
     return match;
   });
 }
