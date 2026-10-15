@@ -5,6 +5,7 @@
     "quickstart",
     "documentation-map",
     "features",
+    "benchmark",
     "api",
     "deployment",
     "llm-providers",

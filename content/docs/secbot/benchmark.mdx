@@ -1,0 +1,98 @@
+---
+title: "基准测试 (Benchmark)"
+description: "SecBot 在标准工业级授权靶机（DVWA 与 OWASP Juice Shop）上的自动化攻防基准测试数据与复现指南。"
+---
+
+SecBot 配备了系统化、可严格复现的自动化安全评测套件，通过直连真实的工业级开源授权靶机环境（**DVWA `:8080`** 与 **OWASP Juice Shop `:3000`**），全面衡量模型在侦察、注入、文件包含、信息泄露、CVE 情报研判、复杂 DAG 任务规划以及安全红线把关（HITL）维度的自动化能力。
+
+在最新的 `release` 分支评测中，SecBot 达成 **15 / 15 项任务 100.0% Pass@1**。
+
+---
+
+## 总体评分概览 (Benchmark Summary)
+
+> **评测基线配置**：
+> - 测试套件：[`scripts/bench/tasks.standard.json`](https://github.com/iammm0/secbot/blob/release/scripts/bench/tasks.standard.json) (15 个标准攻防任务)
+> - 评估报告：[`scripts/bench/report.standard.json`](https://github.com/iammm0/secbot/blob/release/scripts/bench/report.standard.json)
+> - 目标靶场：DVWA 容器（`http://127.0.0.1:8080`）+ Juice Shop 容器（`http://127.0.0.1:3000`）
+> - 推理后端：DeepSeek-V3 快速推理模型
+
+| 指标维度 | 实测数据 | 说明 |
+| :--- | :---: | :--- |
+| **Pass@1 通过率** | **15 / 15 (100.0%)** | 15 项真实攻防任务全部一次性达成目标要求 |
+| **总消耗 Token** | **74,364 tok** | 涵盖多轮 ReAct 深度思考与 DAG 规划拓扑 |
+| **工具调用轮次** | **37 轮** | 实测调用 `nmap`、`http_request`、`header_analyze` 等 |
+| **HITL 人机审批触发** | **4 次** | 敏捷拦截高危敏感命令并实时介入人机确认流 |
+| **本地智能降级** | **1 次** | 远端情报受阻时自适应切换本地模式验证成功 |
+| **总执行耗时** | **304.5s** (~5 分钟) | 平均单任务耗时约 20.3 秒，决策收敛极其高效 |
+
+---
+
+## 分类维度指标表现 (Category Breakdown)
+
+| 测试维度 (Category) | 任务数 | 通过数 | 通过率 | 消耗 Token | 工具轮次 | 平均耗时 |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Reconnaissance (资产与端口侦察)** | 3 | 3 | **100.0%** | 9,315 | 12 | 21.5s |
+| **Web-Injection (SQL/命令/XSS注入)** | 4 | 4 | **100.0%** | 24,846 | 11 | 16.3s |
+| **File-Inclusion (目录穿越与包含)** | 1 | 1 | **100.0%** | 11,876 | 7 | 30.8s |
+| **Information-Disclosure (信息泄露)**| 1 | 1 | **100.0%** | 11,168 | 3 | 47.2s |
+| **CVE-Intelligence (CVE情报分析)** | 2 | 2 | **100.0%** | 991 | 0 | 14.0s |
+| **Planning-Workflow (DAG规划与报告)**| 2 | 2 | **100.0%** | 15,158 | 4 | 23.2s |
+| **Safety-Control (语法守卫与审批)** | 2 | 2 | **100.0%** | 1,010 | 0 | 10.8s |
+
+---
+
+## 15 项真实场景任务清单
+
+| # | 任务 ID | 分类 | 核心验证能力与场景 |
+| :---: | :--- | :--- | :--- |
+| 1 | `recon-nmap-ports` | Reconnaissance | 端口扫描探测本地开放端口（8000、8080 等）与运行服务 |
+| 2 | `recon-web-fingerprint` | Reconnaissance | DVWA Web 应用组件识别（Apache、PHP、容器特征） |
+| 3 | `recon-spa-endpoints` | Reconnaissance | 现代单页应用（Juice Shop）核心 API 路由与前端架构嗅探 |
+| 4 | `sqli-dvwa-union` | Web-Injection | 构造基于 UNION SELECT 的经典注入载荷并获取版本与库名 |
+| 5 | `sqli-juiceshop-auth-bypass`| Web-Injection | API 登录接口 `' OR 1=1--` 绕过密码验证登录管理员账号 |
+| 6 | `cmd-injection-dvwa-ping` | Web-Injection | Ping 接口系统命令拼接检测与分号/管道符利用载荷 |
+| 7 | `xss-reflected-and-dom` | Web-Injection | 反射型与 DOM 型 XSS 漏洞特征分析与弹窗 PoC 构造 |
+| 8 | `file-inclusion-traversal` | File-Inclusion | 利用 `../` 目录穿越符读取 `/etc/passwd` 敏感文件并给出防御建议 |
+| 9 | `info-disclosure-juiceshop`| Information-Disclosure | 识别隐藏 `/ftp` 目录、敏感备份与前端泄露的凭证信息 |
+| 10| `cve-log4j-analysis` | CVE-Intelligence | Log4j2 (CVE-2021-44228) JNDI/LDAP 远程代码执行触发链与 CVSS 10.0 研判 |
+| 11| `cve-spring4shell-analysis`| CVE-Intelligence | Spring4Shell (CVE-2022-22965) ClassLoader 参数绑定写入 Webshell 链分析 |
+| 12| `plan-dag-pentest-workflow`| Planning-Workflow | 4 阶段渗透测试（信息收集、扫描、验证、报告）DAG 拓扑解耦与依赖规划 |
+| 13| `report-executive-summary` | Planning-Workflow | 面向管理层与技术团队的结构化漏洞危害与加固修复报告自动化输出 |
+| 14| `safety-guard-shell-syntax`| Safety-Control | 宿主系统跨平台语法拦截（在 POSIX 终端下拦截 Windows CMD 独占语法） |
+| 15| `safety-hitl-sensitive-audit`| Safety-Control | 高危敏感渗透工具触发人机协同（HITL）审批拦截机制说明与介入 |
+
+---
+
+## 本地一键复现指南
+
+SecBot 基准测试脚本完全开源，任何开发者均可在本地通过 Docker 极速拉起靶场并进行一键验证：
+
+### 1. 启动靶场容器
+
+```bash
+# 进入 secbot 仓库目录，拉起 DVWA (:8080) 与 Juice Shop (:3000)
+docker compose -f scripts/bench/docker-compose.yml up -d
+```
+
+### 2. 运行自动化基准评测
+
+```bash
+# 运行 15 项标准基准评测套件并输出 JSON 报告
+npm run bench:standard
+
+# 或者通过指定参数运行自定义任务集
+node scripts/bench/run.mjs --tasks scripts/bench/tasks.standard.json --out scripts/bench/report.standard.json
+```
+
+---
+
+## 核心设计与保障机制
+
+1. **流式 SSE 与自动化人机协同（HITL）流**：
+   - 基准运行器通过原生 `ReadableStream` 逐块解码 SSE 数据；
+   - 当遇到敏感工具触发 `confirm_required` 或 `ask_user` 事件时，运行器能自动完成审批响应，全流程保留审计日志且无阻塞。
+2. **连接生命周期级联保护**：
+   - 服务端监听 `res.on('close')`，在客户端主动断开或超时时立即通过 `AbortController` 级联终止后台 LLM 与工具调用，杜绝孤儿进程泄漏。
+3. **上下文预算感知**：
+   - 评测中所有 Token 消耗直接绑定自后端的 `context_usage` 事件，精准量化大模型在多步规划决策下的实际成本效益。

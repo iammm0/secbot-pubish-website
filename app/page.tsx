@@ -106,6 +106,7 @@ export default async function Home() {
             <div className="home-doc-links">
               <Link href="/docs/ecosystem">认识 SecBot</Link>
               <Link href="/docs/secbot">开始使用</Link>
+              <Link href="/docs/secbot/benchmark">权威基准测试</Link>
               <Link href="/docs/runtime">运行与执行</Link>
               <Link href="/docs/secbot/quickstart">快速开始</Link>
             </div>

@@ -3,14 +3,28 @@ title: "快速开始"
 description: "按当前 release 仓库真实存在的 server 与 terminal-ui 链路启动 SecBot。"
 ---
 
-本文档只保留当前仓库真实存在、可维护的启动方式：`server/` NestJS 后端和 `terminal-ui/` Ink 终端界面。仓库当前没有 `app/`、`desktop/`、Dockerfile 或 docker-compose 启动链路。
+本文档介绍当前 `release` 分支支持的完整运行方式：**SecBot Desktop 桌面客户端**、**Terminal UI 终端交互**、**独立后端服务**以及**自动化基准测试**。
 
-## 1. 环境要求
+## 0. 桌面版安装（最推荐的用户界面）
+
+对于大多数日常安全测试与交互场景，推荐直接下载安装 **SecBot Desktop 桌面版**：
+
+1. 前往 [GitHub Releases](https://github.com/iammm0/secbot/releases)（标签形如 `desktop-app-v*`）；
+2. 根据您的操作系统下载对应安装包：
+   - **macOS Apple Silicon**: `.dmg`
+   - **Windows x64**: `.exe` (NSIS 安装包)
+   - **Ubuntu / Linux x64**: `.deb` 或 `.AppImage`
+3. 安装并启动后，设置面板内可直观切换模型后端、调节主题与查验系统状态。
+
+> 亦可下载免环境依赖的 **TUI 独立自包含压缩包**（`secbot-tui-<version>-<platform>.tar.gz`），解压后直接执行 `./secbot` 即可运行。
+
+## 1. 源码运行环境要求
 
 - Node.js `>= 24`
-- npm `>= 10`（随新版 Node.js 一起安装即可）
-- 真实终端 TTY（运行 Ink TUI 时需要；Windows 推荐 CMD、PowerShell 或 Windows Terminal）
-- 可选：Ollama（只在使用本地模型时需要）
+- npm `>= 10`
+- 真实终端 TTY（运行 Ink TUI 时需要；Windows 推荐 Windows Terminal / PowerShell）
+- Docker & Docker Compose（运行靶场基准测试时需要）
+- 可选：Ollama（仅在使用本地模型时需要）
 
 ## 2. 配置模型
 
@@ -130,9 +144,10 @@ secbot-server
 npm run build              # 构建 server/dist
 npm run build:terminal-ui  # 构建 terminal-ui/dist
 npm run typecheck          # TypeScript 类型检查
-npm test                   # 运行 vitest
+npm test                   # 运行 vitest 自动化测试
 npm run start:stack        # 构建并进入 TUI
 npm run start:tui          # 启动 TUI
+npm run bench:standard     # 运行 15 项标准权威基准测试 (Pass@1 评测)
 ```
 
 ## 8. 常见问题

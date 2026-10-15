@@ -27,28 +27,28 @@ const zhCN = {
     highlightTitle: "核心能力",
     highlights: [
       {
+        title: "权威基准测试背书",
+        body: "在 DVWA 与 OWASP Juice Shop 真实工业靶场上达成 100.0% Pass@1，全面量化 Token、工具轮次与 HITL 拦截。",
+      },
+      {
         title: "任务规划与工具编排",
         body: "把授权目标、测试意图和上下文转成可执行步骤，并根据反馈持续调整工具调用。",
+      },
+      {
+        title: "ExecGo 沙箱与 MCP",
+        body: "支持 Linux Namespace 强隔离沙箱运行外部命令，并通过 Model Context Protocol 扩展 Python/C/Go 工具。",
       },
       {
         title: "安全工具矩阵",
         body: "覆盖侦察、协议分析、Web Research、防御检查与报告整理，减少在脚本之间来回切换。",
       },
       {
-        title: "流式执行可观测",
-        body: "长任务按阶段输出进度、中间结果和错误，便于中断、复盘和定位问题。",
+        title: "流式可观测与 HITL",
+        body: "长任务按阶段输出 SSE 进度与 Token 预算用量，对高危敏感操作强制触发人机协同审批。",
       },
       {
-        title: "模型与环境适配",
-        body: "可接入云端或本地 LLM，在团队网络、成本和隐私约束下选择合适方案。",
-      },
-      {
-        title: "可复现的会话记忆",
-        body: "配置、上下文和运行记录保留在本地，方便审计、复测和持续调优。",
-      },
-      {
-        title: "TUI + API 双入口",
-        body: "终端适合人机协作，HTTP API 适合接入流水线、服务端任务和自动化脚本。",
+        title: "桌面版 + TUI + API 多端对齐",
+        body: "提供 Tauri 桌面客户端、全功能 Ink 终端界面以及标准 HTTP API，支持跨平台一键部署。",
       },
     ],
   },
@@ -59,6 +59,7 @@ const zhCN = {
     quickNavLabel: "快速导航",
     quickLinks: [
       { label: "文档总览", viewPath: "/docs", emphasis: true },
+      { label: "基准测试", viewPath: "/docs/secbot/benchmark", emphasis: true },
       { label: "认识 SecBot", viewPath: "/docs/ecosystem" },
       { label: "快速开始", viewPath: "/docs/secbot/quickstart" },
       { label: "API 接口", viewPath: "/docs/secbot/api" },

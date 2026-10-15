@@ -27,11 +27,18 @@ description: "SecBot ToolsService 的工具类别、敏感工具策略、扩展�
 
 `install_tool` 可在授权环境中尝试安装缺失的安全 CLI 工具（见 Agent prompt 策略）。
 
-## 敏感工具策略
+## 敏感工具与人机协同 (HITL)
 
-- 工具可标记 `sensitive: true`
-- **ExploreAgent** 与默认 **MCP** 模式下会隐藏/拒绝
+- 工具声明 `sensitive: true` 时：
+  - **Hackbot (HITL 模式)**：遇到敏感命令（如 `execute_command`、高危利用）会暂停并向前端发送 `confirm_required` 事件，等待操作员确认（`allow` / `deny` / `always_allow`）。
+  - **SuperHackbot (自主模式)**：敏感工具直通执行，适合自动化沙箱打靶。
+  - **ExploreAgent** 与默认 **MCP** 模式下会完全隐藏/拒绝敏感工具。
 - MCP 显式开放：`SECBOT_MCP_ALLOW_SENSITIVE=true`
+
+## ExecGo 沙箱与外部 MCP 扩展
+
+- **ExecGo 沙箱**: 通过 `SECBOT_EXECGO_ENABLED=1` 启用，可在 `process`（进程隔离）或 `isolated`（Linux Namespace 隔离）模式下运行外部命令与脚本，防止逃逸。
+- **MCP 扩展**: 通过 `mcp_call` 工具桥接任何兼容 Model Context Protocol 的外部服务（例如 Python `fastmcp` 编写的专有扫描脚本或 C 库）。
 
 ## 扩展工具
 
@@ -42,6 +49,7 @@ description: "SecBot ToolsService 的工具类别、敏感工具策略、扩展�
 ## API 发现
 
 运行后端后，工具亦可通过内部 Agent 工具列表或 MCP `secbot-mcp` 发现。
+GET `/api/tools` 可获取当前注册的全部工具元数据与参数 JSON Schema。
 
 ## 相关
 
