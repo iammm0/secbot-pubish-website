@@ -1,6 +1,6 @@
 # Secbot 文档导览
 
-本站 `docs/` 目录由上游 Secbot 开源项目的 `docs/` 同步而来（同步记录见同目录 `SOURCE.txt`）。**当前唯一维护的上游分支是 `release`**。
+本站 `docs/` 目录下的 `npm-release/` 与 `pypi-release/` 是历史归档（快照见 `SOURCE.txt`），来自上游 Secbot 已冻结的旧分支。上游 `secbot` 仓库目前已不再维护仓库内 `docs/`（以官网为文档真源），**当前唯一维护的上游分支是 `release`**，其用户文档统一收敛到 `/docs/secbot`。
 
 > Python 的 `pypi-release` 与 Go 的 `pure-go` 已冻结，只作历史归档。新功能与文档请以 `release` 为准。站内现行文档入口是 `/docs/secbot`（对应上游 `release`），不要再把 `pypi-release` / 旧 `npm-release` 路径当作默认安装指南。
 

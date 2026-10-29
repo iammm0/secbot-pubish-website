@@ -29,6 +29,7 @@ const SECTION_PAGE_ORDER: Record<SectionId, string[]> = {
     "quickstart",
     "documentation-map",
     "features",
+    "benchmark",
     "api",
     "deployment",
     "llm-providers",

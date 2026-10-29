@@ -3,18 +3,23 @@ title: "终端界面"
 description: "SecBot terminal-ui 的技术栈、启动模式、关键文件、状态和交互说明。"
 ---
 
-当前仓库只保留一个前端实现：[terminal-ui](https://github.com/iammm0/secbot/tree/release/terminal-ui)。
+当前有两套面向用户的客户端，共用同一 NestJS 后端与 SSE：
 
-`terminal-ui` 是基于 Ink + React 的终端 TUI，通过 HTTP 和 SSE 连接 NestJS 后端。仓库当前没有 `app/` 移动端或 `desktop/` 桌面端目录，因此本文档不再描述 Expo、React Native、Tauri 或浏览器 UI。
+| 客户端 | 路径 | 说明 |
+| --- | --- | --- |
+| **Desktop** | `desktop/` + `web/` | Tauri 桌面端；主界面是 `web/`（后端托管 `web/dist`） |
+| **TUI** | `terminal-ui/` | Ink 终端 UI；`secbot` / `npm run start:stack` 默认入口 |
+
+`terminal-ui` 是基于 Ink + React 的终端 TUI，通过 HTTP 和 SSE 连接 NestJS 后端，与 Web/桌面端是对等客户端。改 SSE 事件、会话块、模型/设置、HITL 时，两端应一并更新。
 
 ## 1. 技术栈
 
 | 层级 | 技术 | 位置 |
 |------|------|------|
-| 终端 UI | Ink 4 + React 18 + TypeScript | `terminal-ui/src/` |
-| 后端 API | NestJS 11 + Express | `server/src/` |
-| 实时通信 | SSE (`POST /api/chat`) | `terminal-ui/src/sse.ts` |
-| REST 调用 | `fetch` 封装 | `terminal-ui/src/api.ts` |
+| 终端 UI | Ink 4 + React + TypeScript | `terminal-ui/src/` |
+| 后端 API | NestJS + Express | `server/src/` |
+| 实时通信 | SSE (`POST /api/chat`) | `terminal-ui/src/api/` |
+| REST 调用 | `fetch` 封装 | `terminal-ui/src/api/api.ts` |
 | 入口 | Node CLI | `terminal-ui/src/cli.tsx` |
 
 ## 2. 启动模式
@@ -38,18 +43,34 @@ SECBOT_TUI_BACKEND=service SECBOT_API_URL=http://127.0.0.1:8000 npm run start:tu
 
 `spawn` 模式会把后端子进程日志写入 `logs/backend-runtime.log`，避免污染终端 UI。
 
+## 2.1 自包含发行包
+
+TUI 与桌面端由同一发布流水线产出自包含发行包（随包 Node 运行时，无需目标机安装 Node），
+发布在 `desktop-app-v*` GitHub Release 上：
+
+| 归档 | 平台 |
+| --- | --- |
+| `secbot-tui-<version>-macos-arm64.tar.gz` | macOS Apple Silicon |
+| `secbot-tui-<version>-linux-x64.tar.gz` | Ubuntu x64 |
+| `secbot-tui-<version>-windows-x64.zip` | Windows x64 |
+
+macOS Intel 不受支持。解压后运行 `./secbot` 或 `secbot.cmd`（默认 `spawn` 本地后端）。
+
 ## 3. 入口与关键文件
 
 | 文件 | 职责 |
 |------|------|
-| `terminal-ui/src/cli.tsx` | 解析 CLI 参数和后端模式，启动 Ink 渲染 |
-| `terminal-ui/src/backendSpawn.ts` | 分配端口、启动本地后端、等待 `/api/system/info` 可用 |
-| `terminal-ui/src/App.tsx` | TUI 根组件、全局布局和退出逻辑 |
-| `terminal-ui/src/MainContent.tsx` | 主内容区渲染 |
-| `terminal-ui/src/useChat.ts` | 聊天状态、SSE 事件处理、会话消息流 |
-| `terminal-ui/src/sse.ts` | SSE 请求和事件解析 |
-| `terminal-ui/src/api.ts` | REST API 调用 |
-| `terminal-ui/src/slash.ts` | 斜杠命令解析与补全 |
+| `terminal-ui/src/cli.tsx` | 入口、后端模式、TTY 检查，启动 Ink 渲染 |
+| `terminal-ui/src/App.tsx` | 根布局 |
+| `terminal-ui/src/api/` | REST、SSE、config、后端 spawn |
+| `terminal-ui/src/chat/` | `useChat`、事件类型、内容块与折叠助手 |
+| `terminal-ui/src/slash/` | 斜杠命令解析 |
+| `terminal-ui/src/render/` | markdown → ANSI、剪贴板文案 |
+| `terminal-ui/src/model/` | provider UI 类型 / 离线回退 |
+| `terminal-ui/src/views/` | HomeView、SessionView |
+| `terminal-ui/src/components/` | chrome、对话框、MainContent、blocks/ |
+| `terminal-ui/src/contexts/` | theme、dialogs、keybinds 等全局状态 |
+| `terminal-ui/src/hooks/` | 鼠标过滤 / 滚动 |
 
 ## 4. 布局结构
 
@@ -68,18 +89,32 @@ TUI 的主界面围绕三块区域组织：
 | 事件 | UI 行为 |
 |------|---------|
 | `connected` | 标记连接已建立 |
+| `intent_decision` | 展示意图分类信号（可选探索/报告） |
+| `explore_*` | 展示只读探索阶段 |
+| `context_usage` | 底栏展示 Token 用量 |
 | `planning` | 展示计划或 Todo |
 | `thought_start` / `thought_chunk` / `thought` | 展示推理过程 |
 | `action_start` / `action_result` | 展示工具执行过程与结果 |
 | `content` | 渲染结构化内容块 |
 | `report` | 渲染最终或阶段性报告 |
 | `phase` | 更新当前阶段 |
+| `confirm_required` | 打开敏感操作审批弹窗（HITL） |
+| `user_input_required` | 打开 `ask_user` 决策弹窗 |
 | `root_required` | 打开 root 权限确认对话框 |
 | `error` | 展示错误块 |
 | `response` | 展示最终回复 |
 | `done` | 标记本轮完成 |
 
-事件解析集中在 `useChat.ts`，渲染细节集中在 `components/blocks/`，避免把网络状态和 UI 表现耦合在一起。
+事件解析集中在 `chat/useChat.ts`，渲染细节集中在 `components/blocks/`，避免把网络状态和 UI 表现耦合在一起。
+
+## 5.1 HITL 审批弹窗
+
+敏感工具触发 `confirm_required`（如高危命令、漏洞利用）时，TUI 会暂停 agent 循环并打开 **HitlDialog**：
+
+- **敏感操作批准**：展示工具名、风险摘要与参数，按 `1` 批准一次 / `2` 本会话始终允许 / `3` 拒绝，`Esc` 拒绝。
+- **`ask_user` 决策**（`user_input_required`）：支持单选、多选与自由文本输入，回车提交。
+
+回复通过 `/api/chat/confirm-response` 与 `/api/chat/user-input-response` 交回后端继续执行，全程落审计日志。
 
 ## 6. 斜杠命令
 
@@ -88,13 +123,18 @@ TUI 的主界面围绕三块区域组织：
 | 命令 | 说明 |
 |------|------|
 | `/model` | 打开模型与 provider 配置 |
+| `/execgo` | 查看 ExecGo 沙箱模式、生效隔离级别与运行时 Capabilities |
+| `/mcp` | 查看已挂载的外部 MCP 服务器及工具列表 |
+| `/jev` | 配置 Jev 判断层（主开关、五个环节、API Key） |
 | `/agent` | 切换智能体 |
 | `/list-agents` | 查看后端返回的智能体列表 |
 | `/system-info` | 查看系统信息 |
 | `/db-stats` | 查看 SQLite 统计 |
 | `/help` | 查看可用工具和帮助信息 |
 
-命令实现位于 `terminal-ui/src/slash.ts`，部分命令会打开对话框，部分命令会调用 REST API。
+## 6.1 对话内搜索
+
+按 `Ctrl+F` 打开对话内搜索，`Enter` / `Ctrl+N` 跳转下一处，`Shift+Enter` / `Ctrl+P` 跳转上一处。快捷键可通过后端配置或本地配置覆盖。
 
 ## 7. 对话框与反馈
 
@@ -103,7 +143,8 @@ TUI 的主界面围绕三块区域组织：
 - `ModelConfigDialog.tsx`：模型 provider、API Key、Base URL 和模型名配置。
 - `AgentSelectDialog.tsx`：智能体选择。
 - `ToolsDialog.tsx`：工具列表。
-- `RootPermissionDialog.tsx`：敏感命令授权确认。
+- `HitlDialog.tsx`：敏感操作批准（`confirm_required`）与 `ask_user` 决策弹窗。
+- `RootPermissionDialog.tsx`：root 权限授权确认。
 - `RestResultDialog.tsx`：REST API 调用结果展示。
 - `Toast.tsx`：轻量状态反馈。
 
@@ -143,9 +184,9 @@ TUI 的主界面围绕三块区域组织：
 
 如果新增后端 `content` 类型，推荐流程是：
 
-1. 在 `terminal-ui/src/types.ts` 或相关内容类型中补充字段。
+1. 在 `terminal-ui/src/chat/types.ts` 或相关内容类型中补充字段。
 2. 在 `components/blocks/` 增加专门渲染组件。
-3. 在 `BlockRenderer.tsx` 或判别器中接入。
+3. 在 `blockDiscriminators/` 判别器或 `BlockRenderer` 中接入。
 4. 用一个最小 SSE payload 或组件测试验证展示。
 
 ## 10. 真实终端要求

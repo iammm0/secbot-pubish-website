@@ -3,16 +3,16 @@ title: "认识 SecBot"
 description: "建立 SecBot 的产品定位、仓库边界、版本边界和执行模型总览。"
 ---
 
-本节用于建立 SecBot 的稳定心智模型。当前唯一维护的主线是 `release` 上的 TypeScript 产品：本地 `../secbot` 仓库中 `server/` 提供 NestJS API 与 Agent 执行，`terminal-ui/` 提供 Ink 终端交互，`web/` 提供 Web / 桌面端界面。Python（`pypi-release`）与 Go（`pure-go`）分支已冻结。
+本节用于建立 SecBot 的稳定心智模型。当前主线是 v2 TypeScript 产品线，核心在本地 `../secbot` 仓库中：`server/` 提供 NestJS API 与 Agent 执行，`terminal-ui/` 提供 Ink 终端交互，`desktop/` + `web/` 提供桌面客户端。
 
 <DocsGrid>
   <DocsCard href="/docs/ecosystem/execution-model" eyebrow="模型" title="执行模型" description="Web/API/TUI、ChatService、Agent、任务执行器和工具层如何协作。"/>
-  <DocsCard href="/docs/ecosystem/versioning" eyebrow="版本" title="版本与边界" description="只维护 release；Python 与 Go 分支已冻结。"/>
+  <DocsCard href="/docs/ecosystem/versioning" eyebrow="版本" title="版本与边界" description="v2 TypeScript、Python Legacy、Go Demo 和运行时概念的边界。"/>
 </DocsGrid>
 
 ## 仓库边界
 
-SecBot 的文档站只从本地 `../secbot` 读取主项目文档。`runtime` 是本站文档分区名，表示内部运行与执行层；它不对应独立的 `secbot-runtime` 仓库。
+SecBot 的文档站以站内维护为主：上游 secbot 不再维护仓库内 `docs/` 长篇手册，README_CN.md 与各子目录 README 是代码仓库内的权威说明，本站 `features` 页会持续与其对齐。`runtime` 是本站文档分区名，表示内部运行与执行层；它不对应独立的 `secbot-runtime` 仓库。
 
 ## 当前读者任务
 

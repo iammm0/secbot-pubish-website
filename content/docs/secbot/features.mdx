@@ -21,23 +21,58 @@ description: "SecBot 的定位、安全边界、主要能力、技术栈和仓�
 - 确保遵守所有适用的法律法规
 - 负责任和道德地使用
 
+## 产品演示
+
+当前有两套面向用户的客户端，共用同一 NestJS 后端与 SSE：
+
+| 客户端 | 路径 | 说明 |
+| --- | --- | --- |
+| **Desktop** | `desktop/` + `web/` | Tauri 桌面端；主界面是 `web/`（后端托管 `web/dist`） |
+| **TUI** | `terminal-ui/` | Ink 终端 UI；`secbot` / `npm run start:stack` 默认入口 |
+
+产品能力与聊天体验应对齐：改 SSE 事件、会话块、模型/设置、HITL 等时，**Desktop（`web/`）与 TUI（`terminal-ui/`）应一并更新**（或明确只改一端并写进说明）。
+
+桌面端演示（`release` 分支）：
+
+![Secbot 桌面端](/secbot-demo.gif)
+
+| 首页 | 工具 |
+| --- | --- |
+| ![首页](/demos/web-home.gif) | ![内置工具](/demos/web-tools.gif) |
+| 设置 | 模型与主题 |
+| ![设置](/demos/web-settings.gif) | ![模型配置](/demos/web-model.gif) |
+
+## 维护分支
+
+**只维护 [`release`](https://github.com/iammm0/secbot/tree/release)。** 新功能、文档、CI 与 GitHub Releases 都落在这条分支（NestJS + Ink TUI + Web / 桌面端）。
+
+| 分支 | 状态 |
+| --- | --- |
+| **[`release`](https://github.com/iammm0/secbot/tree/release)** | 当前产品，唯一活跃维护线 |
+| [`pypi-release`](https://github.com/iammm0/secbot/tree/pypi-release) | **已冻结** 的 Python v1 归档（只读，不再加功能） |
+| [`pure-go`](https://github.com/iammm0/secbot/tree/pure-go) | **已冻结** 的 Go 实验分支（只读，不再加功能） |
+
 ## 功能特性
 
 ### 核心能力
 
+- **桌面端（Tauri）**: 带版本号的安装包（`desktop-app-v*`），设置 → 关于可查看版本并检查更新；界面源码在 `web/`
+- **终端 TUI（Ink）**: `secbot` / `npm run start:stack`；与桌面端同一 Release 发布自包含包（`secbot-tui-*`），产品能力应对齐
+- **发布平台**: macOS Apple Silicon、Windows x64、Ubuntu x64（不再支持 macOS Intel）
+- **ExecGo 沙箱隔离与运行时**: 支持 `process`（进程隔离）与 `isolated`（严格 Linux Namespace 隔离且禁用降级回退）；桌面端与 TUI 底栏实时展示当前沙箱状态
+- **MCP 外部工具扩展**: 遵循标准 Model Context Protocol (MCP)，在设置中挂载 Stdio MCP 服务即可无缝扩展 Python (`fastmcp`)、C/Go/Rust 工具，外部工具默认受 HITL 人机审核保护
+- **自动化基准测试 (Benchmark)**: 内置 `npm run bench` 评估脚手架，测量 Pass@1、Token 消耗、工具轮次与沙箱合规度
+- **操作审计**: 每个对话的阶段 / 模型调用 / 工具执行落库，设置 → 审计可按会话追溯
+- **节点探测与攻击链预览**: 主机节点展示 IP、用户名、开放端口，并给出模拟入口面路径（仅预览，不执行攻击）
+- **人机协同（HITL）**: Hackbot 敏感工具需确认；任务中途 `ask_user` 可暂停等待输入
 - **多种智能体模式**: ReAct、Plan-Execute、多智能体协调、工具调用、记忆增强
-- **权威基准测试与性能背书**: 内置自动化打靶评测脚手架，在 DVWA 与 OWASP Juice Shop 上达成 100.0% Pass@1，全面量化 Token、工具轮次与 HITL（详见 [基准测试](/docs/secbot/benchmark)）
-- **ExecGo 执行沙箱**: 提供 `process` 进程级沙箱与 `isolated`（Linux Namespace 隔离 + 回退预防）执行安全保证
-- **MCP 双向工具扩展**: 原生支持 Model Context Protocol，支持 `secbot-mcp` 标准服务模式与 `mcp_call` 桥接外部 Python（fastmcp）/ C / Go 工具
-- **跨平台 Shell 语法守卫**: 运行时防范模型终端命令幻觉，自动识别与阻断跨操作系统 Shell 独占语法错误
-- **全链路动作审计 (Action Audit)**: 每次会话的决策、LLM 思考与工具调用均结构化持久化，支持全面安全合规复盘
 - **AI Web 研究子智能体**: 独立的 WebResearchAgent，基于 ReAct 自动完成联网搜索、网页提取、多页爬取和 API 调用
 - **持久化终端会话**: 为智能体提供专用终端，会话内多步命令执行与系统信息收集
 - **AI 网络爬虫**: 实时网络信息捕获和监控
 - **记忆子系统**: 短期 / 情景 / 长期记忆管理，向量存储与语义检索
 - **漏洞数据库**: 统一漏洞 schema，适配 CVE / NVD / Exploit-DB / MITRE ATT&CK
 - **意图路由与探索**: **`IntentRouter`** 单次分类用户意图；可选 **`ExploreAgent`** 在规划前用 **`vuln_db_query`**、**`browser_session`**（遵守 robots、可读性提取）补全上下文。
-- **上下文预算**: **`ContextAssemblerService`** 按模型窗口装配历史与记忆；SSE **`context_usage`** 供 TUI 右下角用量展示。
+- **上下文预算**: **`ContextAssemblerService`** 按模型窗口装配历史与记忆；SSE **`context_usage`** 供底栏用量展示。
 
 ### 渗透测试
 
@@ -70,43 +105,47 @@ description: "SecBot 的定位、安全边界、主要能力、技术栈和仓�
 ```mermaid
 flowchart LR
   subgraph FrontendClients["前端 / Clients"]
-    user["用户"]
-    tui["terminal-ui (Ink) / Desktop"]
+    user[用户]
+    tui["terminal-ui (Ink)"]
+    web["Web / Desktop"]
   end
 
   user --> tui
-  tui -->|"HTTP / SSE"| api["NestJS /api/chat"]
+  user --> web
+
+  tui -->|HTTP / SSE| api["NestJS /api/chat"]
+  web -->|HTTP / SSE| api
 
   subgraph BackendRouter["会话编排"]
     api --> chatSvc["ChatService"]
-    chatSvc --> intent["IntentRouter (一次分类)"]
-    intent --> explore["ExploreAgent (可选)"]
-    explore --> ctx["ContextAssembler + ContextStore"]
-    intent --> taskPath["task_simple / task_complex"]
+    chatSvc --> intent["IntentRouter\n(一次分类)"]
+    intent --> explore["ExploreAgent\n(可选)"]
+    explore --> ctx["ContextAssembler\n+ ContextStore"]
+    intent --> taskPath["task_simple /\ntask_complex"]
   end
 
   subgraph PlanningExecution["规划 & 执行"]
-    taskPath --> planner["PlannerAgent (复杂任务)"]
+    taskPath --> planner["PlannerAgent\n(复杂任务)"]
     planner --> executor["TaskExecutor"]
-    taskPath --> react["SecurityReActAgent (简单任务)"]
+    taskPath --> react["SecurityReActAgent\n(简单任务)"]
     executor --> coord["CoordinatorAgent"]
-    coord --> specialists["专职子 Agent (ReAct)"]
+    coord --> specialists["专职子 Agent\n(ReAct)"]
   end
 
   subgraph ToolsLayer["工具层"]
-    specialists --> toolsMod["ToolsModule (vuln-db / browser_session / ExecGo / MCP)"]
+    specialists --> toolsMod["ToolsModule\n(vuln-db / browser_session /\nweb-research / …)"]
     explore --> toolsMod
     react --> toolsMod
   end
 
-  toolsMod --> db[("SQLite 数据库")]
+  toolsMod --> db[(SQLite)]
 
   subgraph SummaryStorage["总结与记忆"]
-    coord --> memoryMod["MemoryModule"]
-    coord --> summary["SummaryAgent (按需)"]
+    coord --> memoryMod[MemoryModule]
+    coord --> summary["SummaryAgent\n(按需)"]
   end
 
-  chatSvc -->|"SSE (intent / explore / context_usage)"| sse["SSE Stream"]
+  chatSvc -->|SSE\nintent / explore /\ncontext_usage| sse[SSE Stream]
   sse --> tui
 ```
 
@@ -175,6 +214,7 @@ flowchart LR
 ```bash
 git clone https://github.com/iammm0/secbot.git
 cd secbot
+# 默认分支即为唯一维护中的 `release`
 ```
 
 ### 2. 安装依赖
@@ -198,11 +238,25 @@ DEEPSEEK_MODEL=deepseek-chat
 # OLLAMA_BASE_URL=http://localhost:11434
 # OLLAMA_MODEL=llama3.2
 
-# 可选：探索迭代上限、上下文调试 SSE、关闭自适应重规划、NVD 速率
-# SECBOT_EXPLORE_MAX_ITERS=12
+# 可选：ReAct/探索上限、上下文调试 SSE、开启自适应重规划、NVD 速率
+# SECBOT_REACT_MAX_ITERS=20
+# SECBOT_EXPLORE_MAX_ITERS=6
 # SECBOT_CONTEXT_DEBUG=1
-# SECBOT_ADAPTIVE_REPLAN=false
+# SECBOT_ADAPTIVE_REPLAN=1
 # NVD_API_KEY=your-nvd-key
+
+# 可选：Jev System One 判断层（默认全关；打开后高置信才采纳，失败回退原逻辑）
+# SECBOT_JEV_ENABLED=1
+# SECBOT_JEV_INTENT=1
+# SECBOT_JEV_QA_LIVE=1
+# SECBOT_JEV_ADAPTIVE=1
+# SECBOT_JEV_REACT_STOP=1
+# SECBOT_JEV_CONTEXT=1
+# TYPESAFE_API_KEY=your-typesafe-key
+# TYPESAFE_BASE_URL=https://api.typesafe.ai
+# SECBOT_JEV_MODEL=jev-latest
+# SECBOT_JEV_CONFIDENCE_MIN=0.85
+# SECBOT_JEV_REACT_STOP_MIN=0.92
 ```
 
 ### 4. 启动
@@ -214,6 +268,7 @@ npm run start:stack
 # 或分步启动
 npm run dev           # 后端开发模式（热重载）
 npm run start:tui     # 另一终端启动 TUI（默认自动拉起本地后端子进程）
+cd desktop && npm run dev   # 桌面端热开发（Vite + Nest + Tauri）
 
 # 仅连接已有后端（服务模式，可选）
 SECBOT_TUI_BACKEND=service SECBOT_API_URL=http://127.0.0.1:8000 npm run start:tui
@@ -221,6 +276,8 @@ SECBOT_TUI_BACKEND=service SECBOT_API_URL=http://127.0.0.1:8000 npm run start:tu
 # 兼容别名（remote 等同于 service）
 SECBOT_TUI_BACKEND=remote SECBOT_API_URL=http://127.0.0.1:8000 npm run start:tui
 ```
+
+桌面安装包与终端 TUI 自包含发行包都在 [GitHub Releases](https://github.com/iammm0/secbot/releases)（标签形如 `desktop-app-v0.0.7-beta`）。支持 **macOS Apple Silicon / Windows x64 / Ubuntu x64**，不含 macOS Intel。TUI 解压后运行 `./secbot` 或 `secbot.cmd`。详见 [`desktop/README.md`](https://github.com/iammm0/secbot/blob/release/desktop/README.md)、[`terminal-ui/README.md`](https://github.com/iammm0/secbot/blob/release/terminal-ui/README.md)。
 
 ### 5.（可选）安装 Ollama 本地模型
 
@@ -244,35 +301,119 @@ npm start
 # 终端 TUI（默认子进程模式）
 npm run start:tui
 
+# 桌面端热开发
+cd desktop && npm run dev
 ```
 
 ### 常用环境变量
 
 | 变量 | 用途 | 默认值 |
 |------|------|--------|
-| `LLM_PROVIDER` | 当前推理后端 | `ollama` |
+| `LLM_PROVIDER` | 当前推理后端 | `deepseek` |
 | `DEEPSEEK_API_KEY` | DeepSeek API Key | 无 |
 | `DEEPSEEK_MODEL` | DeepSeek 默认模型 | `deepseek-chat` |
 | `OLLAMA_BASE_URL` | Ollama 服务地址 | `http://localhost:11434` |
 | `OLLAMA_MODEL` | Ollama 默认模型 | `llama3.2` |
 | `PORT` | 后端监听端口 | `8000` |
 | `SECBOT_TUI_BACKEND` | TUI 后端模式：`spawn`/`service`/`remote`/`auto` | 默认优先 `spawn`，连接已有后端时请显式使用 `service`/`remote` |
+| `SECBOT_EXECGO_ENABLED` | 是否启用 ExecGo 运行时（`1`/`true`） | 关 |
+| `SECBOT_EXECGO_SANDBOX` | ExecGo 沙箱 Profile：`process`（进程隔离）或 `isolated`（严格 Namespace 隔离） | `process` |
+| `SECBOT_JEV_ENABLED` | Jev 判断层主开关（默认关） | 关 |
+| `TYPESAFE_API_KEY` | TypeSafe Jev API Key | 无 |
 
 ### 常见斜杠命令（TUI 内使用）
 
 | 命令 | 说明 |
 |------|------|
 | `/model` | 选择推理后端、模型、API Key、Base URL |
+| `/execgo` | 查看 ExecGo 沙箱模式、生效隔离级别与运行时 Capabilities |
+| `/mcp` | 查看已挂载的外部 MCP 服务器及工具列表 |
+| `/jev` | 配置 Jev 判断层（主开关、五个环节、API Key） |
 | `/agent` | 切换 `secbot-cli` / `superhackbot` |
 | `/list-agents` | 查看当前可用智能体 |
 | `/system-info` | 查看系统信息 |
 | `/db-stats` | 查看 SQLite 统计 |
+
+---
+
+## 扩展与安全机制
+
+### 1. MCP 外部工具扩展（Python / C / Go / Rust）
+
+Secbot 支持通过标准 **Model Context Protocol (MCP)** 接入外部自定义工具，无需侵入核心代码或自造私有协议：
+
+- **无缝集成 Python 安全库**：使用 Python 官方 `fastmcp` 库，几行代码即可将 `impacket`、`scapy`、`pwntools` 封装为标准 MCP 工具；
+- **配置与挂载**：在桌面端「设置 → MCP」或通过设置接口添加 Stdio MCP 服务器（指定 `command`、`args`、`cwd`）；
+- **动态发现与安全守护**：
+  - Secbot 启动时自动发现远程工具并挂载至 Agent 工具池；
+  - 外部 MCP 工具默认标记为 **`sensitive: true`**，每次调用均触发 **HITL 人机确认**与**操作审计落库**；
+  - 设有 `MCP_TOOL_CAP` 上限，防止第三方工具列表过长撑爆 LLM 上下文预算。
+
+### 2. ExecGo 沙箱隔离机制
+
+针对高危渗透命令与 Payload 执行，Secbot 深度集成了 ExecGo 独立运行时：
+
+- **隔离分级（Sandbox Profiles）**：
+  - `process`：基础进程级隔离与守护；
+  - `isolated`：**严格 Linux Namespace 隔离**（Mount / PID / UTS / IPC 隔离与 cgroup 资源限制）。在该模式下**强制禁用本地降级回退（Fallback Local）**，若沙箱环境未就绪则直接拦截报错，坚决杜绝恶意逃逸。
+- **全链路状态自省与透明透出**：
+  - Secbot 会向运行时核验 `capabilities`（区分用户请求的 `requested` 与系统实际生效的 `reported` 状态）；
+  - **桌面端**底栏与**终端 TUI**底栏常驻显示当前沙箱状态（`ExecGo isolated` / `ExecGo process` / `ExecGo off`）；
+  - TUI 支持输入 `/execgo` 即时查看底层能力快照。
+
+### 3. 自动化基准测试（Benchmark Harness）
+
+Secbot 内置了标准化的打靶与评估脚手架（位于 `scripts/bench/`），并在工业级标准授权靶场（**DVWA `:8080`** 与 **OWASP Juice Shop `:3000`**）上完成了系统化的权威基准测试：
+
+#### 基准测试总体评分概览 (Benchmark Summary)
+
+> 实测数据基于 `release` 分支与本地靶机容器环境（详情参阅 [`scripts/bench/report.standard.json`](https://github.com/iammm0/secbot/blob/release/scripts/bench/report.standard.json)）：
+
+| 指标维度 | 评测实测数据 | 说明 |
+| :--- | :---: | :--- |
+| **Pass@1 通过率** | **15 / 15 (100.0%)** | 15 项真实攻防任务全部一次性达成目标 |
+| **总消耗 Token** | **74,364 tok** | 涵盖多轮 ReAct 思考与 DAG 规划拓扑 |
+| **工具调用轮次** | **37 轮** | 实测调用 `nmap`、`http_request`、`header_analyze` 等 |
+| **HITL 人机审批介入** | **4 次** | 敏捷拦截高危敏感命令并完成实时审批流 |
+| **本地智能降级** | **1 次** | 远端情报受阻时自适应切换本地模式验证成功 |
+| **总执行耗时** | **304.5s** (~5 分钟) | 平均单任务用时约 20.3 秒 |
+
+#### 分类维度指标表现 (Category Breakdown)
+
+| 测试维度 (Category) | 任务数 | 通过数 | 通过率 | 消耗 Token | 工具轮次 | 平均耗时 |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Reconnaissance (资产侦察)** | 3 | 3 | **100.0%** | 9,315 | 12 | 21.5s |
+| **Web-Injection (SQL/命令/XSS注入)** | 4 | 4 | **100.0%** | 24,846 | 11 | 16.3s |
+| **File-Inclusion (目录穿越与包含)** | 1 | 1 | **100.0%** | 11,876 | 7 | 30.8s |
+| **Information-Disclosure (信息泄露)**| 1 | 1 | **100.0%** | 11,168 | 3 | 47.2s |
+| **CVE-Intelligence (CVE情报分析)** | 2 | 2 | **100.0%** | 991 | 0 | 14.0s |
+| **Planning-Workflow (DAG规划与报告)**| 2 | 2 | **100.0%** | 15,158 | 4 | 23.2s |
+| **Safety-Control (语法守卫与审批)** | 2 | 2 | **100.0%** | 1,010 | 0 | 10.8s |
+
+```bash
+# 启动标准测试靶机容器
+docker compose -f scripts/bench/docker-compose.yml up -d
+
+# 运行 15 项标准权威基准评测
+node scripts/bench/run.mjs --tasks scripts/bench/tasks.standard.json --out scripts/bench/report.standard.json
+```
+
+- **核心评估指标（Metrics）**：
+  - **`Pass@1`**：一次性拿 Flag / 达成目标的成功率；
+  - **`Tokens`**：基于 `context_usage` 统计模型消耗成本，量化规划效率；
+  - **`Tool Rounds`**：工具调用轮次，衡量 ReAct 决策收敛速度；
+  - **`Elapsed Time`**：端到端平均执行耗时；
+  - **`HITL Counts`**：人机介入审核次数；
+  - **`Fallback Local`**：记录是否发生未隔离的本地降级，量化安全合规度。
+
+---
 
 ## 目录结构
 
 ```text
 secbot/
 ├── server/                 # NestJS 后端（TypeScript）
+│   ├── skills/             # Agent 技能定义（base/ + custom/）
 │   └── src/
 │       ├── main.ts         # 应用入口
 │       ├── app.module.ts   # 根模块（引入 12 个业务模块）
@@ -290,12 +431,13 @@ secbot/
 │           ├── system/     # 系统信息与配置
 │           ├── crawler/    # 爬虫调度
 │           └── health/     # 健康检查
-├── npm-bin/                # npm CLI 入口
-├── terminal-ui/            # Ink 终端前端（TypeScript）
+├── bin/                    # npm CLI 入口
+├── terminal-ui/            # Ink 终端前端（TUI）
+├── web/                    # Web UI（桌面端实际界面）
+├── desktop/                # Tauri 桌面壳（拉起后端并加载 web）
 ├── scripts/                # 启动与构建脚本
-├── tools/                  # 工具能力说明文档
-├── skills/                 # Agent 技能定义
-└── docs/                   # 项目文档
+├── CLAUDE.md / AGENTS.md   # 贡献者 / AI agent 约定
+└── SECURITY_WARNING.md     # 法律声明（随包分发）
 ```
 
 ## 开发
@@ -311,8 +453,9 @@ npm run lint:fix
 # 代码格式化
 npm run format
 
-# 运行测试
+# 运行测试与基准评测
 npm test
+npm run bench
 
 # 构建
 npm run build
@@ -325,18 +468,12 @@ npm run release:pack
 
 | 文档 | 说明 |
 |------|------|
-| [CLAUDE.md](https://github.com/iammm0/secbot/blob/release/CLAUDE.md) | 给 AI / 贡献者的编排说明、SSE、环境变量与目录索引 |
-| [快速开始指南](/docs/secbot/quickstart) | 安装与启动 |
-| [API 文档](/docs/secbot/api) | REST + SSE 接口说明 |
-| [LLM 厂商配置](/docs/secbot/llm-providers) | 多厂商模型后端与配置 |
-| [Ollama 设置](https://github.com/iammm0/secbot/blob/release/docs/OLLAMA_SETUP.md) | 本地模型配置 |
-| [UI 设计与交互](/docs/secbot/ui) | TUI 架构说明 |
-| [部署指南](/docs/secbot/deployment) | 后端部署 |
-| [发布说明](/docs/secbot/release) | 发布与打包 |
-| [数据库指南](/docs/secbot/database) | SQLite 结构与操作 |
-| [工具扩展](/docs/secbot/tools) | 自定义工具开发 |
-| [技能与记忆](/docs/secbot/skills-and-memory) | 技能注入与记忆管理 |
-| [安全警告](/docs/secbot/security) | 法律与使用声明 |
+| [https://secbot.site](https://secbot.site) | **用户文档官网**（安装、API、模型配置等） |
+| [CLAUDE.md](https://github.com/iammm0/secbot/blob/release/CLAUDE.md) / [AGENTS.md](https://github.com/iammm0/secbot/blob/release/AGENTS.md) | 给 AI / 贡献者的编排说明、SSE、环境变量与目录索引 |
+| [SECURITY_WARNING.md](https://github.com/iammm0/secbot/blob/release/SECURITY_WARNING.md) | 法律与使用声明（随 npm 包分发） |
+| [desktop/README.md](https://github.com/iammm0/secbot/blob/release/desktop/README.md) | 桌面端开发与打包（TUI 与 Desktop/Web 应对齐更新） |
+
+本仓库不再维护长篇用户手册；以官网为文档真源。
 
 ## 贡献
 

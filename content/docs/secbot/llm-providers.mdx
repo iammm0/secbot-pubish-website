@@ -8,25 +8,26 @@ Secbot 当前的 LLM 调用层只有两条真实执行路径：
 - `ollama`：调用 Ollama `/api/chat`。
 - 其它 provider：走 OpenAI-compatible `/v1/chat/completions`。
 
-`server/src/modules/system/llm-provider-registry.ts` 维护 provider 清单、环境变量名、默认 Base URL 和配置状态。TUI 的 `/model` 对话框和 `/api/system/config/*` 接口都使用这套注册表。
+`server/src/modules/system/llm-provider-registry.ts` 维护 provider 清单、环境变量名、默认 Base URL 和配置状态。TUI 的 `/model` 对话框、桌面/Web 端「设置 → 模型」和 `/api/system/config/*` 接口都使用这套注册表。
 
-仓库当前没有移动端或桌面端工程，模型配置只面向后端 API 与 `terminal-ui`。
+当前默认推理后端为 **DeepSeek**（`LLM_PROVIDER=deepseek`）。
 
 ## 配置优先级
 
 运行时解析顺序大致为：
 
-1. TUI/API 保存的持久化配置。
+1. TUI/桌面端/API 保存的持久化配置。
 2. 显式调用参数。
 3. 通用环境变量，如 `LLM_PROVIDER`、`LLM_MODEL`、`LLM_API_KEY`、`LLM_BASE_URL`。
 4. provider 专用环境变量，如 `DEEPSEEK_API_KEY`、`OLLAMA_MODEL`。
 5. 代码默认值。
 
-注意：SystemModule 会把部分配置写入 SQLite / `config.yaml`。如果你在 TUI 里保存过 provider 或 API Key，后续可能优先使用持久化值，而不是 `.env`。
+注意：SystemModule 会把部分配置写入 SQLite / `config.yaml`。如果你在 TUI 或桌面端里保存过 provider 或 API Key，后续可能优先使用持久化值，而不是 `.env`。
 
 ## 切换方式
 
 - TUI：输入 `/model`。
+- 桌面/Web 端：「设置 → 模型」面板。
 - API：调用 `/api/system/config/provider`、`/api/system/config/api-key`、`/api/system/config/provider-settings`。
 - 环境变量：设置 `LLM_PROVIDER` 与对应 provider 的变量。
 - npm CLI：运行 `secbot` 后在 TUI 中配置。
@@ -107,9 +108,10 @@ CUSTOM_BASE_URL=https://your-gateway.example.com
 | `cohere` | Cohere | `COHERE_API_KEY` | `COHERE_BASE_URL` | 无 |
 | `xai` | xAI (Grok) | `XAI_API_KEY` | `XAI_BASE_URL` | 无 |
 | `azure_openai` | Azure OpenAI | `AZURE_OPENAI_API_KEY` | `AZURE_OPENAI_BASE_URL` | 无 |
+| `codex` | Codex Responses 中转 | `CODEX_API_KEY` | `CODEX_BASE_URL` | 无 |
 | `custom` | OpenAI 兼容中转 | `CUSTOM_API_KEY` | `CUSTOM_BASE_URL` | 无 |
 
-对于默认 Base URL 为“无”的 provider，当前代码仍会使用 OpenAI-compatible 调用方式。你需要提供一个兼容 `/v1/chat/completions` 的网关地址，否则很可能无法直接调用该厂商原生 API。
+对于默认 Base URL 为“无”的 provider，当前代码仍会使用 OpenAI-compatible 调用方式。你需要提供一个兼容 `/v1/chat/completions` 的网关地址，否则很可能无法直接调用该厂商原生 API。`codex` 走 OpenAI **Responses API** 兼容中转，需提供对应网关地址。
 
 ## API 配置接口
 

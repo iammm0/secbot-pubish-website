@@ -119,24 +119,22 @@ npm run tui
 
 ## 6. 从 GitHub Releases 安装
 
-从 [GitHub Releases](https://github.com/iammm0/secbot/releases) 下载 `.tgz`（当前 **v2.0.0-b2**）。包内元数据名称为 `@opensec/secbot`，但**不会发布到 npmjs**。
+从 [GitHub Releases](https://github.com/iammm0/secbot/releases) 下载发行包（标签形如 `desktop-app-v0.0.7-beta`）：
+
+- **桌面安装包**：macOS Apple Silicon `.dmg`、Windows x64 `.exe`（NSIS）、Ubuntu x64 `.deb` / `.AppImage`，安装后直接使用，设置面板内可切换模型后端、调节主题与查验系统状态。
+- **TUI 自包含包**：`secbot-tui-<version>-<platform>.tar.gz` / `.zip`，解压后运行：
 
 ```bash
-npm install -g ./opensec-secbot-2.0.0-b2.tgz
-secbot
+./secbot
 ```
 
-或一次性运行：
+或 Windows：
 
-```bash
-npx ./opensec-secbot-2.0.0-b2.tgz
+```cmd
+secbot.cmd
 ```
 
-后端专用入口：
-
-```bash
-secbot-server
-```
+TUI 包随包 Node 运行时与后端，无需目标机安装 Node；默认 `spawn` 模式自动拉起本地后端。
 
 ## 7. 常见命令
 
@@ -189,4 +187,4 @@ curl http://127.0.0.1:8000/api/system/info
 - `OLLAMA_BASE_URL` 指向正确地址。
 - `OLLAMA_MODEL` 指定的模型已存在，或可由 Ollama 拉取。
 
-更详细说明见 [OLLAMA_SETUP.md](https://github.com/iammm0/secbot/blob/release/docs/OLLAMA_SETUP.md)。
+Ollama 配置说明见 [LLM 配置](/docs/secbot/llm-providers)。

@@ -6,7 +6,7 @@ description: "SecBot 从用户输入到工具执行、SSE 事件和本地持久�
 SecBot 的执行模型围绕一个清晰的链路组织：入口负责收集用户意图，后端负责分类、补上下文、规划和执行，工具层负责把可控能力暴露给 Agent。
 
 ```text
-terminal-ui / POST /api/chat
+terminal-ui / Web(Desktop) / POST /api/chat
   -> ChatService
   -> IntentRouter
   -> ExploreAgent 可选只读探索
@@ -19,7 +19,7 @@ terminal-ui / POST /api/chat
 
 ## 入口层
 
-`terminal-ui` 通过 HTTP 与 SSE 连接 NestJS 后端。TUI 可用 `spawn` 模式拉起本地后端，也可用 `service` 或 `remote` 模式连接已部署服务。
+`terminal-ui` 与 Web/桌面端通过 HTTP 与 SSE 连接 NestJS 后端。TUI 可用 `spawn` 模式拉起本地后端，也可用 `service` 或 `remote` 模式连接已部署服务。
 
 ## 后端层
 

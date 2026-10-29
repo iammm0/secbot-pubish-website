@@ -3,13 +3,14 @@ title: "部署"
 description: "从源码、构建产物、GitHub Release 包和进程管理角度部署 SecBot。"
 ---
 
-本文档只描述当前仓库可维护的部署方式：`server/` NestJS 后端服务，以及可选的本地 `terminal-ui/` 终端界面。仓库当前没有官方 Dockerfile、docker-compose、移动端或桌面端部署产物。
+本文档描述当前仓库可维护的部署方式：`server/` NestJS 后端服务，以及作为用户入口的 `terminal-ui/` 终端界面与 `desktop/` + `web/` 桌面客户端。
 
 ## 当前建议
 
 - 本地完整使用：`npm run start:stack`，进入 TUI，并由 TUI 自动拉起本地后端。
+- 桌面端体验：`cd desktop && npm run dev` 热开发，或从 GitHub Releases 下载 `desktop-app-v*` 安装包。
 - 长期运行 API：构建后执行 `node server/dist/main.js`，用 systemd、pm2、supervisor 或平台进程管理器托管。
-- 发布包分发：从 [GitHub Releases](https://github.com/iammm0/secbot/releases) 下载 `.tgz`，安装后使用 `secbot` 和 `secbot-server` 二进制入口（**不发布到 npmjs**）。
+- 发布包分发：从 [GitHub Releases](https://github.com/iammm0/secbot/releases) 下载桌面安装包或 TUI 自包含发行包（`secbot-tui-*`），无需目标机安装 Node。
 
 ## 1. 从源码部署后端
 
@@ -95,29 +96,12 @@ SECBOT_TUI_BACKEND=service SECBOT_API_URL=http://127.0.0.1:8000 npm run start:tu
 
 ## 3. GitHub Release 包入口
 
-从 [GitHub Releases](https://github.com/iammm0/secbot/releases) 下载 `opensec-secbot-&lt;version&gt;.tgz`，然后：
+从 [GitHub Releases](https://github.com/iammm0/secbot/releases) 下载发行包。当前发布线是 `desktop-app-v*`：
 
-```bash
-npm install -g ./opensec-secbot-2.0.0-b2.tgz
-```
+- **桌面安装包**（Tauri）：macOS Apple Silicon `.dmg`、Windows x64 `.exe`（NSIS）、Ubuntu x64 `.deb` / `.AppImage`，安装即用。
+- **TUI 自包含发行包**：`secbot-tui-<version>-<platform>.tar.gz` / `.zip`，随包 Node 运行时，解压后直接运行 `./secbot` 或 `secbot.cmd`，无需目标机安装 Node。
 
-完整 TUI：
-
-```bash
-secbot
-```
-
-仅后端 API：
-
-```bash
-secbot-server
-```
-
-一次性运行：
-
-```bash
-npx ./opensec-secbot-2.0.0-b2.tgz
-```
+> npm 包只作为 GitHub Packages 分发（`@opensec/secbot`），**不发布到 npmjs 公开渠道**。
 
 ## 4. 环境变量
 
@@ -125,7 +109,7 @@ npx ./opensec-secbot-2.0.0-b2.tgz
 |------|------|--------|
 | `PORT` | 后端监听端口 | `8000` |
 | `DATABASE_PATH` | 主 SQLite 数据库路径 | `data/opencomsagent.db` |
-| `LLM_PROVIDER` | 当前推理后端 | `ollama` |
+| `LLM_PROVIDER` | 当前推理后端 | `deepseek` |
 | `LLM_MODEL` | 通用模型名回退 | 无 |
 | `LLM_API_KEY` | OpenAI 兼容通用 API Key 回退 | 无 |
 | `LLM_BASE_URL` | OpenAI 兼容通用 Base URL 回退 | 无 |
@@ -134,6 +118,8 @@ npx ./opensec-secbot-2.0.0-b2.tgz
 | `DEEPSEEK_API_KEY` | DeepSeek API Key | 无 |
 | `DEEPSEEK_BASE_URL` | DeepSeek Base URL | `https://api.deepseek.com` |
 | `DEEPSEEK_MODEL` | DeepSeek 默认模型 | `deepseek-chat` |
+| `SECBOT_EXECGO_ENABLED` | 是否启用 ExecGo 运行时（`1`/`true`） | 关 |
+| `SECBOT_EXECGO_SANDBOX` | ExecGo 沙箱 Profile：`process` 或 `isolated` | `process` |
 | `SECBOT_TUI_BACKEND` | TUI 后端模式：`spawn` / `service` / `remote` / `auto` | `spawn` |
 | `SECBOT_API_URL` | TUI service 模式连接的后端地址 | `http://localhost:8000` |
 
@@ -257,5 +243,5 @@ curl http://127.0.0.1:8000/api/system/info
 - [API.md](/docs/secbot/api)
 - [QUICKSTART.md](/docs/secbot/quickstart)
 - [LLM_PROVIDERS.md](/docs/secbot/llm-providers)
-- [OLLAMA_SETUP.md](https://github.com/iammm0/secbot/blob/release/docs/OLLAMA_SETUP.md)
 - [RELEASE.md](/docs/secbot/release)
+- [终端界面](/docs/secbot/ui)

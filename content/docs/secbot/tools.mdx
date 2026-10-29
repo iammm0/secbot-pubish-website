@@ -23,6 +23,19 @@ description: "SecBot ToolsService 的工具类别、敏感工具策略、扩展�
 | **mcp** | 调用外部 MCP 服务器 |
 | **crawler** | Web 爬虫 |
 
+## 随包集成工具（Portable Tools）
+
+发布流水线会把官方 Release 工具二进制打进桌面安装包与 TUI 自包含包（不入库）：
+
+| 平台 | 目录 | 内容 |
+| --- | --- | --- |
+| Windows x64 | `tools/win-x64/` | `nuclei.exe`、`ffuf.exe` |
+| Linux x64 | `tools/linux-x64/` | nuclei / ffuf 对应二进制 |
+| macOS Apple Silicon | `tools/macos-arm64/` | nuclei / ffuf 对应二进制 |
+
+**不随包**：`nmap`（依赖 Npcap，Windows 走 winget 安装）、`nikto`（Perl，可选）。
+Windows 工具探测与打包集成已在 `release` 分支修复，详情见 [`tools/README.md`](https://github.com/iammm0/secbot/blob/release/tools/README.md)。
+
 ## 自动安装缺失工具
 
 `install_tool` 可在授权环境中尝试安装缺失的安全 CLI 工具（见 Agent prompt 策略）。
@@ -33,18 +46,19 @@ description: "SecBot ToolsService 的工具类别、敏感工具策略、扩展�
   - **Hackbot (HITL 模式)**：遇到敏感命令（如 `execute_command`、高危利用）会暂停并向前端发送 `confirm_required` 事件，等待操作员确认（`allow` / `deny` / `always_allow`）。
   - **SuperHackbot (自主模式)**：敏感工具直通执行，适合自动化沙箱打靶。
   - **ExploreAgent** 与默认 **MCP** 模式下会完全隐藏/拒绝敏感工具。
+  - TUI 与 Web/桌面端都会弹出 **HITL 审批弹窗**，任务中途 `ask_user` 也可暂停等待输入。
 - MCP 显式开放：`SECBOT_MCP_ALLOW_SENSITIVE=true`
 
 ## ExecGo 沙箱与外部 MCP 扩展
 
-- **ExecGo 沙箱**: 通过 `SECBOT_EXECGO_ENABLED=1` 启用，可在 `process`（进程隔离）或 `isolated`（Linux Namespace 隔离）模式下运行外部命令与脚本，防止逃逸。
-- **MCP 扩展**: 通过 `mcp_call` 工具桥接任何兼容 Model Context Protocol 的外部服务（例如 Python `fastmcp` 编写的专有扫描脚本或 C 库）。
+- **ExecGo 沙箱**: 通过 `SECBOT_EXECGO_ENABLED=1` 启用，可在 `process`（进程隔离）或 `isolated`（严格 Linux Namespace 隔离，禁止回退本机）模式下运行外部命令与脚本，防止逃逸。
+- **MCP 扩展**: 通过 `mcp_call` 工具桥接任何兼容 Model Context Protocol 的外部服务（例如 Python `fastmcp` 编写的专有扫描脚本或 C 库）。外部 MCP 工具默认 `sensitive: true`，每次调用触发 HITL 确认与操作审计。
 
 ## 扩展工具
 
 1. 在 `server/src/modules/tools/` 下实现 `BaseTool` 子类
 2. 在对应 `index.ts` 与 `tools.module.ts` 注册
-3. 参考 [docs/TOOL_EXTENSION.md](https://github.com/iammm0/secbot/blob/release/docs/TOOL_EXTENSION.md)
+3. 工具分类索引以 `server/src/modules/tools/` 各分类 `index.ts` 为准，API 见下
 
 ## API 发现
 

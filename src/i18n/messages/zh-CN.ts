@@ -44,11 +44,11 @@ const zhCN = {
       },
       {
         title: "流式可观测与 HITL",
-        body: "长任务按阶段输出 SSE 进度与 Token 预算用量，对高危敏感操作强制触发人机协同审批。",
+        body: "长任务按阶段输出 SSE 进度与 Token 预算用量，对高危敏感操作强制触发人机协同审批弹窗，TUI 与桌面端对齐。",
       },
       {
         title: "桌面版 + TUI + API 多端对齐",
-        body: "提供 Tauri 桌面客户端、全功能 Ink 终端界面以及标准 HTTP API，支持跨平台一键部署。",
+        body: "提供 Tauri 桌面客户端（含安装/更新器）、全功能 Ink 终端界面（含 Ctrl+F 对话内搜索）以及标准 HTTP API，Windows / macOS / Ubuntu 跨平台发布。",
       },
     ],
   },
@@ -75,7 +75,7 @@ const zhCN = {
     scopeTitle: "适用场景",
     scopeBullets: [
       "需要把 SecBot 作为本地或团队环境里的 AI 安全测试工作流入口。",
-      "接口与配置说明以站内 MDX 版本为准；同步内容来自本地 ../secbot。",
+      "接口与配置说明以站内 MDX 版本为准；features 页与本地 ../secbot 的 README_CN.md 保持同步。",
     ],
     whereToStartTitle: "从哪里读起",
     whereToStartIntro:

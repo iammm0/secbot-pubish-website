@@ -7,98 +7,15 @@ const sourceRoot = path.resolve("..", "secbot");
 const githubBase = "https://github.com/iammm0/secbot";
 const githubBranch = "release";
 
+// 上游 secbot 已在 9-23 移除仓库内 docs/（"site is the docs source of truth"）。
+// 因此本站绝大多数页面改为站内维护：sync 只保留它们，不再从 ../secbot 生成。
+// 唯一例外是 features.mdx —— 它仍从上游 README_CN.md 同步（README_CN 是官方能力总览）。
 const managedPages = [
   {
     target: "secbot/features.mdx",
-    sources: ["README.zh-CN.md", "README_CN.md", "docs/wiki/Home.md", "README.md"],
+    sources: ["README_CN.md", "README.md"],
     title: "功能概览",
     description: "SecBot 的定位、安全边界、主要能力、技术栈和仓库入口。",
-  },
-  {
-    target: "secbot/quickstart.mdx",
-    sources: ["docs/zh/QUICKSTART.md", "docs/QUICKSTART.md", "docs/wiki/Quick-Start.md"],
-    title: "快速开始",
-    description: "按当前 release 仓库真实存在的 server 与 terminal-ui 链路启动 SecBot。",
-  },
-  {
-    target: "secbot/documentation-map.mdx",
-    sources: ["docs/zh/README.md", "docs/README.md", "docs/wiki/README.md", "README.zh-CN.md", "README_CN.md", "README.md"],
-    title: "文档地图",
-    description: "按任务组织 SecBot 主项目文档，并补充源仓库文档目录来源。",
-    intro: [
-      "如果不确定先读哪一页，可以按任务进入：",
-      "",
-      "| 任务 | 页面 |",
-      "| --- | --- |",
-      "| 了解项目能力 | [功能概览](/docs/secbot/features) |",
-      "| 第一次运行 | [快速开始](/docs/secbot/quickstart) |",
-      "| 配置模型 | [LLM 配置](/docs/secbot/llm-providers) |",
-      "| 接入后端 | [API 接口](/docs/secbot/api) |",
-      "| 部署服务 | [部署](/docs/secbot/deployment) |",
-      "| 查看工具能力 | [工具清单](/docs/secbot/tools) |",
-      "| 维护状态与上下文 | [技能与记忆](/docs/secbot/skills-and-memory) 与 [数据库](/docs/secbot/database) |",
-      "| 确认合规边界 | [安全与授权](/docs/secbot/security) |",
-      "| 发布和打包 | [发布](/docs/secbot/release) |",
-      "| 使用终端界面 | [终端界面](/docs/secbot/ui) |",
-      "",
-      "下方内容来自 `../secbot` 的文档目录源文件；同步时优先读取 `docs/zh/README.md`，再按实际存在文件 fallback。",
-      "",
-      "---",
-    ].join("\n"),
-  },
-  {
-    target: "secbot/api.mdx",
-    sources: ["docs/zh/API.md", "docs/API.md"],
-    title: "API 接口",
-    description: "SecBot NestJS 后端的 REST 与 SSE 接口说明。",
-  },
-  {
-    target: "secbot/deployment.mdx",
-    sources: ["docs/zh/DEPLOYMENT.md", "docs/DEPLOYMENT.md"],
-    title: "部署",
-    description: "从源码、构建产物、GitHub Release 包和进程管理角度部署 SecBot。",
-  },
-  {
-    target: "secbot/llm-providers.mdx",
-    sources: ["docs/zh/LLM_PROVIDERS.md", "docs/LLM_PROVIDERS.md"],
-    title: "LLM 配置",
-    description: "SecBot 推理后端、OpenAI-compatible Provider、Ollama 与配置优先级。",
-  },
-  {
-    target: "secbot/tools.mdx",
-    sources: ["docs/zh/Tools.md", "docs/wiki/Tools.md", "docs/TOOL_EXTENSION.md"],
-    title: "工具清单",
-    description: "SecBot ToolsService 的工具类别、敏感工具策略、扩展入口和 API 发现方式。",
-  },
-  {
-    target: "secbot/skills-and-memory.mdx",
-    sources: ["docs/zh/SKILLS_AND_MEMORY.md", "docs/SKILLS_AND_MEMORY.md"],
-    title: "技能与记忆",
-    description: "SecBot 的 skills 资料、记忆 API、本地存储和向量检索能力。",
-  },
-  {
-    target: "secbot/database.mdx",
-    sources: ["docs/zh/DATABASE_GUIDE.md", "docs/DATABASE_GUIDE.md"],
-    title: "数据库",
-    description: "SecBot SQLite 数据库结构、路径配置、使用方式和维护建议。",
-  },
-  {
-    target: "secbot/security.mdx",
-    sources: ["docs/zh/Security.md", "docs/wiki/Security.md", "docs/SECURITY_WARNING.md"],
-    title: "安全与授权",
-    description: "SecBot 的授权测试声明、敏感工具策略、法律边界、数据与隐私说明。",
-  },
-  {
-    target: "secbot/release.mdx",
-    sources: ["docs/zh/RELEASE.md", "docs/RELEASE.md", "docs/wiki/Release-and-Versioning.md"],
-    title: "发布",
-    description: "SecBot GitHub Release tarball、发布前检查、版本约定和维护者流程。",
-  },
-  {
-    target: "secbot/ui.mdx",
-    sources: ["docs/zh/UI-DESIGN-AND-INTERACTION.md", "docs/UI-DESIGN-AND-INTERACTION.md", "terminal-ui/README.md"],
-    title: "终端界面",
-    description: "SecBot terminal-ui 的技术栈、启动模式、关键文件、状态和交互说明。",
   },
 ];
 
@@ -109,7 +26,7 @@ const manualPages = {
     title: "SecBot 文档",
     description: "SecBot 的中文文档中心，按生态认知、主项目使用和内部运行执行链路组织。",
     body: [
-      "SecBot 是一个 AI 驱动的授权安全自动化工作台：NestJS 后端、Ink 终端 UI、多智能体编排、内置安全工具链、Skills 与 MCP 能力共同组成完整工作流。",
+      "SecBot 是一个 AI 驱动的授权安全自动化工作台：NestJS 后端、Ink 终端 UI 与桌面端、多智能体编排、内置安全工具链、Skills 与 MCP 能力共同组成完整工作流。",
       "",
       "> 本工具仅用于已获得明确授权的安全测试、研究与教学。请勿对未授权目标进行扫描、利用或远程控制。",
       "",
@@ -147,7 +64,7 @@ const manualPages = {
     title: "认识 SecBot",
     description: "建立 SecBot 的产品定位、仓库边界、版本边界和执行模型总览。",
     body: [
-      "本节用于建立 SecBot 的稳定心智模型。当前主线是 v2 TypeScript 产品线，核心在本地 `../secbot` 仓库中：`server/` 提供 NestJS API 与 Agent 执行，`terminal-ui/` 提供 Ink 终端交互。",
+      "本节用于建立 SecBot 的稳定心智模型。当前主线是 v2 TypeScript 产品线，核心在本地 `../secbot` 仓库中：`server/` 提供 NestJS API 与 Agent 执行，`terminal-ui/` 提供 Ink 终端交互，`desktop/` + `web/` 提供桌面客户端。",
       "",
       "<DocsGrid>",
       '  <DocsCard href="/docs/ecosystem/execution-model" eyebrow="模型" title="执行模型" description="Web/API/TUI、ChatService、Agent、任务执行器和工具层如何协作。"/>',
@@ -156,7 +73,7 @@ const manualPages = {
       "",
       "## 仓库边界",
       "",
-      "SecBot 的文档站只从本地 `../secbot` 读取主项目文档。`runtime` 是本站文档分区名，表示内部运行与执行层；它不对应独立的 `secbot-runtime` 仓库。",
+      "SecBot 的文档站以站内维护为主：上游 secbot 不再维护仓库内 `docs/` 长篇手册，README_CN.md 与各子目录 README 是代码仓库内的权威说明，本站 `features` 页会持续与其对齐。`runtime` 是本站文档分区名，表示内部运行与执行层；它不对应独立的 `secbot-runtime` 仓库。",
       "",
       "## 当前读者任务",
       "",
@@ -172,7 +89,7 @@ const manualPages = {
       "SecBot 的执行模型围绕一个清晰的链路组织：入口负责收集用户意图，后端负责分类、补上下文、规划和执行，工具层负责把可控能力暴露给 Agent。",
       "",
       "```text",
-      "terminal-ui / POST /api/chat",
+      "terminal-ui / Web(Desktop) / POST /api/chat",
       "  -> ChatService",
       "  -> IntentRouter",
       "  -> ExploreAgent 可选只读探索",
@@ -185,7 +102,7 @@ const manualPages = {
       "",
       "## 入口层",
       "",
-      "`terminal-ui` 通过 HTTP 与 SSE 连接 NestJS 后端。TUI 可用 `spawn` 模式拉起本地后端，也可用 `service` 或 `remote` 模式连接已部署服务。",
+      "`terminal-ui` 与 Web/桌面端通过 HTTP 与 SSE 连接 NestJS 后端。TUI 可用 `spawn` 模式拉起本地后端，也可用 `service` 或 `remote` 模式连接已部署服务。",
       "",
       "## 后端层",
       "",
@@ -206,13 +123,13 @@ const manualPages = {
       "",
       "| 产品线 | 说明 |",
       "| --- | --- |",
-      "| v2 TypeScript | 当前主产品线，默认围绕 `release` 分支、NestJS 后端和 Ink TUI。 |",
+      "| v2 TypeScript | 当前主产品线，默认围绕 `release` 分支、NestJS 后端、Ink TUI 与 Web/桌面端。 |",
       "| v1 Python Legacy | 历史 Python 线，独立维护，不与 v2 共用运行时。 |",
       "| Go Demo | 技术验证或实验性质，不作为正式发布线承诺。 |",
       "",
       "## 发布方式",
       "",
-      "当前 v2 以 GitHub Release `.tgz` 作为用户安装包，不把 npmjs 公开发布当作主渠道。发布前检查以 `secbot` 仓库里的 `package.json`、release workflow 和验证脚本为准。",
+      "当前 v2 以 GitHub Release 作为用户安装渠道：`desktop-app-v*` 标签同时发布桌面安装包（Tauri）与 TUI 自包含发行包（随包 Node + 后端），不再以 npm 公开渠道为主。发布前检查以 `secbot` 仓库里的 `package.json`、release workflow 和验证脚本为准。",
       "",
       "## runtime 的含义",
       "",
@@ -223,7 +140,7 @@ const manualPages = {
     title: "开始使用 SecBot",
     description: "面向安装、启动、配置、API 接入、部署和日常维护的主项目文档入口。",
     body: [
-      "本节面向想把 SecBot 跑起来、接入服务或部署到团队环境的读者。这里的页面大多从本地 `../secbot` 的中文 Markdown 文档同步生成，并在构建时转成 MDX。",
+      "本节面向想把 SecBot 跑起来、接入服务或部署到团队环境的读者。页面以站内维护为主，`features` 页持续与上游 `README_CN.md` 对齐。",
       "",
       "<DocsGrid>",
       '  <DocsCard href="/docs/secbot/quickstart" eyebrow="启动" title="快速开始" description="配置模型、启动后端和 TUI，并完成基础验证。"/>',
@@ -380,6 +297,7 @@ const metaFiles = {
       "quickstart",
       "documentation-map",
       "features",
+      "benchmark",
       "api",
       "deployment",
       "llm-providers",
@@ -396,12 +314,6 @@ const metaFiles = {
     pages: ["index", "quickstart", "execution-flow", "tasks", "operations"],
   },
 };
-
-await ensureSource();
-const resolvedManagedPages = await resolveManagedPages();
-await rebuildDocs(resolvedManagedPages);
-
-console.log(`已同步 SecBot 文档 ${resolvedManagedPages.length} 页到 content/docs/secbot；手写页面 ${Object.keys(manualPages).length} 页。`);
 
 function manualPage({ title, description, body }) {
   return [
@@ -452,22 +364,72 @@ async function existingCandidates(sources) {
 }
 
 async function rebuildDocs(resolvedManagedPages) {
-  await fs.rm(docsRoot, { recursive: true, force: true });
-  await fs.mkdir(docsRoot, { recursive: true });
+  // 快照所有现有页面，保证未被生成的站内维护页面不会被误删。
+  const snapshot = await snapshotDocs();
+
+  // 先生成全部输出到内存；全部成功后再一次性替换目录，
+  // 避免生成中途抛错时把整个 content/docs 删空。
+  const outputs = new Map();
 
   for (const [target, source] of Object.entries(manualPages)) {
-    await writeDocsFile(target, source);
+    outputs.set(normalizeTarget(target), source);
   }
 
   for (const page of resolvedManagedPages) {
     const source = await fs.readFile(page.sourcePath, "utf8");
     const mdx = toMdx(source, page);
-    await writeDocsFile(page.target, mdx);
+    outputs.set(normalizeTarget(page.target), mdx);
   }
 
   for (const [target, meta] of Object.entries(metaFiles)) {
-    await writeDocsFile(target, `${JSON.stringify(meta, null, 2)}\n`);
+    outputs.set(normalizeTarget(target), `${JSON.stringify(meta, null, 2)}\n`);
   }
+
+  // 恢复未被生成的站内维护页面。
+  for (const [rel, content] of snapshot) {
+    if (!outputs.has(rel)) {
+      outputs.set(rel, content);
+    }
+  }
+
+  await fs.rm(docsRoot, { recursive: true, force: true });
+  await fs.mkdir(docsRoot, { recursive: true });
+
+  for (const [rel, content] of outputs) {
+    await writeDocsFile(rel, content);
+  }
+}
+
+async function snapshotDocs() {
+  const snapshot = new Map();
+  const entries = await readTree(docsRoot);
+
+  for (const rel of entries) {
+    if (!rel.endsWith(".mdx") && !rel.endsWith(".json")) continue;
+    const abs = path.join(docsRoot, rel);
+    const content = await fs.readFile(abs, "utf8");
+    snapshot.set(normalizeTarget(rel), content);
+  }
+
+  return snapshot;
+}
+
+async function readTree(dir) {
+  const out = [];
+  const entries = await fs.readdir(dir, { withFileTypes: true }).catch(() => []);
+  for (const entry of entries) {
+    const abs = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...(await readTree(abs)));
+    } else {
+      out.push(path.relative(docsRoot, abs));
+    }
+  }
+  return out;
+}
+
+function normalizeTarget(rel) {
+  return slash(rel).replace(/^\.\//, "");
 }
 
 async function writeDocsFile(rel, source) {
@@ -590,13 +552,31 @@ function rewriteMarkdownLinks(source, sourcePath) {
   return source.replace(
     /(!?)\[([^\]]+)]\(([^)\s]+(?:\s+"[^"]*")?)\)/g,
     (match, bang, label, rawHref) => {
-      if (bang) return match;
       const href = rawHref.replace(/\s+"[^"]*"$/, "");
       const title = rawHref.slice(href.length);
-      const rewritten = rewriteHref(href, sourcePath);
-      return `[${label}](${rewritten}${title})`;
+      const rewritten = bang ? rewriteImageHref(href) : rewriteHref(href, sourcePath);
+      return `${bang}[${label}](${rewritten}${title})`;
     },
   );
+}
+
+// README_CN 里的演示动图指向仓库 assets/；站内 public/ 已有同名文件，
+// 直接把演示图映射到站内路径，避免出现指向 GitHub blob 页面的 <img>。
+const demoAssetToSiteUrl = new Map([
+  ["assets/secbot-demo.gif", "/secbot-demo.gif"],
+  ["assets/demos/web-home.gif", "/demos/web-home.gif"],
+  ["assets/demos/web-tools.gif", "/demos/web-tools.gif"],
+  ["assets/demos/web-settings.gif", "/demos/web-settings.gif"],
+  ["assets/demos/web-model.gif", "/demos/web-model.gif"],
+]);
+
+function rewriteImageHref(href) {
+  const mapped = demoAssetToSiteUrl.get(href);
+  if (mapped) return mapped;
+  if (href.startsWith("/") || href.startsWith("#") || /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(href)) {
+    return href;
+  }
+  return `https://raw.githubusercontent.com/iammm0/secbot/${githubBranch}/${encodePath(href)}`;
 }
 
 function rewriteHref(href, sourcePath) {
@@ -730,3 +710,11 @@ function encodePath(value) {
     .map((segment) => encodeURIComponent(segment))
     .join("/");
 }
+
+await ensureSource();
+const resolvedManagedPages = await resolveManagedPages();
+await rebuildDocs(resolvedManagedPages);
+
+console.log(
+  `已同步 SecBot 文档 ${resolvedManagedPages.length} 页（features 来自 ../secbot README_CN.md）；其余页面为站内维护并保留。`,
+);

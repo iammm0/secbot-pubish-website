@@ -48,6 +48,9 @@ TUI 中的 `secbot-cli` 是历史兼容别名；后端实际执行会落到 `hac
 | 事件 | 说明 |
 |------|------|
 | `connected` | 流已建立 |
+| `intent_decision` | 意图分类结果（含 `needs_explore`、`needs_report`、`focus` 等信号） |
+| `explore_start` / `explore_chunk` / `explore_result` | 只读探索阶段 |
+| `context_usage` | 上下文预算用量 |
 | `context_debug` | 上下文调试信息，仅 `SECBOT_CONTEXT_DEBUG=1` 时发送 |
 | `phase` | 阶段变化 |
 | `planning` | 规划与 Todo |
@@ -55,6 +58,9 @@ TUI 中的 `secbot-cli` 是历史兼容别名；后端实际执行会落到 `hac
 | `thought` | 推理轮次完成 |
 | `action_start` | 工具执行开始 |
 | `action_result` | 工具执行结果 |
+| `confirm_required` | 敏感操作需 HITL 审批（配合 `/api/chat/confirm-response`） |
+| `user_input_required` | `ask_user` 需用户决策（配合 `/api/chat/user-input-response`） |
+| `root_required` | 需要 root 权限确认（配合 `/api/chat/root-response`） |
 | `content` | 文本或结构化内容 |
 | `report` | 安全报告 |
 | `response` | 最终回复 |
@@ -82,7 +88,7 @@ curl -X POST http://127.0.0.1:8000/api/chat/sync \
 
 ### `POST /api/chat/root-response`
 
-敏感操作确认回调。字段名使用 camelCase。
+root 权限确认回调。字段名使用 camelCase。
 
 ```json
 {
@@ -97,6 +103,39 @@ curl -X POST http://127.0.0.1:8000/api/chat/sync \
 - `run_once`
 - `always_allow`
 - `deny`
+
+### `POST /api/chat/confirm-response`
+
+敏感操作审批回调（HITL）。对应 SSE 事件 `confirm_required`，TUI 与 Web/桌面端会打开审批弹窗。
+
+```json
+{
+  "request_id": "request-id-from-sse",
+  "action": "allow",
+  "session_id": "session-id"
+}
+```
+
+`action` 可选：
+
+- `allow`（批准一次）
+- `always_allow`（本会话始终允许）
+- `deny`（拒绝）
+
+### `POST /api/chat/user-input-response`
+
+`ask_user` 决策回调（对应 SSE 事件 `user_input_required`）。
+
+```json
+{
+  "request_id": "request-id-from-sse",
+  "selected": ["option-id"],
+  "text": "补充说明",
+  "session_id": "session-id"
+}
+```
+
+`text` 用于 `input_type: "text"`，`selected` 用于单选 / 多选（`options` / `multi_select`）。
 
 ## 2. 智能体
 

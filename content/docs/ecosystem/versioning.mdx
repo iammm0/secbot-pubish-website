@@ -7,17 +7,15 @@ SecBot 相关项目采用独立版本管理。`secbot-components` 是本机工�
 
 ## 产品线
 
-当前 **只维护 `release` 一条产品线**。
-
 | 产品线 | 说明 |
 | --- | --- |
-| `release`（当前） | 唯一维护中的产品：NestJS 后端、Ink TUI、Web / 桌面端。GitHub Release `.tgz`。 |
-| `pypi-release` | 已冻结的 Python v1 历史线，只读归档，不再加功能。 |
-| `pure-go` | 已冻结的 Go 实验分支，只读归档。 |
+| v2 TypeScript | 当前主产品线，默认围绕 `release` 分支、NestJS 后端、Ink TUI 与 Web/桌面端。 |
+| v1 Python Legacy | 历史 Python 线，独立维护，不与 v2 共用运行时。 |
+| Go Demo | 技术验证或实验性质，不作为正式发布线承诺。 |
 
 ## 发布方式
 
-当前 v2 以 GitHub Release `.tgz` 作为用户安装包，不把 npmjs 公开发布当作主渠道。发布前检查以 `secbot` 仓库里的 `package.json`、release workflow 和验证脚本为准。
+当前 v2 以 GitHub Release 作为用户安装渠道：`desktop-app-v*` 标签同时发布桌面安装包（Tauri）与 TUI 自包含发行包（随包 Node + 后端），不再以 npm 公开渠道为主。发布前检查以 `secbot` 仓库里的 `package.json`、release workflow 和验证脚本为准。
 
 ## runtime 的含义
 
