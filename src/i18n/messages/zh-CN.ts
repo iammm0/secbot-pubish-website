@@ -23,7 +23,11 @@ const zhCN = {
   },
   home: {
     heroTitle: "AI 驱动的自动化安全测试平台",
+    heroKicker: "授权安全自动化",
+    heroSubtitle:
+      "基于 NestJS + 多智能体编排的自动化渗透测试与安全审计工具，内置 ExecGo 沙箱隔离、MCP 扩展与 HITL 人机协同审批。",
     ctaTs: "快速开始",
+    downloadCta: "下载 SecBot",
     tsCmd: "git clone https://github.com/iammm0/secbot.git\ncd secbot\ngit checkout release\nnpm ci\nnpm run start:stack",
     highlightTitle: "核心能力",
     highlights: [
@@ -54,6 +58,7 @@ const zhCN = {
     ],
     download: {
       title: "下载 SecBot",
+      kicker: "立即下载",
       subtitle: "桌面版支持 macOS（Apple Silicon）、Windows x64、Ubuntu x64；TUI 端随包 Node 运行时，解压即可运行。",
       macosArm: "macOS · Apple Silicon",
       windowsX64: "Windows · x64",

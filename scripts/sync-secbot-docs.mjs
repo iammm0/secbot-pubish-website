@@ -560,14 +560,14 @@ function rewriteMarkdownLinks(source, sourcePath) {
   );
 }
 
-// README_CN 里的演示动图指向仓库 assets/；站内 public/ 已有同名文件，
-// 直接把演示图映射到站内路径，避免出现指向 GitHub blob 页面的 <img>。
+// README_CN 里的演示动图指向仓库 assets/；站内已重录 light/dark 两套。
+// 文档页不随站点主题切换，固定映射到 dark 版本（与 README 深色截图观感一致）。
 const demoAssetToSiteUrl = new Map([
   ["assets/secbot-demo.gif", "/secbot-demo.gif"],
-  ["assets/demos/web-home.gif", "/demos/web-home.gif"],
-  ["assets/demos/web-tools.gif", "/demos/web-tools.gif"],
-  ["assets/demos/web-settings.gif", "/demos/web-settings.gif"],
-  ["assets/demos/web-model.gif", "/demos/web-model.gif"],
+  ["assets/demos/web-home.gif", "/demos/web-home-dark.gif"],
+  ["assets/demos/web-tools.gif", "/demos/web-tools-dark.gif"],
+  ["assets/demos/web-settings.gif", "/demos/web-settings-dark.gif"],
+  ["assets/demos/web-model.gif", "/demos/web-model-dark.gif"],
 ]);
 
 function rewriteImageHref(href) {

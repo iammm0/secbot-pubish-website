@@ -1,5 +1,6 @@
 /**
  * Record SecBot Web UI demos with Playwright (system Chrome) and export GIF via ffmpeg.
+ * Usage: node scripts/record-demos.mjs [--theme light|dark] [--name clip1,clip2]
  */
 import { chromium } from "playwright";
 import { spawn } from "node:child_process";
@@ -11,8 +12,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const OUT_DIR = path.join(ROOT, "public", "demos");
 const RAW_DIR = path.join(ROOT, "tmp", "demo-raw");
-const FFMPEG = path.join(ROOT, "tools", "ffmpeg", "ffmpeg.exe");
+// 本机 ffmpeg（homebrew）；旧脚本指向仓库内 tools/ffmpeg/ffmpeg.exe，已失效。
+const FFMPEG = process.env.FFMPEG_BIN || "/opt/homebrew/bin/ffmpeg";
 const BASE = process.env.SECBOT_DEMO_URL || "http://127.0.0.1:8000";
+
+const themeArg = process.argv.indexOf("--theme");
+const THEME = themeArg >= 0 ? process.argv[themeArg + 1] || "dark" : "dark";
+const nameArg = process.argv.indexOf("--name");
+const CLIP_FILTER = nameArg >= 0 ? new Set((process.argv[nameArg + 1] || "").split(",").filter(Boolean)) : null;
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 fs.mkdirSync(RAW_DIR, { recursive: true });
@@ -57,9 +64,12 @@ async function sleep(ms) {
 }
 
 async function recordClip(page, context, name, action, opts = {}) {
+  if (CLIP_FILTER && !CLIP_FILTER.has(name)) {
+    return { name, skipped: true };
+  }
   const webmPath = path.join(RAW_DIR, `${name}.webm`);
-  const gifPath = path.join(OUT_DIR, `${name}.gif`);
-  console.log(`\n[record] ${name}`);
+  const gifPath = path.join(OUT_DIR, `${name}-${THEME}.gif`);
+  console.log(`\n[record] ${name} (theme=${THEME})`);
 
   await context.tracing?.stop?.().catch(() => {});
   const pageVideo = page.video();
@@ -138,7 +148,7 @@ async function main() {
   const context = await browser.newContext({
     viewport: { width: 1280, height: 800 },
     deviceScaleFactor: 1,
-    colorScheme: "dark",
+    colorScheme: THEME === "light" ? "light" : "dark",
   });
   const page = await context.newPage();
   const results = [];
@@ -146,8 +156,44 @@ async function main() {
   await page.goto(BASE, { waitUntil: "networkidle", timeout: 60000 });
   await sleep(800);
 
+  // 注入主题到 Web（存储键 secbot-theme；深色为 hacker 主题，浅色为 light）
+  await page.evaluate((theme) => {
+    try {
+      const value = theme === "light" ? "light" : "hacker";
+      localStorage.setItem("secbot-theme", value);
+      const root = document.documentElement;
+      root.setAttribute("data-theme", value);
+      root.setAttribute("data-theme-pref", value);
+      root.classList.toggle("dark", value !== "light");
+    } catch {
+      /* ignore */
+    }
+  }, THEME).catch(() => {});
+  await page.reload({ waitUntil: "networkidle" }).catch(() => {});
+  await sleep(600);
+
+  async function safeClip(page, context, name, action, opts = {}) {
+    try {
+      return await recordClip(page, context, name, action, opts);
+    } catch (err) {
+      console.warn(`\n[skip] ${name} 失败: ${err instanceof Error ? err.message : String(err)}`);
+      return { name, skipped: true };
+    }
+  }
+
+  // 点击设置面板 tab（模型/Jev/外观/指令/MCP/技能/ExecGo/审计/关于/帮助）
+  const clickSettingsTab = async (p, label) => {
+    const tab = p.locator("button").filter({ hasText: label }).first();
+    if (await tab.count()) {
+      await tab.click();
+      await sleep(700);
+      return true;
+    }
+    return false;
+  };
+
   results.push(
-    await recordClip(page, context, "web-home", async (p) => {
+    await safeClip(page, context, "web-home", async (p) => {
       await sleep(1200);
       const input = p.locator("textarea").first();
       await input.click();
@@ -157,85 +203,14 @@ async function main() {
   );
 
   results.push(
-    await recordClip(page, context, "web-sidebar", async (p) => {
-      const expand = p.locator("aside button").filter({ hasText: "▶" }).first();
-      if (await expand.count()) {
-        await expand.click();
-        await sleep(700);
-      }
-      const newChat = p.getByRole("button", { name: /New Chat|\+/ }).first();
-      await newChat.click();
+    await safeClip(page, context, "web-tools", async (p) => {
+      await p.goto(`${BASE}/settings?tab=help`, { waitUntil: "networkidle" });
       await sleep(900);
-      const collapse = p.locator("aside button").filter({ hasText: "◀" }).first();
-      if (await collapse.count()) {
-        await collapse.click();
-        await sleep(600);
-      }
-    }),
-  );
-
-  results.push(
-    await recordClip(page, context, "web-settings", async (p) => {
-      const expand = p.locator("aside button").filter({ hasText: "▶" }).first();
-      if (await expand.count()) await expand.click();
-      await sleep(400);
-      const settingsBtn = p.getByRole("button", { name: /Settings|⚙/ }).first();
-      if (await settingsBtn.count()) {
-        await settingsBtn.click();
-      } else {
-        // collapsed settings gear
-        const gear = p.locator("aside button").filter({ hasText: "⚙" }).first();
-        await gear.click();
-      }
-      await sleep(800);
-      for (const label of ["主题", "帮助与工具", "模型配置"]) {
-        const tab = p.getByRole("button", { name: label });
-        if (await tab.count()) {
-          await tab.click();
-          await sleep(700);
-        }
-      }
-      await p.locator("button", { hasText: "×" }).first().click().catch(async () => {
-        await p.keyboard.press("Escape");
-      });
-      await sleep(500);
-    }),
-  );
-
-  results.push(
-    await recordClip(page, context, "web-session", async (p) => {
-      await p.goto(`${BASE}/`, { waitUntil: "networkidle" });
-      await sleep(500);
-      const expand = p.locator("aside button").filter({ hasText: "▶" }).first();
-      if (await expand.count()) await expand.click();
-      await sleep(300);
-      await p.getByRole("button", { name: /New Chat|\+/ }).first().click();
-      await sleep(600);
-      const input = p.locator("textarea").first();
-      await input.click();
-      await input.type("/help", { delay: 40 });
-      await sleep(400);
-      await input.press("Enter");
-      // Wait for stream or idle UI; don't fail if LLM unavailable
-      await sleep(3500);
-    }, { intervalMs: 140, fps: 7 }),
-  );
-
-  results.push(
-    await recordClip(page, context, "web-tools", async (p) => {
-      await p.goto(BASE, { waitUntil: "networkidle" });
-      await sleep(400);
-      const expand = p.locator("aside button").filter({ hasText: "▶" }).first();
-      if (await expand.count()) await expand.click();
-      await sleep(300);
-      await p.locator("aside button").filter({ hasText: "⚙" }).first().click();
-      await sleep(500);
-      await p.getByRole("button", { name: "帮助与工具" }).click();
-      await sleep(700);
-      for (const label of ["Core Security", "Defense", "OSINT", "Web Research"]) {
-        const row = p.getByText(label, { exact: true }).first();
+      // 帮助 tab：工具清单（核心/网络/侦察等分类）
+      for (const label of ["核心", "网络", "侦察", "利用", "OSINT"]) {
+        const row = p.getByText(label, { exact: false }).first();
         if (await row.count()) {
-          await row.click();
+          await row.click().catch(() => {});
           await sleep(650);
         }
       }
@@ -243,26 +218,86 @@ async function main() {
   );
 
   results.push(
-    await recordClip(page, context, "web-model", async (p) => {
-      const open = async () => {
-        if (await p.getByText("设置").count()) return;
-        const expand = p.locator("aside button").filter({ hasText: "▶" }).first();
-        if (await expand.count()) await expand.click();
-        await p.locator("aside button").filter({ hasText: "⚙" }).first().click();
-        await sleep(400);
-      };
-      await open();
-      await p.getByRole("button", { name: "模型配置" }).click();
-      await sleep(1000);
-      await p.getByRole("button", { name: "主题" }).click();
+    await safeClip(page, context, "web-settings", async (p) => {
+      await p.goto(`${BASE}/settings?tab=appearance`, { waitUntil: "networkidle" });
       await sleep(900);
-      await p.getByRole("button", { name: "模型配置" }).click();
-      await sleep(1000);
+      // 外观：主题（黑客绿 / 浅色 / 跟随系统）
+      for (const label of ["黑客绿", "浅色", "跟随系统"]) {
+        const opt = p.getByRole("button", { name: new RegExp(label) }).first();
+        if (await opt.count()) {
+          await opt.click().catch(() => {});
+          await sleep(700);
+        }
+      }
+      // 再看一下模型配置
+      await clickSettingsTab(p, "模型");
+      await sleep(900);
+      await clickSettingsTab(p, "外观");
+      await sleep(800);
+    }),
+  );
+
+  results.push(
+    await safeClip(page, context, "web-model", async (p) => {
+      await p.goto(`${BASE}/settings?tab=model`, { waitUntil: "networkidle" });
+      await sleep(900);
+      const provider = p.locator("button").filter({ hasText: /DeepSeek|Ollama|模型|deepseek/i }).first();
+      if (await provider.count()) {
+        await provider.click().catch(() => {});
+        await sleep(800);
+      }
+      await clickSettingsTab(p, "模型");
+      await sleep(700);
+    }),
+  );
+
+  results.push(
+    await safeClip(page, context, "web-session", async (p) => {
+      await p.goto(`${BASE}/`, { waitUntil: "networkidle" });
+      await sleep(500);
+      const newChat = p.getByRole("button", { name: /新对话/ }).first();
+      if (await newChat.count()) {
+        await newChat.click().catch(() => {});
+        await sleep(600);
+      }
+      const input = p.locator("textarea").first();
+      await input.click();
+      await input.type("/help", { delay: 40 });
+      await sleep(400);
+      await input.press("Enter");
+      // 等待流式或空闲 UI；LLM 不可用也不失败
+      await sleep(3500);
+    }, { intervalMs: 140, fps: 7 }),
+  );
+
+  // 侧边栏演示：新建对话 + 展开右侧节点/终端栏
+  results.push(
+    await safeClip(page, context, "web-sidebar", async (p) => {
+      await p.goto(BASE, { waitUntil: "networkidle" });
+      await sleep(500);
+      const newChat = p.getByRole("button", { name: /新对话/ }).first();
+      if (await newChat.count()) {
+        await newChat.click();
+        await sleep(700);
+      }
+      // 展开右侧栏（节点/拓扑/终端）
+      const rail = p.locator("button[title*='展开'],button[title*='收起']").first();
+      if (await rail.count()) {
+        await rail.click().catch(() => {});
+        await sleep(900);
+      }
+      for (const label of ["节点", "拓扑", "终端"]) {
+        const tab = p.getByRole("button", { name: label }).first();
+        if (await tab.count()) {
+          await tab.click().catch(() => {});
+          await sleep(600);
+        }
+      }
     }),
   );
 
   // Static showcase still → short looping GIF
-  {
+  if (!CLIP_FILTER || CLIP_FILTER.has("web-still-home")) {
     const name = "web-still-home";
     await page.goto(BASE, { waitUntil: "networkidle" });
     await sleep(500);
@@ -274,7 +309,7 @@ async function main() {
     for (let i = 0; i < 12; i++) {
       fs.copyFileSync(still, path.join(framesDir, `f${String(i).padStart(4, "0")}.png`));
     }
-    const gifPath = path.join(OUT_DIR, `${name}.gif`);
+    const gifPath = path.join(OUT_DIR, `${name}-${THEME}.gif`);
     await run(FFMPEG, [
       "-y",
       "-framerate",

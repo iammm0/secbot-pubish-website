@@ -130,6 +130,7 @@ export function DownloadSection({ messages }: DownloadSectionProps) {
       className="home-download-section mx-auto w-full max-w-7xl px-4 py-12 sm:px-8 lg:px-12"
     >
       <div className="section-head">
+        <span className="home-hero-kicker">{m.kicker}</span>
         <h2 id="download-heading" className="section-title">
           {m.title}
         </h2>

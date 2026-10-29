@@ -265,8 +265,9 @@ a {
 }
 
 .home-hero-content {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
   align-items: center;
   width: 100%;
 }
@@ -286,13 +287,12 @@ a {
 }
 
 .home-hero-title {
-  margin-top: 0;
+  margin-top: 0.9rem;
   font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
-  font-size: clamp(4.6rem, 11vw, 8.75rem);
-  line-height: 0.82;
-  font-weight: 800;
-  letter-spacing: -0.08em;
-  text-transform: uppercase;
+  font-size: clamp(2.1rem, 4.4vw, 3.3rem);
+  line-height: 1.12;
+  font-weight: 750;
+  letter-spacing: -0.02em;
   color: var(--foreground);
   text-wrap: balance;
 }
@@ -1424,6 +1424,13 @@ details[open] > nav {
 .home-download-section {
   scroll-margin-top: 5rem;
   border-top: 1px solid var(--line);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--brand-soft) 14%, transparent) 0%,
+      transparent 42%
+    ),
+    var(--background);
 }
 
 .home-download-grid {
@@ -1448,8 +1455,9 @@ details[open] > nav {
 }
 
 .home-download-card:hover {
-  border-color: var(--muted-soft);
+  border-color: color-mix(in srgb, var(--brand-start) 48%, var(--line));
   transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
 }
 
 .home-download-card-recommended {
