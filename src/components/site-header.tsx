@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { BookOpenText, GitBranch, House, Menu, PlayCircle, Route, X } from "lucide-react";
+import { BookOpenText, Download, GitBranch, House, Menu, PlayCircle, Route, X } from "lucide-react";
 import { ThemeToggle } from "@/src/components/theme-toggle";
 import type { SiteMessages } from "@/src/i18n/messages";
 
@@ -18,6 +18,12 @@ export function SiteHeader({ messages }: SiteHeaderProps) {
 
   const navLinks = [
     { href: "/", label: messages.nav.home, active: pathname === "/", icon: House },
+    {
+      href: "/#download",
+      label: messages.nav.download,
+      active: false,
+      icon: Download,
+    },
     {
       href: "/docs",
       label: messages.nav.docs,

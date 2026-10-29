@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { DownloadSection } from "@/src/components/download-section";
 import { SiteFooter } from "@/src/components/site-footer";
 import { SiteHeader } from "@/src/components/site-header";
 import { getMessages } from "@/src/i18n/messages";
@@ -56,6 +57,8 @@ export default async function Home() {
               </div>
             </div>
           </section>
+
+          <DownloadSection messages={messages} />
 
           <section
             className="home-showcase-section motion-enter motion-enter-delay-1"

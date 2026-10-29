@@ -31,6 +31,9 @@
 .DS_Store
 *.pem
 
+# local Claude preview launch config
+/.claude/
+
 # local demo capture tooling / intermediates
 /tmp/
 /tools/ffmpeg/

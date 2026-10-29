@@ -6,6 +6,7 @@ const zhCN = {
   nav: {
     home: "首页",
     docs: "文档",
+    download: "下载",
     start: "开始使用",
     runtime: "运行与执行",
     github: "GitHub",
@@ -51,6 +52,20 @@ const zhCN = {
         body: "提供 Tauri 桌面客户端（含安装/更新器）、全功能 Ink 终端界面（含 Ctrl+F 对话内搜索）以及标准 HTTP API，Windows / macOS / Ubuntu 跨平台发布。",
       },
     ],
+    download: {
+      title: "下载 SecBot",
+      subtitle: "桌面版支持 macOS（Apple Silicon）、Windows x64、Ubuntu x64；TUI 端随包 Node 运行时，解压即可运行。",
+      macosArm: "macOS · Apple Silicon",
+      windowsX64: "Windows · x64",
+      linuxDeb: "Ubuntu · x64 (.deb)",
+      desktopLabel: "桌面版",
+      tuiLabel: "TUI 命令行",
+      download: "下载",
+      forYou: "为你推荐",
+      allPlatforms: "全部平台",
+      unsupportedIntel: "macOS Intel 暂不支持，建议使用 TUI 端",
+      unsupported32: "Windows 32 位暂不支持，请使用 64 位系统",
+    },
   },
   docs: {
     title: "SecBot 文档",

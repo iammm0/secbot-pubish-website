@@ -1418,3 +1418,133 @@ details[open] > nav {
     padding: 1.5rem 0.5rem;
   }
 }
+
+/* ── 首页「下载 SecBot」区块 ─────────────────────────────── */
+
+.home-download-section {
+  scroll-margin-top: 5rem;
+  border-top: 1px solid var(--line);
+}
+
+.home-download-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.9rem, 2vw, 1.35rem);
+  margin-top: 1.5rem;
+}
+
+.home-download-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 220ms var(--motion-ease);
+}
+
+.home-download-card:hover {
+  border-color: var(--muted-soft);
+  transform: translateY(-2px);
+}
+
+.home-download-card-recommended {
+  position: relative;
+  border-color: var(--brand-start);
+  background:
+    linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--brand-start) 12%, transparent),
+        transparent 55%
+      ),
+    var(--surface);
+}
+
+.home-download-badge {
+  position: absolute;
+  top: -0.7rem;
+  left: 1rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: var(--brand-end);
+}
+
+.home-download-recommended {
+  max-width: 24rem;
+}
+
+.home-download-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.home-download-card-icon {
+  width: 1.9rem;
+  height: 1.9rem;
+  color: var(--brand-start);
+}
+
+.home-download-card-title {
+  font-family: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.home-download-card-sub {
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.home-download-card-action {
+  width: 100%;
+}
+
+.home-download-card-action-ghost {
+  border-color: var(--line);
+}
+
+.home-download-note {
+  margin-top: 0.8rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.home-download-footer {
+  margin-top: 1.5rem;
+  font-size: 0.82rem;
+  color: var(--muted-soft);
+}
+
+.home-download-link {
+  color: color-mix(in srgb, var(--foreground) 88%, var(--brand-start));
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.home-download-link:hover {
+  color: var(--brand-start);
+  border-bottom-color: color-mix(in srgb, var(--brand-start) 55%, transparent);
+}
+
+@media (max-width: 767px) {
+  .home-download-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-download-recommended {
+    max-width: none;
+  }
+}
